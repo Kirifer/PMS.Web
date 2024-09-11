@@ -1,0 +1,21 @@
+.add-but{
+    background-color: rgb(50, 50, 211);
+    color: white;
+}
+.add-but:hover{
+    background-color: rgb(75, 75, 199);
+}
+.content{
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+.row{
+    display: flex;
+    gap: 10px;
+}
+.action{
+    padding: 0px 25px 20px;
+    button{
+        flex:1;
+    }
+}

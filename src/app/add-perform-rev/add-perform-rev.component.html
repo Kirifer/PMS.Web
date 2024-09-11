@@ -1,0 +1,54 @@
+<div mat-dialog-title>
+  <h5><span class="material-icons">
+      inventory
+    </span> Add New Item</h5>
+</div>
+
+<form [formGroup]="empForm" (ngSubmit)="onFormSubmit()">
+  
+  <div mat-dialog-content class="content">
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Code</mat-label>
+        <input matInput type="text" placeholder="Ex. BP" formControlName="code">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Category</mat-label>
+        <input matInput type="text" formControlName="category">
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Item</mat-label>
+        <input matInput type="text" formControlName="item">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Color</mat-label>
+        <input matInput type="text" formControlName="color">
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Size</mat-label>
+        <input matInput type="text" formControlName="size" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Quantity</mat-label>
+        <input matInput type="number" placeholder="0" formControlName="quantity" />
+      </mat-form-field>
+    </div>
+
+
+
+  </div>
+
+  <div mat-dialog-actions class="action">
+    <button mat-raised-button (click)="onCancel()">Cancel</button>
+    <button class="add-but" mat-raised-button type="submit"><mat-icon>input</mat-icon>Add</button>
+  </div>
+</form>

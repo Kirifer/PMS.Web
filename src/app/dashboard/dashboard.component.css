@@ -1,0 +1,44 @@
+
+
+
+.main-container {
+     width: 100%;
+     border: 2px solid rgb(225, 225, 225);
+     border-radius: 15px;
+     padding: 20px;
+}
+
+
+.title {
+    width: 100%;
+    height: 80px;
+
+    
+
+}
+
+.main-cards {
+    width: 100%;
+    height: 250px;
+    
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    div {
+        width: 200px;
+        height: 200px;
+        border: 2px solid rgb(225, 225, 225);
+        border-radius: 15px;
+        background: rgb(238, 238, 238);
+    }
+}
+
+.big-container {
+    width: 100%;
+    height: 500px;
+    border-radius: 15px;
+    border: 2px solid rgb(225, 225, 225);
+    background: rgb(238, 238, 238);
+}
