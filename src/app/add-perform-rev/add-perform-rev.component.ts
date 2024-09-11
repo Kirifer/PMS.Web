@@ -55,4 +55,16 @@ export class AddPerformRevComponent {
   onCancel(): void{
     this.dialogRef.close(false)
   }
+
+
+
+  onSubmit() {
+    // Handle form submission
+    console.log('Form submitted');
+  }
+
+  cancel() {
+    // Handle cancel action
+    console.log('Cancel clicked');
+  }
 }

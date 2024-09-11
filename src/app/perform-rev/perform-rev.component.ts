@@ -58,14 +58,12 @@ export class PerformRevComponent implements OnInit {
 
 
   
-  // Add Performance Review (Form)
-  // openAddEditForm() {
-  //   this._dialog.open(AddPerformRevComponent);
-  // }
+ 
 
   openAddEditForm() {
     const dialogRef = this._dialog.open(AddPerformRevComponent, {
-      width: '500px',  // You can adjust the dialog size if necessary
+      // width: '500px',  // You can adjust the dialog size if necessary
+      panelClass: 'custom-dialog-container',
       data: {}         // Pass any necessary data to the component (if needed)
     });
 
@@ -94,43 +92,7 @@ export class PerformRevComponent implements OnInit {
 
   
   
-  // constructor() {
-  //   // Create 100 users
-  //   const users = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
 
-  //   // Assign the data to the data source for the table to render
-  //   this.dataSource = new MatTableDataSource(users);
-  // }
-
-//   ngAfterViewInit() {
-//     this.dataSource.paginator = this.paginator;
-//     this.dataSource.sort = this.sort;
-//   }
-
-//   applyFilter(event: Event) {
-//     const filterValue = (event.target as HTMLInputElement).value;
-//     this.dataSource.filter = filterValue.trim().toLowerCase();
-
-//     if (this.dataSource.paginator) {
-//       this.dataSource.paginator.firstPage();
-//     }
-//   }
-// }
-
-// /** Builds and returns a new User. */
-// function createNewUser(id: number): UserData {
-//   const name =
-//     NAMES[Math.round(Math.random() * (NAMES.length - 1))] +
-//     ' ' +
-//     NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) +
-//     '.';
-
-//   return {
-//     id: id.toString(),
-//     name: name,
-//     progress: Math.round(Math.random() * 100).toString(),
-//     fruit: FRUITS[Math.round(Math.random() * (FRUITS.length - 1))],
-//   };
 }
 
 

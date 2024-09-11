@@ -1,54 +1,58 @@
-<div mat-dialog-title>
-  <h5><span class="material-icons">
-      inventory
-    </span> Add New Item</h5>
+
+<div class="container">
+  <div class="title-add">
+  <h3>Add Performance Review</h3>
+    
+  </div>
+
+  <h6>Employee Details</h6>
+  <form class="employee-details-form" [formGroup]="empForm" (ngSubmit)="onFormSubmit()">
+    <!-- (ngSubmit)="onSubmit()" -->
+    <div class="form-row">
+      <mat-form-field class="full-width">
+        <mat-label>Review Year *</mat-label>
+        <input matInput [matDatepicker]="reviewYearPicker" placeholder="Choose a year" readonly>
+        <mat-datepicker-toggle matSuffix [for]="reviewYearPicker"></mat-datepicker-toggle>
+        <mat-datepicker #reviewYearPicker startView="multi-year" panelClass="year-picker"></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Start Date *</mat-label>
+        <input matInput [matDatepicker]="startDatePicker" placeholder="Choose a start date">
+        <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #startDatePicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>End Date *</mat-label>
+        <input matInput [matDatepicker]="endDatePicker" placeholder="Choose an end date">
+        <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #endDatePicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field class="full-width">
+        <mat-label>Employee Name *</mat-label>
+        <input matInput placeholder="Enter employee name" pattern="[a-zA-Z. ]*">
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Supervisor Name *</mat-label>
+        <input matInput placeholder="Enter supervisor name" pattern="[a-zA-Z. ]*">
+      </mat-form-field>
+
+      <mat-checkbox class="active-supervisor-checkbox">Active Supervisor</mat-checkbox>
+    </div>
+
+    <div class="button-group">
+      <button mat-raised-button color="primary" type="submit">Submit</button>
+      <button mat-raised-button color="warn" type="button" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
 </div>
 
-<form [formGroup]="empForm" (ngSubmit)="onFormSubmit()">
-  
-  <div mat-dialog-content class="content">
-    <div class="row">
-      <mat-form-field appearance="outline">
-        <mat-label>Code</mat-label>
-        <input matInput type="text" placeholder="Ex. BP" formControlName="code">
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Category</mat-label>
-        <input matInput type="text" formControlName="category">
-      </mat-form-field>
-    </div>
-
-    <div class="row">
-      <mat-form-field appearance="outline">
-        <mat-label>Item</mat-label>
-        <input matInput type="text" formControlName="item">
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Color</mat-label>
-        <input matInput type="text" formControlName="color">
-      </mat-form-field>
-    </div>
-
-    <div class="row">
-      <mat-form-field appearance="outline">
-        <mat-label>Size</mat-label>
-        <input matInput type="text" formControlName="size" />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Quantity</mat-label>
-        <input matInput type="number" placeholder="0" formControlName="quantity" />
-      </mat-form-field>
-    </div>
-
-
-
-  </div>
-
-  <div mat-dialog-actions class="action">
-    <button mat-raised-button (click)="onCancel()">Cancel</button>
-    <button class="add-but" mat-raised-button type="submit"><mat-icon>input</mat-icon>Add</button>
-  </div>
-</form>
+<!-- <div mat-dialog-actions class="action">
+  <button mat-raised-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button type="submit">Add</button>
+</div> -->
