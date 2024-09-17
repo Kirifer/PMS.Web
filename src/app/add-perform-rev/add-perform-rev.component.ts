@@ -26,14 +26,16 @@ export class AddPerformRevComponent {
 
   // Get unique levels for selected competency
   getUniqueLevelsForCompetency(): string[] {
-    if (this.selectedCompetency) {
-      return [...new Set(
-        this.competencies
-          .filter(c => c.competency === this.selectedCompetency)
-          .map(c => c.level)
-      )];
-    }
-    return [];
+
+    return [...new Set(this.competencies.map(c => c.level))];
+    // if (this.selectedCompetency) {
+    //   return [...new Set(
+    //     this.competencies
+    //       .filter(c => c.competency === this.selectedCompetency)
+    //       .map(c => c.level)
+    //   )];
+    // }
+    // return [];
   }
 
   // Get description based on selected competency and level
