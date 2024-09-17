@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import employees from "./data.json"
-import {MatSort, MatSortModule} from '@angular/material/sort';
-import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import { AddPerformRevComponent } from '../add-perform-rev/add-perform-rev.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule} from '@angular/material/dialog';
+
 
 
 
@@ -35,15 +34,9 @@ export class PerformRevComponent implements OnInit {
   
   data = employees;
   
-
-
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    // if (this.dataSource.paginator) {
-    //   this.dataSource.paginator.firstPage();
-    // }
   }
   
   ngOnInit() {
@@ -57,40 +50,24 @@ export class PerformRevComponent implements OnInit {
   }
 
 
-  
- 
+  readonly dialog = inject(MatDialog);
 
-  openAddEditForm() {
-    const dialogRef = this._dialog.open(AddPerformRevComponent, {
-      // width: '500px',  // You can adjust the dialog size if necessary
-      panelClass: 'custom-dialog-container',
-      data: {}         // Pass any necessary data to the component (if needed)
+  openDialog() {
+    const dialogRef = this.dialog.open(AddPerformRevComponent, {
+      width: '1100px',
+      maxWidth: 'none',
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        // Handle the result if needed (e.g., refresh the table)
-        console.log("Dialog closed with result:", result);
-      }
+      console.log(`Dialog result: ${result}`);
     });
   }
 
   
-  
-  
-  
-
-
-
-
-
-
-
-
-
-
+ 
 
   
+
   
 
 }

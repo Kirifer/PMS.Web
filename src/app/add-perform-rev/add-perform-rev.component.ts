@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { IPerformanceReview } from '../models/performanceReview';
+import { ICompetency } from '../models/competency';
+import competencyData from './competency.json'
+
+
 
 
 @Component({
@@ -11,60 +13,80 @@ import { IPerformanceReview } from '../models/performanceReview';
   styleUrls: ['./add-perform-rev.component.css']
 })
 export class AddPerformRevComponent {
-  empForm: FormGroup;
+  
+  
+  competencies = competencyData;
+  selectedCompetency: string = '';
+  selectedLevel: string = '';
 
-
-  categ: string[] = [
-    'Office Supply'
-  ];
-
-  constructor(
-    private _fb: FormBuilder,
-    private http: HttpClient,
-    public dialogRef: MatDialogRef<AddPerformRevComponent>
-  ) {    
-      this.empForm = this._fb.group({
-      code:'',
-      // sequenceCode:'',
-      category:'',
-      item:'',
-      color:'',
-      size:'',
-      quantity:'',
-      supplyTaken:'',
-    });
+  // Get unique competencies
+  getUniqueCompetencies(): string[] {
+    return [...new Set(this.competencies.map(c => c.competency))];
   }
 
-  // CREATE
-  onFormSubmit(){ 
-    if(this.empForm.valid){
-      const formData: IPerformanceReview = this.empForm.value;
-      this.http.post('https://localhost:7012/supplycodes', formData).subscribe({
-        next: response => {
-          console.log('Data successfully submitted', response);
-          this.dialogRef.close(true);
-        },
-        error: error => {
-          console.error('Error submitting data', error);
-        }
-      });
+  // Get unique levels for selected competency
+  getUniqueLevelsForCompetency(): string[] {
+    if (this.selectedCompetency) {
+      return [...new Set(
+        this.competencies
+          .filter(c => c.competency === this.selectedCompetency)
+          .map(c => c.level)
+      )];
     }
+    return [];
   }
 
-  // CANCEL
-  onCancel(): void{
-    this.dialogRef.close(false)
+  // Get description based on selected competency and level
+  getDescription(): string {
+    const selected = this.competencies.find(c =>
+      c.competency === this.selectedCompetency && c.level === this.selectedLevel
+    );
+    return selected ? selected.description : '';
   }
+  
 
-
-
-  onSubmit() {
-    // Handle form submission
-    console.log('Form submitted');
-  }
-
-  cancel() {
-    // Handle cancel action
-    console.log('Cancel clicked');
-  }
+  
 }
+
+
+
+
+// export class AddPerformRevComponent {
+  
+//   competencies = competencyData;
+//   selectedRows: { selectedCompetency: string, selectedLevel: string }[] = [
+//     { selectedCompetency: '', selectedLevel: '' },
+//     { selectedCompetency: '', selectedLevel: '' },
+//     { selectedCompetency: '', selectedLevel: '' },
+//     { selectedCompetency: '', selectedLevel: '' },
+//     { selectedCompetency: '', selectedLevel: '' }
+//   ];
+
+//   // Get unique competencies
+//   getUniqueCompetencies(): string[] {
+//     return [...new Set(this.competencies.map(c => c.competency))];
+//   }
+
+//   // Get unique levels for selected competency
+//   getUniqueLevelsForCompetency(rowIndex: number): string[] {
+//     const selectedCompetency = this.selectedRows[rowIndex].selectedCompetency;
+//     if (selectedCompetency) {
+//       return [...new Set(
+//         this.competencies
+//           .filter(c => c.competency === selectedCompetency)
+//           .map(c => c.level)
+//       )];
+//     }
+//     return [];
+//   }
+
+//   // Get description based on selected competency and level
+//   getDescription(rowIndex: number): string {
+//     const selectedCompetency = this.selectedRows[rowIndex].selectedCompetency;
+//     const selectedLevel = this.selectedRows[rowIndex].selectedLevel;
+//     const selected = this.competencies.find(c =>
+//       c.competency === selectedCompetency && c.level === selectedLevel
+//     );
+//     return selected ? selected.description : '';
+//   }
+// }
