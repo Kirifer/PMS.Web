@@ -16,17 +16,22 @@ export class AddPerformRevComponent {
   
   
   competencies = competencyData;
-  selectedCompetency: string = '';
-  selectedLevel: string = '';
+  selectedRows: { selectedCompetency: string, selectedLevel: string }[] = [
+        { selectedCompetency: '', selectedLevel: '' },
+        { selectedCompetency: '', selectedLevel: '' },
+        { selectedCompetency: '', selectedLevel: '' },
+        { selectedCompetency: '', selectedLevel: '' },
+        { selectedCompetency: '', selectedLevel: '' }
+  ];
+    
 
-  // Get unique competencies
+
   getUniqueCompetencies(): string[] {
     return [...new Set(this.competencies.map(c => c.competency))];
   }
 
-  // Get unique levels for selected competency
+  
   getUniqueLevelsForCompetency(): string[] {
-
     return [...new Set(this.competencies.map(c => c.level))];
     // if (this.selectedCompetency) {
     //   return [...new Set(
@@ -38,14 +43,14 @@ export class AddPerformRevComponent {
     // return [];
   }
 
-  // Get description based on selected competency and level
-  getDescription(): string {
-    const selected = this.competencies.find(c =>
-      c.competency === this.selectedCompetency && c.level === this.selectedLevel
+  getDescription(rowIndex: number): string {
+    const selectedCompetency = this.selectedRows[rowIndex].selectedCompetency;
+    const selectedLevel = this.selectedRows[rowIndex].selectedLevel;
+    const selected = this.competencies.find(c => c.competency === selectedCompetency && 
+                                                 c.level === selectedLevel
     );
     return selected ? selected.description : '';
   }
-  
 
   
 }
@@ -53,42 +58,4 @@ export class AddPerformRevComponent {
 
 
 
-// export class AddPerformRevComponent {
-  
-//   competencies = competencyData;
-//   selectedRows: { selectedCompetency: string, selectedLevel: string }[] = [
-//     { selectedCompetency: '', selectedLevel: '' },
-//     { selectedCompetency: '', selectedLevel: '' },
-//     { selectedCompetency: '', selectedLevel: '' },
-//     { selectedCompetency: '', selectedLevel: '' },
-//     { selectedCompetency: '', selectedLevel: '' }
-//   ];
 
-//   // Get unique competencies
-//   getUniqueCompetencies(): string[] {
-//     return [...new Set(this.competencies.map(c => c.competency))];
-//   }
-
-//   // Get unique levels for selected competency
-//   getUniqueLevelsForCompetency(rowIndex: number): string[] {
-//     const selectedCompetency = this.selectedRows[rowIndex].selectedCompetency;
-//     if (selectedCompetency) {
-//       return [...new Set(
-//         this.competencies
-//           .filter(c => c.competency === selectedCompetency)
-//           .map(c => c.level)
-//       )];
-//     }
-//     return [];
-//   }
-
-//   // Get description based on selected competency and level
-//   getDescription(rowIndex: number): string {
-//     const selectedCompetency = this.selectedRows[rowIndex].selectedCompetency;
-//     const selectedLevel = this.selectedRows[rowIndex].selectedLevel;
-//     const selected = this.competencies.find(c =>
-//       c.competency === selectedCompetency && c.level === selectedLevel
-//     );
-//     return selected ? selected.description : '';
-//   }
-// }

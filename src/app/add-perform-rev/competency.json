@@ -25,7 +25,7 @@
   },
   {
     "competency": "Delivering",
-    "level": "Individual Operator ",
+    "level": "Individual Operator",
     "combined": "DeliveringIndividual Operator",
     "description": "Follow safety and security rules and procedures, pause a job to avoid putting others at risk if there are safety or security concerns. Give standards of service for happy customers. Listen to instructions and clarify when unsure."
   },
@@ -55,7 +55,7 @@
   },
   {
     "competency": "Drive",
-    "level": "Individual Operator ",
+    "level": "Individual Operator",
     "combined": "DriveIndividual Operator",
     "description": "Have a positive attitude and know what needs to be done before they start a new task"
   },
@@ -86,7 +86,7 @@
   },
   {
     "competency": "Open to Opportunity",
-    "level": "Individual Operator ",
+    "level": "Individual Operator",
     "combined": "Open to OpportunityIndividual Operator",
     "description": "Keep calm when things are changing quickly, encourage others to do their best. They add something to the team."
   },
@@ -116,7 +116,7 @@
   },
   {
     "competency": "Business Thinking",
-    "level": "Individual Operator ",
+    "level": "Individual Operator",
     "combined": "Business ThinkingIndividual Operator",
     "description": "Make suggestions as if the organisation was their own company. Act in a way which fits where we are going with the business"
   },
@@ -146,7 +146,7 @@
   },
   {
     "competency": "Collaboration",
-    "level": "Individual Operator ",
+    "level": "Individual Operator",
     "combined": "CollaborationIndividual Operator ",
     "description": "Respect individual differences. Share their knowledge and help others with their work to benefit the entire team"
   },
