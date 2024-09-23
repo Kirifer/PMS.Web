@@ -1,0 +1,12 @@
+<div class="body" [ngClass]="{'body': !isAdminLogin, 'disabled-body': isAdminLogin}">
+  
+  @if(!isAdminLogin) {
+      <app-side-nav (onToggleSideNav)="onToggleSideNav($event)"></app-side-nav>
+      <app-body [collapsed]="isSideNavCollapsed" [screenWidth]="screenWidth"></app-body>
+  }
+  
+  @else {
+    <app-login></app-login>
+  }
+    
+  </div>

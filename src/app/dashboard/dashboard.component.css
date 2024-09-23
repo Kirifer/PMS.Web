@@ -1,0 +1,64 @@
+.main-container {
+    width: 100%;
+    border: 2px solid rgb(225, 225, 225);
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.title {
+   width: 100%;
+   height: 80px;
+
+}
+
+.main-cards {
+   width: 100%;
+   height: 350px;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+
+   div{
+       width: 300px;
+       margin: auto;
+       height: 350px;
+       border: 2px solid rgb(225, 225, 225);
+       border-radius: 15px;
+       background: rgb(255, 255, 255);
+       margin-bottom: 50px;
+   }
+}
+
+.big-container {
+   margin-top: 20px;
+   width: 100%;
+   height: auto;
+   border-radius: 15px;
+   border: 2px solid rgb(225, 225, 225); /* Keep the border of the big-container */
+   background: rgb(255, 255, 255); /* Keep the white background for big-container */
+   padding: 20px;
+}
+
+.first{
+   width: 500px;
+}
+#echart-container {
+   width: 100%;
+   height: 400px;
+ }
+ 
+ table {
+   width: 100%;
+   background-color: white;
+ }
+ 
+ .mat-mdc-form-field {
+   font-size: 14px;
+   width: 100%;
+ }
+ 
+ mat-paginator {
+background-color: white; }
+ .mat-elevation-z8{
+   box-shadow: none;
+ }
