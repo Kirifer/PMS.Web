@@ -60,12 +60,19 @@
 }
 table {
     width: 100%;
+    background-color: white;
 }
   
 .mat-mdc-form-field {
     font-size: 14px;
     width: 100%;
 }
+
+
+
+
+
+
 
 
 

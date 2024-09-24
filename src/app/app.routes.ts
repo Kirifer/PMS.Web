@@ -6,7 +6,7 @@ import { PerformRevComponent } from './perform-rev/perform-rev.component';
 
 
 export const routes: Routes = [
-    {path: '', component: BodyComponent},
+    {path: '', redirectTo: 'login', pathMatch: 'full'},
     {path: 'dashboard', component: DashboardComponent},
     {path: 'login', component: LoginComponent},
     {path: 'performance', component: PerformRevComponent}

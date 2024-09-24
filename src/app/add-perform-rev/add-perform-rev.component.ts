@@ -1,15 +1,32 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup } from '@angular/forms';
+
 import competencyData from './competency.json'
 import {MatDialogModule} from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatInputModule} from '@angular/material/input';
+import {MatIconModule} from '@angular/material/icon';
+
 @Component({
   selector: 'app-add-perform-rev',
   standalone: true,
-  imports: [FormsModule,MatDialogModule,CommonModule,RouterModule],
+  imports: [
+    FormsModule,
+    MatDialogModule,
+    CommonModule,
+    RouterModule, 
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatCheckboxModule,
+    MatInputModule,
+    MatIconModule
+  ],
   templateUrl: './add-perform-rev.component.html',
   styleUrl: './add-perform-rev.component.css'
 })

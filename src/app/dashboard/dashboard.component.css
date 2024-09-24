@@ -58,7 +58,8 @@
  }
  
  mat-paginator {
-background-color: white; }
+background-color: white; 
+}
  .mat-elevation-z8{
    box-shadow: none;
  }
