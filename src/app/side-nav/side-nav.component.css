@@ -121,7 +121,7 @@
     }
 
     .sidenav-nav-item:hover{
-        .sidenav-nav-link{
+        .sidenav-nav-link:not(.active){
             background-color: #ffffff46;
             color: #000;
         }

@@ -14,16 +14,7 @@
     h2 {
        position: relative;
     }
-    h2::after {
-        content: '';
-        width: 100%;
-        height: 5px;
-        background: linear-gradient(to right, #004ba3, #00b8d4);
-        position: absolute;
-        bottom: -3px;
-        left: 0;
-        /* border-radius: 35px; */
-    }
+    
     button {
         background-image: linear-gradient(315deg, #00b8d4 0%, #004ba3  50%);
         color: white;
@@ -68,7 +59,18 @@ table {
     width: 100%;
 }
 
+table th {
+    background-color: rgb(241, 241, 241);
+    border: none;
 
+}
+
+table td {
+    border-color: rgb(220, 220, 220);
+}
+
+table th:first-child { border-top-left-radius: 10px; border-bottom-left-radius: 10px; }
+table th:last-child { border-top-right-radius: 10px; border-bottom-right-radius: 10px;}
 
 
 

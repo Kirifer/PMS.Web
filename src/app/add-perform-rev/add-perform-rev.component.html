@@ -167,6 +167,7 @@
             <td>{{ i + 1 }}</td>
             <td>
               <select name="competency" id="competency" [(ngModel)]="selectedRows[i].selectedCompetency">
+                <option value="" disabled selected hidden>Select competency</option>
                 <option *ngFor="let competency of getUniqueCompetencies()" [value]="competency">
                   {{ competency }}
                 </option>
@@ -175,6 +176,7 @@
             <td><input type="text" /></td>
             <td>
               <select name="level" id="level" [(ngModel)]="selectedRows[i].selectedLevel">
+                <option value="" disabled selected hidden>Select level</option>
                 <option *ngFor="let level of getUniqueLevelsForCompetency()" [value]="level">
                   {{ level }}
                 </option>
