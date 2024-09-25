@@ -4,7 +4,10 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { AddReviewComponent } from '../add-review/add-review.component';
+import { MatDialog } from '@angular/material/dialog';
 import * as echarts from 'echarts/core';
 import {
   TooltipComponent,
@@ -53,9 +56,11 @@ const ELEMENT_DATA: UserData[] = [
   standalone: true,
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
-  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule]
+  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatIconModule]
 })
 export class DashboardComponent implements AfterViewInit {
+  constructor(private _dialog: MatDialog) {}
+
   displayedColumns: string[] = ['name', 'reviewYear', 'startDate', 'endDate', 'employee', 'supervisor', 'actions'];
   dataSource: MatTableDataSource<UserData> = new MatTableDataSource(ELEMENT_DATA);
 
@@ -68,7 +73,7 @@ export class DashboardComponent implements AfterViewInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-
+  // 1ST CHART
   private initPieChart(): void {
     const chartDom = document.getElementById('echart-container')!;
     const myChart = echarts.init(chartDom);
@@ -94,7 +99,7 @@ export class DashboardComponent implements AfterViewInit {
     };
     myChart.setOption(option);
   }
-
+  // 2ND CHART
   private initLineChart(): void {
     const chartDom = document.getElementById('linechart-container')!;
     const myChart = echarts.init(chartDom);
@@ -127,5 +132,16 @@ export class DashboardComponent implements AfterViewInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  // OPEN DIALOG
+  openAddReview(){
+    this._dialog.open(AddReviewComponent,{
+      width: '1500px',
+      maxWidth: 'none',
+      height: '800px',
+      maxHeight: 'none',
+      
+    });
   }
 }

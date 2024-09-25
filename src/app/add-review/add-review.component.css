@@ -1,0 +1,124 @@
+* {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+}
+
+*::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
+    
+form {
+    padding: 50px;
+
+  }
+  
+  .form-row {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group.col-md-4 {
+    flex: 1;
+    margin-right: 10px;
+  }
+  
+  .form-group.col-md-4:last-child {
+    margin-right: 0;
+  }
+  
+  /* Container for tables in a single row */
+  .table-container {
+    display: flex;
+    flex-direction: row; /* Align tables horizontally */
+    gap: 20px; /* Adds space between tables */
+    justify-content: space-between; /* Distribute tables across the row */
+    width: 100%; /* Ensures the container takes full width */
+  }
+  
+  .table-wrapper {
+    flex: 1;
+    min-width: 300px; /* Minimum width for each table */
+    padding: 10px; /* Adds padding around the table */
+    border-radius: 8px; /* Rounds the corners of the table wrapper */
+  }
+  
+  /* Table Styling */
+  table {
+    width: 100%; /* Full width inside the wrapper */
+    border-collapse: collapse; /* Ensure no double borders between cells */
+    background-color: white; /* White background inside the table */
+  }
+  
+  table th, table td {
+    border: 1px solid black; /* Black borders around table cells */
+    padding: 8px; /* Padding inside the table cells */
+    text-align: left; /* Left align the text */
+  }
+  
+  table th {
+    background-color: #f8f8f8; /* Light background for table headers */
+    font-weight: bold; /* Bold text in headers */
+  }
+  
+  table thead tr {
+    border-bottom: 2px solid black; /* Thicker border below the header row */
+  }
+  
+  table tbody tr:hover {
+    background-color: #f0f0f0; /* Light gray hover effect for rows */
+  }
+  table td{
+    height: 120px;
+  }
+  
+  button {
+    background-color: black; /* Black button background */
+    color: white; /* White text */
+    border: 1px solid black; /* Black border */
+    padding: 10px 20px; /* Padding around button */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Cursor turns into a pointer */
+  }
+  
+  button:hover {
+    background-color: #333; /* Darker shade of black on hover */
+  }
+
+
+  .card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.card {
+  flex: 1 1 calc(50% - 1rem); /* 2 columns */
+  border: 1px solid black;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  font-weight: bold;
+}
+
+.card-body {
+  padding: 1rem;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.col {
+  flex: 1 1 calc(50% - 1rem); /* 2 columns */
+  padding: 1rem;
+}
