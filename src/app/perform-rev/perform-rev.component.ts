@@ -15,8 +15,7 @@ import {MatSort, MatSortModule} from '@angular/material/sort';
 import {MatInputModule} from '@angular/material/input';
 
 import employees from "./data.json"
-import { IUserData } from '../model/interface/UserData';
-
+import { IUserData } from '../models/userData';
 
 
 

@@ -1,47 +1,47 @@
 
     
 form {
-    padding: 30px;
+  padding: 30px;
 }
 
 
 
 /* Employee Details */
 .employee-details {
-  width: 100%;
-  margin: auto;
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 30px;
+width: 100%;
+margin: auto;
+background-color: white;
+padding: 20px;
+border-radius: 8px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+margin-bottom: 30px;
 
-  
-  .row {
-    display: flex;
-    margin-bottom: 10px;
-  }
 
-  .label {
-    width: 20%;
-    background-color: #f0f0f0;
-    padding: 10px;
-    border: 1px solid #f0f0f0;
-    border-radius: 5px;
-  }
+.row {
+  display: flex;
+  margin-bottom: 10px;
+}
 
-  .value {
-    width: 30%;
-    background-color: #ffffff;
-    padding: 10px;
-    border: 1px solid #f0f0f0;
-    border-radius: 5px;
-    text-align: center;
-  }
+.label {
+  width: 20%;
+  background-color: #f0f0f0;
+  padding: 10px;
+  border: 1px solid #f0f0f0;
+  border-radius: 5px;
+}
 
-  .value:last-child {
-    width: 50%;
-  }
+.value {
+  width: 30%;
+  background-color: #ffffff;
+  padding: 10px;
+  border: 1px solid #f0f0f0;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.value:last-child {
+  width: 50%;
+}
 }
 
 
@@ -49,56 +49,56 @@ form {
 /* Objectives */
 
 .objectives {
+width: 100%;
+margin: auto;
+background-color: white;
+padding: 20px;
+border-radius: 8px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+margin-bottom: 30px;
+
+
+
+p {
+  font-size: 15px;
+  line-height: 1.5;
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 7px;
+}
+
+table {
   width: 100%;
-  margin: auto;
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 30px;
+  text-align: center;
+}
 
+table th, table td {
+  padding: 10px;
+  text-align: center;
+  font-size: 16px;
+}
 
-  
-  p {
-    font-size: 15px;
-    line-height: 1.5;
-    background-color: #f0f0f0;
-    padding: 10px;
-    border-radius: 7px;
-  }
-  
-  table {
-    width: 100%;
-    text-align: center;
-  }
-  
-  table th, table td {
-    padding: 10px;
-    text-align: center;
-    font-size: 16px;
-  }
-  
-  table th {
-    background-color: #f0f0f0;
-    font-weight: bold;
-  }
+table th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
 
-  table td {
-    border: 1px solid #f0f0f0;
-    text-align: center;
-  }
-  
-  td:nth-child(4), td:nth-child(6) {
-    font-weight: bold;
-    background-color: #f0f0f0;
-  }
-  
-  .total-label {
-    font-weight: bold;
-  }
+table td {
+  border: 1px solid #f0f0f0;
+  text-align: center;
+}
 
-  table th:first-child { border-top-left-radius: 10px; }
-  table thead th:last-child { border-top-right-radius: 10px; }
+td:nth-child(4), td:nth-child(6) {
+  font-weight: bold;
+  background-color: #f0f0f0;
+}
+
+.total-label {
+  font-weight: bold;
+}
+
+table th:first-child { border-top-left-radius: 10px; }
+table thead th:last-child { border-top-right-radius: 10px; }
 }
 
 
@@ -111,47 +111,47 @@ form {
 /* Competencies */
 
 .competencies {
+width: 100%;
+margin: auto;
+background-color: white;
+padding: 20px;
+border-radius: 8px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+margin-bottom: 30px;
+
+
+table {
   width: 100%;
-  margin: auto;
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 30px;
+  text-align: center;
+}
 
-  
-  table {
-    width: 100%;
-    text-align: center;
-  }
-  
-  table th, table td {
-    padding: 10px;
-    text-align: center;
-    font-size: 16px;
-  }
+table th, table td {
+  padding: 10px;
+  text-align: center;
+  font-size: 16px;
+}
 
-  table td {
-    border: 1px solid #f0f0f0;
-  }
+table td {
+  border: 1px solid #f0f0f0;
+}
 
-  table th {
-    background-color: #f0f0f0;
-    font-weight: bold;
-  }
-  
-  td:nth-child(4), td:nth-child(6) {
-    font-weight: bold;
-    background-color: #f0f0f0;
-  }
-  
-  .total-label {
-    font-weight: bold;
-  }
+table th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
 
-  table th:first-child { border-top-left-radius: 10px; }
-  table thead th:last-child { border-top-right-radius: 10px; }
-  
+td:nth-child(4), td:nth-child(6) {
+  font-weight: bold;
+  background-color: #f0f0f0;
+}
+
+.total-label {
+  font-weight: bold;
+}
+
+table th:first-child { border-top-left-radius: 10px; }
+table thead th:last-child { border-top-right-radius: 10px; }
+
 }
 
 
@@ -160,103 +160,103 @@ form {
 
 /* Overall Contri Level & Agreement */
 .container {
+width: 100%;
+margin: auto;
+background-color: white;
+padding: 20px;
+border-radius: 8px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+margin-bottom: 30px;
+
+
+
+table {
   width: 100%;
-  margin: auto;
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 30px;
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+table th, table td {
+  padding: 10px;
+  text-align: center;
+  font-size: 16px;
+}
+
+table td {
+  border: 1px solid #f0f0f0;
+}
+
+table th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+.calibration-comments {
+  font-weight: bold;
+  height: 100px;
+}
+
+table th:first-child { border-top-left-radius: 10px; }
+table thead th:last-child { border-top-right-radius: 10px; }
 
 
-  
-  table {
-    width: 100%;
-    margin-bottom: 50px;
+
+.agreement-section {
+  margin-top: 20px;
+
+  h6 {
+    margin-bottom: 100px;
+  }
+  .signatures {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .signatures div {
+    width: 40%;
+    border-top: 2px solid rgb(136, 136, 136);
     text-align: center;
   }
 
-  table th, table td {
-    padding: 10px;
-    text-align: center;
-    font-size: 16px;
-  }
-
-  table td {
-    border: 1px solid #f0f0f0;
-  }
-
-  table th {
-    background-color: #f0f0f0;
-    font-weight: bold;
-  }
-
-  .calibration-comments {
-    font-weight: bold;
-    height: 100px;
-  }
-
-  table th:first-child { border-top-left-radius: 10px; }
-  table thead th:last-child { border-top-right-radius: 10px; }
-
-
-
-  .agreement-section {
-    margin-top: 20px;
-
-    h6 {
-      margin-bottom: 100px;
-    }
-    .signatures {
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .signatures div {
-      width: 40%;
-      border-top: 2px solid rgb(136, 136, 136);
-      text-align: center;
-    }
-
-  }
+}
 
 
 }
 
 .button-section {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+width: 100%;
+display: flex;
+align-items: center;
+justify-content: flex-end;
 
-  button {
-    width: 75px;
-    height: 40px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    transition: all 0.4s;
-    margin-right: 15px;
+button {
+  width: 75px;
+  height: 40px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.4s;
+  margin-right: 15px;
 
-  }
+}
 
-  button:hover {
-    transform: scale(1.1);
-  }
+button:hover {
+  transform: scale(1.1);
+}
 
-  button:active {
-    transform: scale(1);
-  }
+button:active {
+  transform: scale(1);
+}
 
-  .close {
-    background-color: rgb(240, 240, 240);
-  }
+.close {
+  background-color: rgb(240, 240, 240);
+}
 
-  .submit {
-    background-color: rgb(145, 145, 145);
-    color: white;
-    font-weight: 700;
-  }
+.submit {
+  background-color: rgb(145, 145, 145);
+  color: white;
+  font-weight: 700;
+}
 }
 
 
@@ -280,4 +280,3 @@ form {
 
 
 
- 

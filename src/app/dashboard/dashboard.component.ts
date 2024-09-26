@@ -10,7 +10,7 @@ import { AddReviewComponent } from '../add-review/add-review.component';
 import { MatDialog } from '@angular/material/dialog';
 
 import employees from "../perform-rev/data.json"
-import { IUserData } from '../model/interface/UserData';
+import { IUserData } from '../models/userData';
 
 
 

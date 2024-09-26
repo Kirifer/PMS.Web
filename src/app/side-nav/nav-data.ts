@@ -6,7 +6,7 @@ export const navbarData = [
     },
     {
         routeLink: 'performance',
-        icon: 'fas fa-chart-bar',
+        icon: 'fal fa-chart-bar',
         label: 'Performance Review'
     },
     {

@@ -8,6 +8,7 @@
     transition: all .5s ease;
     background: white;
     padding: 3em;
+    
 }
 
 .body-trimmed{
@@ -19,3 +20,36 @@
     width: calc(100% - 5rem);
     margin-left: 5rem;
 }
+.app-header {
+    border: 1px solid #8690a3;
+    background-color: white; /* Light background color */
+    height: 55px;
+    padding: 10px 20px; /* Padding for the header */
+    display: flex; /* Use flexbox for layout */
+    justify-content: flex-end; /* Align account info to the right */
+    align-items: center; /* Center items vertically */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    position: fixed; /* Fixed position */
+    width: 100%; /* Full width */
+    z-index: 1; /* Ensure it appears above other content */
+
+}
+
+.account-info {
+    display: flex; /* Use flexbox for account info */
+    align-items: center; /* Center items vertically */
+}
+
+.account-icon {
+    width: 30px; /* Icon size */
+    height: 30px; /* Icon size */
+    margin-top: 12px;
+    margin-right: 8px; /* Space between icon and username */
+}
+
+.username {
+    font-size: 16px; /* Username font size */
+    color: #333; /* Username text color */
+}
+
+
