@@ -1,17 +1,8 @@
-* {
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none;  /* Internet Explorer 10+ */
-}
 
-*::-webkit-scrollbar { 
-    display: none;  /* Safari and Chrome */
-}
     
 form {
     padding: 30px;
 }
-
-
 
 
 

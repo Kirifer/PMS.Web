@@ -18,7 +18,7 @@ export class AddReviewComponent {
   constructor(public dialogRef: MatDialogRef<AddReviewComponent>) { }
 
   closeDialog(): void {
-    this.dialogRef.close(); // This will close the dialog
+    this.dialogRef.close(); // 
   }
 
 }

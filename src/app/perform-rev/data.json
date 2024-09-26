@@ -6,8 +6,7 @@
       "startDate": "2021-01-01",
       "endDate": "2022-01-01",
       "employee": "Jam Payumo",
-      "supervisor": "Arrian Pascual",
-      "action": ""
+      "supervisor": "Arrian Pascual"
     },
     {
       "id": 2,
@@ -16,8 +15,7 @@
       "startDate": "2021-01-01",
       "endDate": "2022-01-01",
       "employee": "Ashley San Pedro",
-      "supervisor": "Jam Payumo",
-      "action": ""
+      "supervisor": "Jam Payumo"
     },
     {
       "id": 3,
@@ -26,8 +24,7 @@
       "startDate": "2021-01-01",
       "endDate": "2022-01-01",
       "employee": "Sherlyn De Guzman",
-      "supervisor": "Arrian Pascual",
-      "action": ""
+      "supervisor": "Arrian Pascual"
     },
     {
       "id": 4,
@@ -36,8 +33,7 @@
       "startDate": "2021-01-01",
       "endDate": "2022-01-01",
       "employee": "Timothy Sean",
-      "supervisor": "Jam Payumo",
-      "action": ""
+      "supervisor": "Jam Payumo"
     },
     {
       "id": 5,
@@ -46,8 +42,7 @@
       "startDate": "2021-01-01",
       "endDate": "2022-01-01",
       "employee": "Aaron Punz",
-      "supervisor": "Jam Payumo",
-      "action": ""
+      "supervisor": "Jam Payumo"
     },
     {
       "id": 6,
@@ -56,8 +51,7 @@
       "startDate": "2021-01-01",
       "endDate": "2022-01-01",
       "employee": "Patrick Perez",
-      "supervisor": "Jam Payumo",
-      "action": ""
+      "supervisor": "Jam Payumo"
     },
     {
       "id": 7,
@@ -66,8 +60,7 @@
       "startDate": "2021-01-01",
       "endDate": "2022-01-01",
       "employee": "Kenji",
-      "supervisor": "Jam Payumo",
-      "action": ""
+      "supervisor": "Jam Payumo"
     },
     {
       "id": 8,
@@ -76,8 +69,7 @@
       "startDate": "2021-01-01",
       "endDate": "2022-01-01",
       "employee": "Archie Custodio",
-      "supervisor": "Darwin Pascual",
-      "action": ""
+      "supervisor": "Darwin Pascual"
     },
     {
       "id": 9,
@@ -86,8 +78,7 @@
       "startDate": "2021-01-01",
       "endDate": "2022-01-01",
       "employee": "Robz Ruben",
-      "supervisor": "Darwin Pascual",
-      "action": ""
+      "supervisor": "Darwin Pascual"
     },
     {
       "id": 10,
@@ -96,8 +87,7 @@
       "startDate": "2021-01-01",
       "endDate": "2022-01-01",
       "employee": "Robz Ruben",
-      "supervisor": "Darwin Pascual",
-      "action": ""
+      "supervisor": "Darwin Pascual"
     },
     {
       "id": 11,
@@ -106,8 +96,7 @@
       "startDate": "2021-01-01",
       "endDate": "2022-01-01",
       "employee": "Robz Ruben",
-      "supervisor": "Darwin Pascual",
-      "action": ""
+      "supervisor": "Darwin Pascual"
     },
     {
       "id": 12,
@@ -116,8 +105,7 @@
       "startDate": "2021-01-01",
       "endDate": "2022-01-01",
       "employee": "Robz Ruben",
-      "supervisor": "Darwin Pascual",
-      "action": ""
+      "supervisor": "Darwin Pascual"
     }
   ]
   

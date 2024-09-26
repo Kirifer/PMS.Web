@@ -1,5 +1,5 @@
-import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
-import employees from "./data.json"
+import { Component, OnInit, inject, AfterViewInit, ViewChild } from '@angular/core';
+
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import { AddPerformRevComponent } from '../add-perform-rev/add-perform-rev.component';
 import { MatDialog, MatDialogModule} from '@angular/material/dialog';
@@ -10,10 +10,20 @@ import { RouterModule } from '@angular/router';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import {MatDividerModule} from '@angular/material/divider';
-import {AfterViewInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatSort, MatSortModule} from '@angular/material/sort';
 import {MatInputModule} from '@angular/material/input';
+
+import employees from "./data.json"
+import { IUserData } from '../model/interface/UserData';
+
+
+
+
+
+
+const ELEMENT_DATA: IUserData[] = employees;
+
 
 
 @Component({
@@ -23,37 +33,30 @@ import {MatInputModule} from '@angular/material/input';
   templateUrl: './perform-rev.component.html',
   styleUrl: './perform-rev.component.css'
 })
-export class PerformRevComponent {
-  // Define the columns to be displayed in the table
-  displayedColumns: string[] = [
-    'id',
-    'name',
-    'reviewYear',
-    'startDate',
-    'endDate',
-    'employee',
-    'supervisor',
-    'action'
-  ];
+export class PerformRevComponent implements AfterViewInit {
+
   constructor(private _dialog: MatDialog) {}
 
-  dataSource!: MatTableDataSource<any>;
+ 
+  displayedColumns: string[] = ['id', 'name', 'reviewYear', 'startDate', 'endDate', 'employee', 'supervisor', 'actions'];
+  dataSource: MatTableDataSource<IUserData> = new MatTableDataSource(ELEMENT_DATA);
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
   
-  data = employees;
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+ 
   
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-  
-  ngOnInit() {
-    // Optionally add a 'position' field for numbering the rows
-    const dataWithPosition = this.data.map((item, index) => ({
-      position: index + 1,
-      ...item,
-    }));
-    // Initialize the data source with the modified data
-    this.dataSource = new MatTableDataSource(dataWithPosition);
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
 

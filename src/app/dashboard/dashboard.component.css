@@ -1,64 +1,99 @@
 .main-container {
-    width: 100%;
-    border: 2px solid rgb(225, 225, 225);
-    border-radius: 15px;
-    padding: 20px;
+   width: 100%;
+   border-radius: 15px;
+   padding: 20px;
 }
 
 .title {
-   width: 100%;
-   height: 80px;
+  width: 100%;
+  height: 80px;
 
 }
 
 .main-cards {
-   width: 100%;
-   height: 350px;
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
 
-   div{
-       width: 300px;
-       margin: auto;
-       height: 350px;
-       border: 2px solid rgb(225, 225, 225);
-       border-radius: 15px;
-       background: rgb(255, 255, 255);
-       margin-bottom: 50px;
-   }
+
+  div{
+      width: 300px;
+      height: 150px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      background: rgb(250, 250, 250);
+      padding: 15px;
+      position: relative;
+
+     h4{
+        color: black
+     }
+     h6{
+        color: lightskyblue;
+     }
+     p{
+        color: gray;
+     }
+     span{
+        position: absolute;
+        right: 15%;
+        top: 20%;
+        font-size: 7em;
+        opacity: 0.1;
+     }
+  }
 }
 
 .big-container {
-   margin-top: 20px;
-   width: 100%;
-   height: auto;
-   border-radius: 15px;
-   border: 2px solid rgb(225, 225, 225); /* Keep the border of the big-container */
-   background: rgb(255, 255, 255); /* Keep the white background for big-container */
-   padding: 20px;
+  margin-top: 20px;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: rgb(250, 250, 250); 
+  padding: 20px;
 }
 
 .first{
-   width: 500px;
+  width: 500px;
 }
-#echart-container {
-   width: 100%;
-   height: 400px;
- }
- 
- table {
-   width: 100%;
-   background-color: white;
- }
- 
- .mat-mdc-form-field {
-   font-size: 14px;
-   width: 100%;
- }
- 
- mat-paginator {
-background-color: white; }
- .mat-elevation-z8{
-   box-shadow: none;
- }
+table {
+  width: 100%;
+  background: rgb(250, 250, 250); 
+}
+
+table th{
+  background-color: rgb(241, 241, 241);
+  border: none;
+}
+
+table td{
+  border-color: rgb(220, 220, 220);
+}
+
+table th:first-child { border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
+table th:last-child { border-top-right-radius: 8px; border-bottom-right-radius: 8px;}
+
+
+table button {
+   border: 2px solid lightskyblue;
+   color: lightskyblue;
+   border-radius: 5px;
+   padding: 5px 10px;
+   background-color: transparent;
+
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+mat-paginator {
+  background: rgb(250, 250, 250);  
+}
+.mat-elevation-z8{
+  box-shadow: none;
+}

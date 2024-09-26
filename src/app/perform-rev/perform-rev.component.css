@@ -45,10 +45,6 @@
 }
 
 
-.table-container {
-    max-height: 530px; 
-    overflow-y: auto; 
-}
 table {
     width: 100%;
     background-color: white;
@@ -75,22 +71,12 @@ table th:last-child { border-top-right-radius: 10px; border-bottom-right-radius:
 
 
 
-
-
-
-
-/* Action Buttons */
-
-.edit{
-    color: rgb(3, 183, 3);
+mat-paginator {
+    background: white;  
 }
-.del{
-    color: red;
+.mat-elevation-z8{
+    box-shadow: none;
 }
-.info{
-    color: black;
-}
-
 
 
 

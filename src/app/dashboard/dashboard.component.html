@@ -3,8 +3,38 @@
         <h2>Dashboard</h2>
     </div>
     <div class="main-cards">
-        <div id="linechart-container" style="width: 1000px; height: 350px;"></div>
-        <div id="echart-container" style="width: 600px; height: 350px;"></div>
+        <div>
+            <h4>12</h4>
+            <h6>Total Users</h6>
+            <p>In Progress</p>
+            <span class="material-symbols-outlined">
+                groups
+                </span>
+        </div>
+        <div>
+            <h4>12</h4>
+            <h6>Self Assessment</h6>
+            <p>In Progress</p>
+            <span class="material-symbols-outlined">
+                demography
+                </span>
+        </div>
+        <div>
+            <h4>12</h4>
+            <h6>Manager Assessment</h6>
+            <p>In Progress</p>
+            <span class="material-symbols-outlined">
+                clinical_notes
+                </span>
+        </div>
+        <div>
+            <h4>12</h4>
+            <h6>Completed</h6>
+            <p>In Progress</p>
+            <span class="material-symbols-outlined">
+                task_alt
+                </span>
+        </div>
     </div>
     <!-- TABLE -->
     <div class="big-container">
@@ -26,7 +56,7 @@
                 <!-- Review Year Column -->
                 <ng-container matColumnDef="reviewYear">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Review Year </th>
-                    <td mat-cell *matCellDef="let row"> {{row.reviewYear}}% </td>
+                    <td mat-cell *matCellDef="let row"> {{row.reviewYear}}</td>
                 </ng-container>
 
                 <!-- Start Date Column -->
