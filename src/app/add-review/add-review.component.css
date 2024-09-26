@@ -8,117 +8,285 @@
 }
     
 form {
-    padding: 50px;
+    padding: 30px;
+}
 
-  }
+
+
+
+
+/* Employee Details */
+.employee-details {
+  width: 100%;
+  margin: auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+
   
-  .form-row {
+  .row {
     display: flex;
-    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .label {
+    width: 20%;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border: 1px solid #f0f0f0;
+    border-radius: 5px;
+  }
+
+  .value {
+    width: 30%;
+    background-color: #ffffff;
+    padding: 10px;
+    border: 1px solid #f0f0f0;
+    border-radius: 5px;
+    text-align: center;
+  }
+
+  .value:last-child {
+    width: 50%;
+  }
+}
+
+
+
+/* Objectives */
+
+.objectives {
+  width: 100%;
+  margin: auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+
+
+  
+  p {
+    font-size: 15px;
+    line-height: 1.5;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 7px;
   }
   
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  .form-group.col-md-4 {
-    flex: 1;
-    margin-right: 10px;
-  }
-  
-  .form-group.col-md-4:last-child {
-    margin-right: 0;
-  }
-  
-  /* Container for tables in a single row */
-  .table-container {
-    display: flex;
-    flex-direction: row; /* Align tables horizontally */
-    gap: 20px; /* Adds space between tables */
-    justify-content: space-between; /* Distribute tables across the row */
-    width: 100%; /* Ensures the container takes full width */
-  }
-  
-  .table-wrapper {
-    flex: 1;
-    min-width: 300px; /* Minimum width for each table */
-    padding: 10px; /* Adds padding around the table */
-    border-radius: 8px; /* Rounds the corners of the table wrapper */
-  }
-  
-  /* Table Styling */
   table {
-    width: 100%; /* Full width inside the wrapper */
-    border-collapse: collapse; /* Ensure no double borders between cells */
-    background-color: white; /* White background inside the table */
+    width: 100%;
+    text-align: center;
   }
   
   table th, table td {
-    border: 1px solid black; /* Black borders around table cells */
-    padding: 8px; /* Padding inside the table cells */
-    text-align: left; /* Left align the text */
+    padding: 10px;
+    text-align: center;
+    font-size: 16px;
   }
   
   table th {
-    background-color: #f8f8f8; /* Light background for table headers */
-    font-weight: bold; /* Bold text in headers */
-  }
-  
-  table thead tr {
-    border-bottom: 2px solid black; /* Thicker border below the header row */
-  }
-  
-  table tbody tr:hover {
-    background-color: #f0f0f0; /* Light gray hover effect for rows */
-  }
-  table td{
-    height: 120px;
-  }
-  
-  button {
-    background-color: black; /* Black button background */
-    color: white; /* White text */
-    border: 1px solid black; /* Black border */
-    padding: 10px 20px; /* Padding around button */
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer; /* Cursor turns into a pointer */
-  }
-  
-  button:hover {
-    background-color: #333; /* Darker shade of black on hover */
+    background-color: #f0f0f0;
+    font-weight: bold;
   }
 
+  table td {
+    border: 1px solid #f0f0f0;
+    text-align: center;
+  }
+  
+  td:nth-child(4), td:nth-child(6) {
+    font-weight: bold;
+    background-color: #f0f0f0;
+  }
+  
+  .total-label {
+    font-weight: bold;
+  }
 
-  .card-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
+  table th:first-child { border-top-left-radius: 10px; }
+  table thead th:last-child { border-top-right-radius: 10px; }
 }
 
-.card {
-  flex: 1 1 calc(50% - 1rem); /* 2 columns */
-  border: 1px solid black;
+
+
+
+
+
+
+
+/* Competencies */
+
+.competencies {
+  width: 100%;
+  margin: auto;
+  background-color: white;
+  padding: 20px;
   border-radius: 8px;
-  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+
+  
+  table {
+    width: 100%;
+    text-align: center;
+  }
+  
+  table th, table td {
+    padding: 10px;
+    text-align: center;
+    font-size: 16px;
+  }
+
+  table td {
+    border: 1px solid #f0f0f0;
+  }
+
+  table th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+  }
+  
+  td:nth-child(4), td:nth-child(6) {
+    font-weight: bold;
+    background-color: #f0f0f0;
+  }
+  
+  .total-label {
+    font-weight: bold;
+  }
+
+  table th:first-child { border-top-left-radius: 10px; }
+  table thead th:last-child { border-top-right-radius: 10px; }
+  
 }
 
-.card-header {
-  background-color: #f8f9fa;
-  padding: 1rem;
-  font-weight: bold;
+
+
+
+
+/* Overall Contri Level & Agreement */
+.container {
+  width: 100%;
+  margin: auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+
+
+  
+  table {
+    width: 100%;
+    margin-bottom: 50px;
+    text-align: center;
+  }
+
+  table th, table td {
+    padding: 10px;
+    text-align: center;
+    font-size: 16px;
+  }
+
+  table td {
+    border: 1px solid #f0f0f0;
+  }
+
+  table th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+  }
+
+  .calibration-comments {
+    font-weight: bold;
+    height: 100px;
+  }
+
+  table th:first-child { border-top-left-radius: 10px; }
+  table thead th:last-child { border-top-right-radius: 10px; }
+
+
+
+  .agreement-section {
+    margin-top: 20px;
+
+    h6 {
+      margin-bottom: 100px;
+    }
+    .signatures {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .signatures div {
+      width: 40%;
+      border-top: 2px solid rgb(136, 136, 136);
+      text-align: center;
+    }
+
+  }
+
+
 }
 
-.card-body {
-  padding: 1rem;
-}
-
-.row {
+.button-section {
+  width: 100%;
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
+  align-items: center;
+  justify-content: flex-end;
+
+  button {
+    width: 75px;
+    height: 40px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.4s;
+    margin-right: 15px;
+
+  }
+
+  button:hover {
+    transform: scale(1.1);
+  }
+
+  button:active {
+    transform: scale(1);
+  }
+
+  .close {
+    background-color: rgb(240, 240, 240);
+  }
+
+  .submit {
+    background-color: rgb(145, 145, 145);
+    color: white;
+    font-weight: 700;
+  }
 }
 
-.col {
-  flex: 1 1 calc(50% - 1rem); /* 2 columns */
-  padding: 1rem;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 

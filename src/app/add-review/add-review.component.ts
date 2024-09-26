@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-review',
@@ -12,5 +13,12 @@ import { MatDialogModule } from '@angular/material/dialog';
   styleUrl: './add-review.component.css'
 })
 export class AddReviewComponent {
+
+
+  constructor(public dialogRef: MatDialogRef<AddReviewComponent>) { }
+
+  closeDialog(): void {
+    this.dialogRef.close(); // This will close the dialog
+  }
 
 }

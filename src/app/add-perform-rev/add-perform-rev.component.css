@@ -2,8 +2,7 @@
 .title {
     color: #3b3b3b;
     text-align: center;
-    padding-top: 50px;
-    padding-bottom: 15px;
+    padding: 20px;
     font-size: 1.4em;
 
     .fa-plus {
@@ -14,10 +13,11 @@
 
 
 .employee {
-    box-shadow: 5px 8px 15px #c3c3c3;
-    border-radius: 20px;
-    width: 90%;
-    padding: 25px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
     margin: auto;
     margin-top: 20px;
     margin-bottom: 50px;
@@ -62,11 +62,12 @@
 
 
 .goals {
-    box-shadow: 5px 8px 15px #c3c3c3;
-    border-radius: 20px;
-    width: 90%;
-    margin: auto;
+    background-color: white;
     padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    margin: auto;
     position: relative;
     margin-bottom: 50px;
 
@@ -135,12 +136,12 @@
 
 
 .competency {
-
-    box-shadow: 5px 8px 15px #c3c3c3;
-    border-radius: 20px;
-    width: 90%;
-    margin: auto;
+    background-color: white;
     padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    margin: auto;
     position: relative;
     margin-bottom: 50px;
 
@@ -259,7 +260,7 @@ mat-dialog-actions  {
         width: 75px;
         height: 40px;
         margin-right: 20px;
-        border-radius: 15px;
+        border-radius: 5px;
         border: none;
         cursor: pointer;
         transition: all 0.4s;

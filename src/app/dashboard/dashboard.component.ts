@@ -137,7 +137,7 @@ export class DashboardComponent implements AfterViewInit {
   // OPEN DIALOG
   openAddReview(){
     this._dialog.open(AddReviewComponent,{
-      width: '1500px',
+      width: '1300px',
       maxWidth: 'none',
       height: '800px',
       maxHeight: 'none',
