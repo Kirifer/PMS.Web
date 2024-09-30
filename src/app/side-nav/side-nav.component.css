@@ -117,14 +117,14 @@
             }
 
             .sidenav-link-text{
-                margin-left: 1.5rem;
+                margin-left: 0.5rem;
             }
         }
     }
 
     .sidenav-nav-item:hover{
         .sidenav-nav-link{
-            border: 1px solid gray;
+            border: 1px solid #004ba3;
             color: #000;
         }
     }

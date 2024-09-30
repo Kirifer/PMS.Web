@@ -1,106 +1,69 @@
 <body>
-
-    <div class="title">
-        <img src="images/logo.png" alt="">
-        <div class="text">
-            <h1 >IT Squarehub</h1>
-            <p>Building Quality Service Without Compromise</p>
+    <div class="container">  
+        <!-- Left Container -->
+        <div class="container-left">
+            <img src="images/logo.png" alt="">
+            <h2>IT Squarehub</h2>
+            <p>Building Quality Services Without Compromise</p>
+            <h1>Performance Management System</h1>
         </div>
+        <!-- Right Container -->
+        <div class="container-right">
+            <div class="flip-card-inner" id="flip-card-inner">
+                <div class="flip-card-front">
+                    <form #signInForm="ngForm" (ngSubmit)="onLogin(signInForm)">
+                        <h2>Login</h2>
+                        <input type="email" name="username" [(ngModel)]="loginObj.username"  placeholder="Username" required>
+                        <div *ngIf="signInForm.submitted && signInForm.controls['username']"></div>
+                                <input type="password" name="password" [(ngModel)]="loginObj.password" placeholder="Password" required>
+                                <div *ngIf="signInForm.submitted && signInForm.controls['password']"></div>
+                                <button type="submit">Login</button>
+                    </form>
+                        
+                    <div class="flip-section">
+                        <p>Don't have an account?</p>
+                        <a (click)="flipCard()">Sign Up</a>
+                    </div>
+                             
+                    <div class="logo-contain">
+                        <div class="logo">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                             
+                </div>
         
+                <div class="flip-card-back">
+                    <form #registerForm="ngForm" (ngSubmit)="onRegister(registerForm)">
+                        <h2>Sign Up</h2>
+
+                        <input type="text" name="name" [(ngModel)]="signUpObj.name" placeholder="Admin Name" required>
+                        <div *ngIf="registerForm.submitted && registerForm.controls['name']"></div>
+                        <input type="email" name="username" [(ngModel)]="signUpObj.username" placeholder="Username" required>
+                        <div *ngIf="registerForm.submitted && registerForm.controls['username']"></div>
+                        <input type="password" name="password" [(ngModel)]="signUpObj.password" placeholder="Password" required>
+                        <div *ngIf="registerForm.submitted && registerForm.controls['password']"></div>
+                        <button type="submit">Sign Up</button>
+                    </form>
+            
+                    <div class="flip-section">
+                        <p>Already have an account?</p>
+                        <a (click)="flipCard()">Login</a>
+                    </div>
+
+                    <div class="logo-contain">
+                        <div class="logo">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <img src="images/logo.png" alt="Background Image" class="background-image">
-
-    <div class="container" [class.active]="isRegisterMode">
-        <div class="curved-shape"></div>
-        <div class="curved-shape2"></div>
-        
-
-
-        
-        <div class="form-box Login">
-          <h2 class="animation" style="--D:0; --S:21">Login</h2>
-          <form (ngSubmit)="onLogin()">
-            <div class="input-box animation" style="--D:1; --S:22">
-              <input type="text" required [(ngModel)]="loginForm.username" name="username">
-              <label>Username</label>
-              
-            </div>
-      
-            <div class="input-box animation" style="--D:2; --S:23">
-              <input type="password" required [(ngModel)]="loginForm.password" name="password">
-              <label>Password</label>
-              
-            </div>
-      
-            <div class="input-box animation" style="--D:3; --S:24">
-              <button class="btn" type="submit">Login</button>
-            </div>
-      
-            <div class="regi-link animation" style="--D:4; --S:25">
-              <p>Don't have an account? <br><a (click)="toggleMode()" class="SignUpLink">Sign Up</a></p>
-            </div>
-          </form>
-        </div>
-      
-
-        <!-- LOGO & TITLE in Login-->
-        <div class="info-content Login">
-          <h2 class="animation" style="--D:0; --S:20"> 
-            <span>Performance</span> 
-            <span>Management</span> 
-            <span>System</span>
-          </h2>
-          <!-- <p class="animation" style="--D:1; --S:21">
-            We are happy to have you with us again. If you need anything, we are here to help.
-          </p> -->
-        </div>
-      
-
-
-
-
-
-
-
-        <div class="form-box Register">
-          <h2 class="animation" style="--li:17; --S:0">Register</h2>
-          <form (ngSubmit)="onRegister()">
-            <div class="input-box animation" style="--li:18; --S:1">
-              <input type="text" required [(ngModel)]="registerForm.username" name="registerUsername">
-              <label>Username</label>
-            </div>
-      
-            <div class="input-box animation" style="--li:19; --S:2">
-              <input type="email" required [(ngModel)]="registerForm.email" name="email">
-              <label>Email</label>
-              <box-icon name='envelope' type='solid'></box-icon>
-            </div>
-      
-            <div class="input-box animation" style="--li:19; --S:3">
-              <input type="password" required [(ngModel)]="registerForm.password" name="registerPassword">
-              <label>Password</label>
-            </div>
-      
-            <div class="input-box animation" style="--li:20; --S:4">
-              <button class="btn" type="submit">Register</button>
-            </div>
-      
-            <div class="regi-link animation" style="--li:21; --S:5">
-              <p>Already have an account? <br><a (click)="toggleMode()" class="SignInLink">Sign In</a></p>
-            </div>
-          </form>
-        </div>
-      
-
-        <!-- LOGO & TITLE in Register -->
-        <div class="info-content Register">
-          <h2 class="animation" style="--li:17; --S:0">WELCOME!</h2>
-          <p class="animation" style="--li:18; --S:1">
-            We’re delighted to have you here. If you need any assistance, feel free to reach out.
-          </p>
-        </div>
-      </div>
-      
-
 </body>

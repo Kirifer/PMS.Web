@@ -63,12 +63,18 @@
               <!-- Actions Column -->
               <ng-container matColumnDef="actions">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header> Actions </th>
-                  <td mat-cell *matCellDef="let row">
-                      <div class="button-section">
-                        <button id="edit" mat-icon-button>Edit</button>
-                        <button id="del" mat-icon-button>Delete</button>
-                        <button id="info" mat-icon-button><span class="material-symbols-outlined">info</span></button>
-                      </div>
+                  <td mat-cell *matCellDef="let row" class="action-column">
+                    <button mat-icon-button>
+                        <mat-icon class="edit-btn">edit</mat-icon>
+                      </button>
+              
+                      <button mat-icon-button>
+                        <mat-icon class="delete-btn">delete</mat-icon>
+                      </button>
+
+                      <button mat-icon-button>
+                        <mat-icon class="info-btn">info</mat-icon>
+                      </button>
                   </td>
               </ng-container>
 

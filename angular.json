@@ -28,7 +28,6 @@
             ],
             "styles": [
               "@angular/material/prebuilt-themes/azure-blue.css",
-              "node_modules/boxicons/css/boxicons.min.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -88,7 +87,6 @@
             ],
             "styles": [
               "@angular/material/prebuilt-themes/azure-blue.css",
-              "node_modules/boxicons/css/boxicons.min.css",
               "src/styles.css"
             ],
             "scripts": []

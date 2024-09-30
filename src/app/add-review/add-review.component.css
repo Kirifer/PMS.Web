@@ -62,9 +62,10 @@ margin-bottom: 30px;
 p {
   font-size: 15px;
   line-height: 1.5;
-  background-color: #f0f0f0;
+  border: 1px solid #727272;
   padding: 10px;
   border-radius: 7px;
+  margin-bottom: 50px;
 }
 
 table {
@@ -203,22 +204,44 @@ table thead th:last-child { border-top-right-radius: 10px; }
 
 .agreement-section {
   margin-top: 20px;
-
-  h6 {
-    margin-bottom: 100px;
-  }
-  .signatures {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .signatures div {
-    width: 40%;
-    border-top: 2px solid rgb(136, 136, 136);
-    text-align: center;
-  }
-
 }
+
+.agreement-section h6 {
+  margin-bottom: 40px;
+}
+
+.signatures {
+  display: flex;
+  justify-content: space-between;
+}
+
+.signature-box {
+  width: 40%;
+  text-align: center;
+}
+
+.signature-details {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px; /* Add space between name/date and the signature line */
+}
+
+.name {
+  margin-left: 20px;
+  font-size: 1.1em;
+}
+
+.date {
+  margin-right: 20px;
+  font-size: 0.9em;
+  color: #888; /* Optional: Lighter color for the date */
+}
+
+.signature-line {
+  border-top: 2px solid rgb(136, 136, 136); /* Signature line */
+  margin-top: 10px;
+}
+
 
 
 }
@@ -259,6 +282,27 @@ button:active {
 }
 }
 
+.transparent-select,
+.transparent-textarea {
+    background: transparent;  /* Make background transparent */
+    border: none;             /* Remove border */
+    outline: none;            /* Remove outline */
+    color: inherit;           /* Inherit text color */
+    width: 100%;              /* Full width */
+    padding: 5px;            /* Add padding */
+}
+
+.transparent-textarea {
+    resize: none;             /* Disable resizing */
+    height: 50px;            /* Set height */
+}
+
+/* Optional: Add a focus style for accessibility */
+.transparent-select:focus,
+.transparent-textarea:focus {
+    border: 1px solid #ccc;  /* Add border on focus for visibility */
+    outline: none;            /* Remove outline */
+}
 
 
 

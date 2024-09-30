@@ -1,8 +1,24 @@
 <header class="app-header">
-    <div class="account-info">
+    <div class="notification" (click)="toggleNotif($event)" #notifContainer>
+        <i class="fas fa-bell notification-icon"></i>
+        <span class="notif-name">Notifications</span>
+        <div class="notif-popup" *ngIf="showNotif">
+            <p class="notif-p">Recently Notifications</p>
+            <div class="notif-divider"></div>
+            <div class="notif-item">
+                <i class="fas fa-user"></i>
+                <span>John Lang Par has submitted a performance review</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="account-info" (click)="toggleAccount($event)" #accountContainer>
         <i class="fas fa-user account-icon"></i>
-        <span class="account-name">Account/User</span>
-        
+        <span class="account-name">John Lang Par</span>
+        <div class="account-popup" *ngIf="showAccount">
+            <a (click)="openAccountSettings()">Account Settings</a>
+            <a (click)="logout()">Logout</a>
+        </div>
     </div>
 </header>
 
