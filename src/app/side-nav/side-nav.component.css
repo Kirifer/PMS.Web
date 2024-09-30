@@ -124,7 +124,7 @@
 
     .sidenav-nav-item:hover{
         .sidenav-nav-link{
-            border: 1px solid #004ba3;
+            border: 1px solid gray;
             color: #000;
         }
     }

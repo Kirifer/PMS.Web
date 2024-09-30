@@ -3,204 +3,254 @@
 <!-- <i class="fa-solid fa-xmark"></i> -->
 
 
-<mat-dialog-content class="mat-typography">
+
 
   <form>
-    <!-- ------------Employee-------------- -->
-    <div class="employee">
+    <mat-tab-group #tabGroup dynamicHeight>
+      
+      <!-- ----------- Employee ----------- -->
+      <mat-tab label="Employee Details">
+        <div class="employee">
 
-      <h6>Employee Details</h6>
+          <h6>Employee Details</h6>
+        
+          <div class="row">
+            <mat-form-field class="name-field" appearance="outline">
+              <mat-label>Name</mat-label>
+              <input class="input-text" matInput>
+            </mat-form-field>
+        
+            <mat-form-field class="review-year-field" appearance="outline">
+              <mat-label>Review Year</mat-label>
+              <mat-date-range-input [rangePicker]="picker">
+                <input matStartDate placeholder="Start date">
+                <input matEndDate placeholder="End date">
+              </mat-date-range-input>
+              <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+          </div>
+        
+          <div class="row">
+            <mat-form-field class="employee-field" appearance="outline">
+              <mat-label>Employee</mat-label>
+              <input class="input-text" matInput>
+            </mat-form-field>
+        
+            <mat-form-field class="date-field" appearance="outline">
+              <mat-label>Start Date</mat-label>
+              <input matInput [matDatepicker]="picker1">
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matIconSuffix [for]="picker1">
+                <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+        
+            <mat-form-field class="date-field" appearance="outline">
+              <mat-label>End Date</mat-label>
+              <input matInput [matDatepicker]="picker2">
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matIconSuffix [for]="picker2">
+                <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+        
+          </div>
+        
+          <div class="row">
+            <mat-form-field class="supervisor-field" appearance="outline">
+              <mat-label>Supervisor</mat-label>
+              <input matInput>
+            </mat-form-field>
+        
+            <mat-checkbox class="active-supervisor-checkbox">Active Supervisor</mat-checkbox>
+          </div>
 
-      <div class="row">
-        <mat-form-field class="name-field" appearance="outline">
-          <mat-label>Name</mat-label>
-          <input class="input-text" matInput>
-        </mat-form-field>
+        </div>
+
+        <div class="navigation-buttons">
+          
+          <button mat-icon-button class="left-button" (click)="goToPreviousTab()" disabled>
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+          <button mat-icon-button class="right-button" (click)="goToNextTab()">
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+
+        </div>
+      </mat-tab>
+
+      <!-- ----------- Goals ----------- -->
+      <mat-tab label="Goals">
+        <div class="goals">
+
+          <h6>Goals</h6>
+        
+          <table>
+            <thead>
+              <tr>
+                <th rowspan="2">No</th>
+                <th rowspan="2">Individual Goals</th>
+                <th rowspan="2">Weight</th>
+                <th rowspan="2">Date</th>
+                <th colspan="4">Measures</th>
+              </tr>
+              <tr>
+                <th>4-Consistently Exceeds Expectations</th>
+                <th>3-Met and Sometimes Exceeds Expectations</th>
+                <th>2-Met Expectations</th>
+                <th>1-Did Not Meet Expectations</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>1</strong></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+              </tr>
+              <tr>
+                <td><strong>2</strong></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+              </tr>
+              <tr>
+                <td><strong>3</strong></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+              </tr>
+              <tr>
+                <td><strong>4</strong></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+              </tr>
+              <tr>
+                <td><strong>5</strong></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+              </tr>
+        
+            </tbody>
+          </table>
+        </div>
 
 
-        <mat-form-field class="review-year-field" appearance="outline">
-          <mat-label>Review Year</mat-label>
-          <mat-date-range-input [rangePicker]="picker">
-            <input matStartDate placeholder="Start date">
-            <input matEndDate placeholder="End date">
-          </mat-date-range-input>
-          <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-date-range-picker #picker></mat-date-range-picker>
-        </mat-form-field>
+        <div class="navigation-buttons">
+          <button mat-icon-button class="left-button" (click)="goToPreviousTab()">
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+          <button mat-icon-button class="right-button" (click)="goToNextTab()">
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </div>
+      </mat-tab>
+
+
+      <!-- ----------- Competency ----------- -->
+    <mat-tab label="Competency">
+      <div class="competency">
+
+        <h6>Competency</h6>
+      
+        <table>
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Competencies</th>
+              <th>Weight</th>
+              <th>Level</th>
+              <th >Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of selectedRows; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>
+                <select name="competency" id="competency" [(ngModel)]="selectedRows[i].selectedCompetency">
+                  <option value="" disabled selected hidden>Select competency</option>
+                  <option *ngFor="let competency of getUniqueCompetencies()" [value]="competency">
+                    {{ competency }}
+                  </option>
+                </select>
+              </td>
+              <td><input type="text" /></td>
+              <td>
+                <select name="level" id="level" [(ngModel)]="selectedRows[i].selectedLevel">
+                  <option value="" disabled selected hidden>Select level</option>
+                  <option *ngFor="let level of getUniqueLevelsForCompetency()" [value]="level">
+                    {{ level }}
+                  </option>
+                </select>
+              </td>
+              <td>{{ getDescription(i) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      
       </div>
 
-
-      <div class="row">
-        <mat-form-field class="employee-field" appearance="outline">
-          <mat-label>Employee</mat-label>
-          <input class="input-text" matInput>
-        </mat-form-field>
-
-        <mat-form-field class="date-field" appearance="outline">
-          <mat-label>Start Date</mat-label>
-          <input matInput [matDatepicker]="picker1">
-          <mat-hint>MM/DD/YYYY</mat-hint>
-          <mat-datepicker-toggle matIconSuffix [for]="picker1">
-            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-          </mat-datepicker-toggle>
-          <mat-datepicker #picker1></mat-datepicker>
-        </mat-form-field>
-
-        <mat-form-field class="date-field" appearance="outline">
-          <mat-label>End Date</mat-label>
-          <input matInput [matDatepicker]="picker2">
-          <mat-hint>MM/DD/YYYY</mat-hint>
-          <mat-datepicker-toggle matIconSuffix [for]="picker2">
-            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-          </mat-datepicker-toggle>
-          <mat-datepicker #picker2></mat-datepicker>
-        </mat-form-field>
-
+      <div class="navigation-buttons">
+        <button mat-icon-button class="left-button" (click)="goToPreviousTab()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <button mat-icon-button class="right-button" (click)="goToNextTab()" disabled>
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
       </div>
-
-      <div class="row">
-        <mat-form-field class="supervisor-field" appearance="outline">
-          <mat-label>Supervisor</mat-label>
-          <input matInput>
-        </mat-form-field>
-
-        <mat-checkbox class="active-supervisor-checkbox">Active Supervisor</mat-checkbox>
-      </div>
-
-
-    </div>
-    <!-- ------------Goals-------------- -->
-    <div class="goals">
-
-      <h6>Goals</h6>
-
-      <table>
-        <thead>
-          <tr>
-            <th rowspan="2">No</th>
-            <th rowspan="2">Individual Goals</th>
-            <th rowspan="2">Weight</th>
-            <th rowspan="2">Date</th>
-            <th colspan="4">Measures</th>
-          </tr>
-          <tr>
-            <th>4-Consistently Exceeds Expectations</th>
-            <th>3-Met and Sometimes Exceeds Expectations</th>
-            <th>2-Met Expectations</th>
-            <th>1-Did Not Meet Expectations</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>1</strong></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-          </tr>
-          <tr>
-            <td><strong>2</strong></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-          </tr>
-          <tr>
-            <td><strong>3</strong></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-          </tr>
-          <tr>
-            <td><strong>4</strong></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-          </tr>
-          <tr>
-            <td><strong>5</strong></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-          </tr>
-
-        </tbody>
-      </table>
-    </div>
-
-    <!-- ------------Competency-------------- -->
-    <div class="competency">
-
-      <h6>Competency</h6>
-
-      <table>
-        <thead>
-          <tr>
-            <th>No</th>
-            <th>Competencies</th>
-            <th>Weight</th>
-            <th>Level</th>
-            <th >Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let row of selectedRows; let i = index">
-            <td>{{ i + 1 }}</td>
-            <td>
-              <select name="competency" id="competency" [(ngModel)]="selectedRows[i].selectedCompetency">
-                <option value="" disabled selected hidden>Select competency</option>
-                <option *ngFor="let competency of getUniqueCompetencies()" [value]="competency">
-                  {{ competency }}
-                </option>
-              </select>
-            </td>
-            <td><input type="text" /></td>
-            <td>
-              <select name="level" id="level" [(ngModel)]="selectedRows[i].selectedLevel">
-                <option value="" disabled selected hidden>Select level</option>
-                <option *ngFor="let level of getUniqueLevelsForCompetency()" [value]="level">
-                  {{ level }}
-                </option>
-              </select>
-            </td>
-            <td>{{ getDescription(i) }}</td>
-          </tr>
-        </tbody>
-      </table>
-
-    </div>
-
-
-
-
-
+    </mat-tab>
+    </mat-tab-group>
 
 
   </form>
 
 
 
-</mat-dialog-content>
+
+
+
+
+
+
+
+
+
+
+<!-- 
 <mat-dialog-actions align="end">
   <button class="cancel" mat-button mat-dialog-close>Cancel</button>
   <button class="add" mat-button [mat-dialog-close]="true" cdkFocusInitial>Add</button>
-</mat-dialog-actions>
+</mat-dialog-actions> -->
+
+
+
+
+
+
+

@@ -63,7 +63,7 @@ export class PerformRevComponent implements AfterViewInit {
 
   openDialog() {
     const dialogRef = this.dialog.open(AddPerformRevComponent, {
-      width: '1100px',
+      width: '1250px',
       maxWidth: 'none',
     });
 
