@@ -57,7 +57,11 @@ border-radius: 8px;
 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 margin-bottom: 30px;
 
-
+select,textarea{
+  border: none;
+  outline: none;
+  background: transparent;
+}
 
 p {
   font-size: 15px;
@@ -169,7 +173,11 @@ border-radius: 8px;
 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 margin-bottom: 30px;
 
-
+textarea{
+  border: none;
+  outline: none;
+  background: transparent;
+}
 
 table {
   width: 100%;
@@ -274,9 +282,25 @@ button:active {
 .close {
   background-color: rgb(240, 240, 240);
 }
-
+.cancel{
+  background-color: #ffffff;
+  color: #f44336;
+  font-weight: 700;
+  border: 1px solid #f44336;
+}
+.cancel:hover{
+  background-color: #f44336;
+  color: white;
+  font-weight: 700;
+}
 .submit {
-  background-color: rgb(145, 145, 145);
+  background-color: #ffffff;
+  color: #00b8d4;
+  font-weight: 700;
+  border: 1px solid #00b8d4;
+}
+.submit:hover {
+  background-color: #00b8d4;
   color: white;
   font-weight: 700;
 }
