@@ -102,6 +102,7 @@ table button {
    background-color: transparent;
    cursor: pointer;
    font-weight: bold;
+   transition: all 0.3s;
 
 }
 table button:hover {
