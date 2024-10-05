@@ -2,13 +2,10 @@
 <h5 class="title"><i class="fa-solid fa-plus"></i>Add Performance Review</h5> 
 <!-- <i class="fa-solid fa-xmark"></i> -->
 
-
-
-
   <form>
     <mat-tab-group #tabGroup dynamicHeight>
       
-      <!-- ----------- Employee ----------- -->
+      <!-- ----------- Employee Section ----------- -->
       <mat-tab label="Employee Details">
         <div class="employee">
 
@@ -83,7 +80,7 @@
         </div>
       </mat-tab>
 
-      <!-- ----------- Goals ----------- -->
+      <!-- ----------- Goals Section ----------- -->
       <mat-tab label="Goals">
         <div class="goals">
 
@@ -173,7 +170,7 @@
       </mat-tab>
 
 
-      <!-- ----------- Competency ----------- -->
+      <!-- ----------- Competency Section ----------- -->
     <mat-tab label="Competency">
       <div class="competency">
 
@@ -220,30 +217,83 @@
         <button mat-icon-button class="left-button" (click)="goToPreviousTab()">
           <mat-icon>arrow_back</mat-icon>
         </button>
+        <button mat-icon-button class="right-button" (click)="goToNextTab()">
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+    </mat-tab>
+    <!-- Confirmation Section -->
+    <mat-tab label="Confirmation">
+      <div class="confirmation">
+        <h6>Confirmation</h6>
+  
+        <div class="confirmation-section">
+          <h6>Employee Details</h6>
+          <p>Name: {{ employeeName }}</p>
+          <p>Review Year: {{ selectedReviewYearStart }} - {{ selectedReviewYearEnd }}</p>
+          <p>Employee: {{ employee }}</p>
+          <p>Start Date: {{ startDate }}</p>
+          <p>End Date: {{ endDate }}</p>
+          <p>Supervisor: {{ supervisor }}</p>
+          <p>Active Supervisor: {{ activeSupervisor ? 'Yes' : 'No' }}</p>
+        </div>
+  
+        <div class="confirmation-section">
+          <h6>Goals</h6>
+          <table>
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Description</th>
+                <th>Weight</th>
+                <th>Date</th>
+                <th>Rating</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let goal of goals; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ goal.description }}</td>
+                <td>{{ goal.weight }}</td>
+                <td>{{ goal.date }}</td>
+                <td>{{ goal.rating }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  
+        <div class="confirmation-section">
+          <h6>Competency</h6>
+          <table>
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Competency</th>
+                <th>Level</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of selectedRows; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ row.selectedCompetency }}</td>
+                <td>{{ row.selectedLevel }}</td>
+                <td>{{ getDescription(i) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  
+        <button mat-raised-button color="primary" (click)="submitForm()">Submit</button>
+      </div>
+  
+      <div class="navigation-buttons">
+        <button mat-icon-button class="left-button" (click)="goToPreviousTab()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
         <button mat-icon-button class="right-button" (click)="goToNextTab()" disabled>
           <mat-icon>arrow_forward</mat-icon>
         </button>
       </div>
     </mat-tab>
-    </mat-tab-group>
-
-
-  </form>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- 
-<mat-dialog-actions align="end">
-  <button class="cancel" mat-button mat-dialog-close>Cancel</button>
-  <button class="add" mat-button [mat-dialog-close]="true" cdkFocusInitial>Add</button>
-</mat-dialog-actions> -->
+  </mat-tab-group>

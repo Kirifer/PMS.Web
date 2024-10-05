@@ -145,6 +145,8 @@
     width: 97%;
     margin: 10px 15px 10px 15px;
     position: relative;
+    overflow-y: auto; /* Enable vertical scrolling */
+    max-height: 400px; /* Adjust the height as needed */
 
     table {
         width: 100%;
@@ -236,23 +238,6 @@
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* Buttons */
 
 .navigation-buttons {
@@ -281,6 +266,47 @@
 
 }
 
+/* Cofirmation Section Styles  */
+.confirmation {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 97%;
+    margin: 10px 15px 10px 15px;
+    position: relative;
+    max-height: 400px; /* Adjust the height as needed */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.confirmation-section {
+    margin-bottom: 20px;
+}
+
+.confirmation-section h6 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.confirmation-section p {
+    margin: 5px 0;
+}
+
+.confirmation-section table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.confirmation-section th, .confirmation-section td {
+    border: 1px solid #f0f0f0;
+    padding: 8px;
+    text-align: center;
+}
+
+.confirmation-section th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
 
 
 
@@ -303,32 +329,3 @@
 
 
 
-
-
-/* mat-dialog-actions  {
-
-    button {
-        width: 75px;
-        height: 40px;
-        margin-right: 20px;
-        border-radius: 5px;
-        border: none;
-        cursor: pointer;
-        transition: all 0.4s;
-    }
-    button:hover {
-        transform: scale(1.1);
-    }
-    button:active {
-        transform: scale(1);
-    }
-
-    .cancel{
-        background-color: rgb(240, 240, 240);
-    }
-    .add{
-        background-color: rgb(145, 145, 145);
-        color: white;
-        font-weight: 700;
-    }
-} */

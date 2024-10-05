@@ -70,7 +70,6 @@ body{
     width: 750px;
     height: 450px;
     background-color: white;
-    /* border: 2px solid lightskyblue; */
     border-radius: 15px;
     box-shadow: 0 0 25px rgb(195, 195, 195);
     overflow: hidden;
@@ -90,62 +89,65 @@ body{
             font-size: 32px;
             text-align: center;
             color: black;
+            margin-top: 20px;
         }
         
         .input-box {
             position: relative;
             width: 100%;
-            height: 50px;
+            height: 38px;
             margin-top: 25px;
+            display: flex;
+            align-items: center;
 
             input{
                 width: 100%;
                 height: 100%;
                 background: transparent;
+                border-radius: 7px;
+                box-shadow: inset 1px 1px 10px #00b8d42c, inset -1px -1px 10px #00b8d42f;
                 border: none;
                 outline: none;
-                font-size: 16px;
+                font-size: 15px;
                 color: black;
-                font-weight: 600;
-                border-bottom: 2px solid black;
-                padding-right: 23px;
+                font-weight: 500;
+                padding: 0 15px;
                 transition: .5s;
             }
-            input:focus,
-            input:valid{
-                border-bottom: 2px solid #00b8d4;
+            input::placeholder {
+                font-weight: 300;
+                font-size: 13px;
             }
+               
+            
 
             
             label{
+                display: none;
                 position: absolute;
-                top: 50%;
-                left: 0;
-                transform: translateY(-50%);
+                cursor: text;
+                left: 10px;
+                top: 7px;
                 font-size: 16px;
                 color: black;
                 transition: .5s;
             }
-            input:focus ~ label,
-            input:valid ~ label{
-                top: -5px;
-                color: #00b8d4;
-            }
+            
+           
 
             .btn{
                 position: relative;
-                width: 100%;
-                height: 45px;
+                width: 50%;
+                height: 32px;
+                margin: 0 auto;
                 color: #00b8d4;
                 background: transparent;
                 border-radius: 40px;
                 cursor: pointer;
                 font-size: 16px;
                 font-weight: 600;
-                border: 2px solid #00b8d4;
-                overflow: hidden;
-                z-index: 1;    
-                transition: 0.5s;
+                border: 1px solid #00b8d4; 
+                transition: 0.8s;
             }
 
             .btn:hover {
@@ -184,6 +186,7 @@ body{
     left: 0;
     padding: 0 40px;
 
+    
     .animation{
         transform: translateX(0%);
         transition: .7s;
@@ -202,10 +205,15 @@ body{
 
 
 .form-box.Register{
-    /* display: none; */
     right: 0;
     padding: 0 60px;
 
+    h2 {
+       margin-bottom: -10px;
+    }
+    a {
+        margin-bottom: -30px;
+    }
     .animation{
         transform: translateX(120%);
         transition: .7s ease;
@@ -252,16 +260,20 @@ body{
         color: black;
         margin-bottom: 110px;
         font-size: 2em;
+        font-family: 'Poppins';
+        font-weight: 500;
         text-align: center;  
-        line-height: 0.8em;
+        line-height: 1em;
         background-color: white;
-        padding: 10px 20px;
-        border-top-left-radius: 70px;
-        border-bottom-right-radius: 70px;
+        border-radius: 15px;
+        width: 250px;
+        text-align: center;
+        padding: 20px;
+        box-shadow: inset 4px 4px 15px #00b8d462, inset -4px -4px 15px #00b8d462;
+        /* border: 1px solid #00c0dd; */ 
         position: relative;
-        z-index: 1; 
-        
     }
+   
   
 }
 

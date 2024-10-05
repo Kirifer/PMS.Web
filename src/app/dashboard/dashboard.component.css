@@ -30,6 +30,7 @@
       padding: 15px;
       position: relative;
       transition: all 0.7s;
+      cursor: pointer;
 
      h4{
         color: black
@@ -46,12 +47,13 @@
         top: 20%;
         font-size: 7em;
         opacity: 0.1;
+        transition: all 0.4s;
      }
   }
   div:hover{
     background: white;
     color: #00b8d4;
-    box-shadow: 0 1px 5px #00b8d4;
+    box-shadow: 0 1px 4px #00b8d4;
     transform: translateY(-10px);
     span{
       color: #00b8d4;
