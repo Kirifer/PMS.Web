@@ -63,7 +63,7 @@
               <input matInput>
             </mat-form-field>
         
-            <mat-checkbox class="active-supervisor-checkbox">Active Supervisor</mat-checkbox>
+            <mat-checkbox class="active-supervisor-checkbox">Active</mat-checkbox>
           </div>
 
         </div>
@@ -190,8 +190,8 @@
             <tr *ngFor="let row of selectedRows; let i = index">
               <td>{{ i + 1 }}</td>
               <td>
-                <select name="competency" id="competency" [(ngModel)]="selectedRows[i].selectedCompetency">
-                  <option value="" disabled selected hidden>Select competency</option>
+                <select class="comp" name="competency" id="competency" [(ngModel)]="selectedRows[i].selectedCompetency">
+                  <option value="" disabled selected>Select competency</option>
                   <option *ngFor="let competency of getUniqueCompetencies()" [value]="competency">
                     {{ competency }}
                   </option>
@@ -199,7 +199,7 @@
               </td>
               <td><input type="text" /></td>
               <td>
-                <select name="level" id="level" [(ngModel)]="selectedRows[i].selectedLevel">
+                <select class="select" name="level" id="level" [(ngModel)]="selectedRows[i].selectedLevel">
                   <option value="" disabled selected hidden>Select level</option>
                   <option *ngFor="let level of getUniqueLevelsForCompetency()" [value]="level">
                     {{ level }}
