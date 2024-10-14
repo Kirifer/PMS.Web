@@ -3,6 +3,9 @@ import { FormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import competencyData from './competency.json';
+import { LookupService } from '../services/lookup/lookup.service';
+import { ICompetency } from '../models/competency';
+
 import { MatDialogModule } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -14,6 +17,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule, MatTabGroup } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+
+
+
 
 @Component({
   selector: 'app-add-perform-rev',
@@ -30,10 +37,11 @@ import { MatSelectModule } from '@angular/material/select';
     MatIconModule,
     MatTabsModule,
     MatTabGroup,
-    MatSelectModule
+    MatSelectModule,
+    HttpClientModule
   ],
   templateUrl: './add-perform-rev.component.html',
-  styleUrl: './add-perform-rev.component.css'
+  styleUrl: './add-perform-rev.component.css',
 })
 export class AddPerformRevComponent implements AfterViewInit {
 
@@ -61,7 +69,7 @@ export class AddPerformRevComponent implements AfterViewInit {
     { id: 5, description: '', weight: '', date: '', rating: 0 }
   ];
 
-  constructor() {
+  constructor(private lookupService: LookupService, private httpClient: HttpClient) {
     const startYear = 2000;
     const endYear = new Date().getFullYear() + 1; // Include next year
     for (let year = startYear; year <= endYear; year++) {
@@ -72,10 +80,17 @@ export class AddPerformRevComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    // Now this.tabGroup will be initialized and ready to use
+    this.lookupService.getData().subscribe(
+      (response) => { 
+        this.competencies = response.data; 
+      },
+      (error) => { 
+        console.error('Error fetching competencies:', error); 
+      }
+    );
   }
 
-  competencies = competencyData;
+  competencies: ICompetency[] = [];
   selectedRows: { selectedCompetency: string, selectedLevel: string }[] = [
     { selectedCompetency: '', selectedLevel: '' },
     { selectedCompetency: '', selectedLevel: '' },
