@@ -19,26 +19,12 @@ export class LookupService {
 }
 
 
-// competencies: ICompetency[] = [];
 
-//   ngOnInit(): void {
-//     this.fetchCompetencies();
-//   }
 
-//   fetchCompetencies(): void {
-//     this.lookupService.getData().subscribe(
-//       (response) => {
-//         this.competencies = response.data; 
-//       },
-//       (error) => {
-//         console.error('Error fetching competencies:', error);
-//       }
-//     );
-//   }
+  // ngOnInit(): void {
+  //   this.lookupService.getData().subscribe(
+  //     (response) => { this.competencies = response.data; },
+  //     (error) => { console.error('Error fetching competencies:', error); }
+  //   );
+  // }
 
-//   ngOnInit(): void {
-//     this.lookupService.getData().subscribe(
-//       (response) => { this.competencies = response.data; },
-//       (error) => { console.error('Error fetching competencies:', error); }
-//     );
-//   }

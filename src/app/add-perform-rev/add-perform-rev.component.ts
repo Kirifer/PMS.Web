@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
@@ -43,7 +43,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
   templateUrl: './add-perform-rev.component.html',
   styleUrl: './add-perform-rev.component.css',
 })
-export class AddPerformRevComponent implements AfterViewInit {
+export class AddPerformRevComponent implements OnInit {
 
   @ViewChild('tabGroup') tabGroup: MatTabGroup | undefined;
 
@@ -79,18 +79,25 @@ export class AddPerformRevComponent implements AfterViewInit {
     this.selectedReviewYearEnd = endYear;
   }
 
-  ngAfterViewInit() {
+  
+
+  competencies: ICompetency[] = [];
+
+  ngOnInit(): void {
+    this.fetchCompetencies();
+  }
+
+  fetchCompetencies(): void {
     this.lookupService.getData().subscribe(
-      (response) => { 
+      (response) => {
         this.competencies = response.data; 
       },
-      (error) => { 
-        console.error('Error fetching competencies:', error); 
+      (error) => {
+        console.error('Error fetching competencies:', error);
       }
     );
   }
-
-  competencies: ICompetency[] = [];
+  
   selectedRows: { selectedCompetency: string, selectedLevel: string }[] = [
     { selectedCompetency: '', selectedLevel: '' },
     { selectedCompetency: '', selectedLevel: '' },
