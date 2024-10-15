@@ -191,13 +191,27 @@
               <td>{{ i + 1 }}</td>
               <td>
                 <select class="comp" name="competency" id="competency" [(ngModel)]="selectedRows[i].selectedCompetency">
-                  <option value="" disabled selected>Select competency</option>
+                  <option value="" disabled selected hidden>Select competency</option>
                   <option *ngFor="let competency of getUniqueCompetencies()" [value]="competency">
                     {{ competency }}
                   </option>
                 </select>
               </td>
-              <td><input type="text" /></td>
+              <td>
+                <input type="number" list="numbers" min="1" max="100" step="0.1" required />
+                <datalist id="numbers">
+                  <option value="10">
+                  <option value="20">
+                  <option value="30">
+                  <option value="40">
+                  <option value="50">
+                  <option value="60">
+                  <option value="70">
+                  <option value="80">
+                  <option value="90">
+                  <option value="100">
+                </datalist>
+              </td>
               <td>
                 <select class="select" name="level" id="level" [(ngModel)]="selectedRows[i].selectedLevel">
                   <option value="" disabled selected hidden>Select level</option>

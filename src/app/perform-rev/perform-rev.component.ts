@@ -16,6 +16,7 @@ import {MatInputModule} from '@angular/material/input';
 
 import employees from "./data.json"
 import { IUserData } from '../models/userData';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -28,9 +29,22 @@ const ELEMENT_DATA: IUserData[] = employees;
 @Component({
   selector: 'app-perform-rev',
   standalone: true,
-  imports: [CommonModule,RouterModule,MatTableModule,MatDialogModule,MatFormFieldModule,MatIconModule,MatNativeDateModule,MatCheckboxModule,MatDividerModule,MatPaginatorModule,MatSortModule,MatInputModule],
+  imports: [CommonModule,
+    RouterModule,
+    MatTableModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatNativeDateModule,
+    MatCheckboxModule,
+    MatDividerModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatInputModule,
+    HttpClientModule
+  ],
   templateUrl: './perform-rev.component.html',
-  styleUrl: './perform-rev.component.css'
+  styleUrl: './perform-rev.component.css',
 })
 export class PerformRevComponent implements AfterViewInit {
 
