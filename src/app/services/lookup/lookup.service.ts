@@ -9,7 +9,7 @@ import { ICompetency } from '../../models/competency';
 })
 export class LookupService {
 
-  private apiUrl = 'http://localhost:5105/lookup/competencies';
+  private apiUrl = 'https://localhost:7012/lookup/competencies';
 
   constructor(private http: HttpClient) { }
 
@@ -21,10 +21,5 @@ export class LookupService {
 
 
 
-  // ngOnInit(): void {
-  //   this.lookupService.getData().subscribe(
-  //     (response) => { this.competencies = response.data; },
-  //     (error) => { console.error('Error fetching competencies:', error); }
-  //   );
-  // }
+
 

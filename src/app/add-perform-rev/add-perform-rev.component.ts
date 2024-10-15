@@ -2,7 +2,6 @@ import { Component, ViewChild, AfterViewInit, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
-import competencyData from './competency.json';
 import { LookupService } from '../services/lookup/lookup.service';
 import { ICompetency } from '../models/competency';
 
@@ -79,25 +78,16 @@ export class AddPerformRevComponent implements OnInit {
     this.selectedReviewYearEnd = endYear;
   }
 
-  
-
+  // Competency Section -------------------------------------------------------------------------------------------------------------------
   competencies: ICompetency[] = [];
 
   ngOnInit(): void {
-    this.fetchCompetencies();
-  }
-
-  fetchCompetencies(): void {
     this.lookupService.getData().subscribe(
-      (response) => {
-        this.competencies = response.data; 
-      },
-      (error) => {
-        console.error('Error fetching competencies:', error);
-      }
+      (response) => { this.competencies = response.data; },
+      (error) => { console.error('Error fetching competencies:', error); }
     );
   }
-  
+
   selectedRows: { selectedCompetency: string, selectedLevel: string }[] = [
     { selectedCompetency: '', selectedLevel: '' },
     { selectedCompetency: '', selectedLevel: '' },
@@ -123,7 +113,19 @@ export class AddPerformRevComponent implements OnInit {
     return selected ? selected.description : '';
   }
 
-  // Tab navigation functions
+
+
+
+
+
+
+
+
+
+
+
+
+  // Tab navigation functions -------------------------------------------------------------------------------------------------------------
   goToNextTab() {
     if (this.tabGroup && this.tabGroup.selectedIndex !== undefined && this.tabGroup._tabs) {
       const tabsLength = this.tabGroup._tabs.length;
