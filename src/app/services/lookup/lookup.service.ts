@@ -3,13 +3,15 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 import { ICompetency } from '../../models/competency';
+import { environment } from '../../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class LookupService {
 
-  private apiUrl = 'https://localhost:7012/lookup/competencies';
+  private apiUrl = environment.lookupUrl;
 
   constructor(private http: HttpClient) { }
 
