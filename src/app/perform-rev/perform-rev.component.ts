@@ -19,13 +19,7 @@ import { IUserData } from '../models/userData';
 import { HttpClientModule } from '@angular/common/http';
 
 
-
-
-
 const ELEMENT_DATA: IUserData[] = employees;
-
-
-
 @Component({
   selector: 'app-perform-rev',
   standalone: true,

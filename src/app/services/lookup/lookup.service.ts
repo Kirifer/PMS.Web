@@ -11,12 +11,10 @@ import { environment } from '../../../environments/environment';
 })
 export class LookupService {
 
-  private apiUrl = environment.lookupUrl;
-
   constructor(private http: HttpClient) { }
 
   getData(): Observable<{ data: ICompetency[] }> {
-    return this.http.get<{ data: ICompetency[] }>(this.apiUrl);
+    return this.http.get<{ data: ICompetency[] }>(environment.apiUrl + '/lookup/competencies');
   }
 }
 
