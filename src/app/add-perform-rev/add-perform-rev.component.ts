@@ -20,7 +20,6 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 
 
-
 @Component({
   selector: 'app-add-perform-rev',
   standalone: true,
@@ -43,22 +42,43 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
   styleUrl: './add-perform-rev.component.css',
 })
 export class AddPerformRevComponent implements OnInit {
-
   @ViewChild('tabGroup') tabGroup: MatTabGroup | undefined;
 
-  // Review years
-  reviewYears: number[] = [];
-  selectedReviewYearStart: number;
-  selectedReviewYearEnd: number;
 
-  // Employee details
+  // Employee Details 
+  selectedDepartment: string = '';
   employeeName: string = '';
-  employee: string = '';
+  supervisor: string = '';
   startDate: string = '';
   endDate: string = '';
-  supervisor: string = '';
+  
   activeSupervisor: boolean = false;
 
+  departments: string[] = ['Human Resources', 'Finance', 'Sales', 'Marketing', 'Creative', 'Engaged', 'Engineering', 'Software Development', 'IT'];
+
+
+  // Review Year
+  startYear: number | null = null;
+  endYear: number | null = null;
+
+  years: number[] = [];
+  getYears(): number[] {
+    const years: number[] = [];
+    const startYear = 2000;
+    const endYear = 2070;
+  
+    for (let year = startYear; year <= endYear; year++) {
+      years.push(year);
+    }
+    return years;
+  }
+
+
+
+  constructor(private lookupService: LookupService, private httpClient: HttpClient) {
+
+  }
+  
   // Goals Array for Performance Review Table
   goals = [
     { id: 1, description: '', weight: '', date: '', rating: 0 },
@@ -67,16 +87,7 @@ export class AddPerformRevComponent implements OnInit {
     { id: 4, description: '', weight: '', date: '', rating: 0 },
     { id: 5, description: '', weight: '', date: '', rating: 0 }
   ];
-
-  constructor(private lookupService: LookupService, private httpClient: HttpClient) {
-    const startYear = 2000;
-    const endYear = new Date().getFullYear() + 1; // Include next year
-    for (let year = startYear; year <= endYear; year++) {
-      this.reviewYears.push(year);
-    }
-    this.selectedReviewYearStart = startYear;
-    this.selectedReviewYearEnd = endYear;
-  }
+  
 
   // Competency Section -------------------------------------------------------------------------------------------------------------------
   competencies: ICompetency[] = [];
@@ -86,6 +97,7 @@ export class AddPerformRevComponent implements OnInit {
       (response) => { this.competencies = response.data; },
       (error) => { console.error('Error fetching competencies:', error); }
     );
+    this.years = this.getYears();
   }
 
   selectedRows: { selectedCompetency: string, selectedLevel: string }[] = [
@@ -112,13 +124,6 @@ export class AddPerformRevComponent implements OnInit {
     );
     return selected ? selected.description : '';
   }
-
-
-
-
-
-
-
 
 
 
