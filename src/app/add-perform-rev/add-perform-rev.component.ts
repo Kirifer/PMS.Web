@@ -36,7 +36,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     MatTabsModule,
     MatTabGroup,
     MatSelectModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   templateUrl: './add-perform-rev.component.html',
   styleUrl: './add-perform-rev.component.css',
@@ -45,35 +45,33 @@ export class AddPerformRevComponent implements OnInit {
   @ViewChild('tabGroup') tabGroup: MatTabGroup | undefined;
 
 
-  // Employee Details 
+  // Employee Details ----------------------------------------------------------------------
   selectedDepartment: string = '';
   employeeName: string = '';
   supervisor: string = '';
+  // Review Year
+  startYear: number | null = null;
+  endYear: number | null = null;
   startDate: string = '';
   endDate: string = '';
   
   activeSupervisor: boolean = false;
 
   departments: string[] = ['Human Resources', 'Finance', 'Sales', 'Marketing', 'Creative', 'Engaged', 'Engineering', 'Software Development', 'IT'];
-
-
-  // Review Year
-  startYear: number | null = null;
-  endYear: number | null = null;
-
   years: number[] = [];
+
   getYears(): number[] {
     const years: number[] = [];
     const startYear = 2000;
     const endYear = 2070;
-  
     for (let year = startYear; year <= endYear; year++) {
       years.push(year);
     }
     return years;
   }
 
-
+  
+  
 
   constructor(private lookupService: LookupService, private httpClient: HttpClient) {
 
@@ -126,8 +124,25 @@ export class AddPerformRevComponent implements OnInit {
   }
 
 
+  // Start Date & End Date
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    
+    const month = monthNames[date.getMonth()];
+    const day = date.getDate(); 
+    const year = date.getFullYear(); 
 
+    return `${month} ${day} ${year}`;
+  }
 
+  getFormattedStartDate(): string {
+    return this.startDate ? this.formatDate(this.startDate) : '';
+  }
+
+  getFormattedEndDate(): string {
+    return this.endDate ? this.formatDate(this.endDate) : '';
+  }
 
 
   // Tab navigation functions -------------------------------------------------------------------------------------------------------------

@@ -49,7 +49,7 @@
 
           <mat-form-field class="date-field" appearance="outline">
             <mat-label>Start Date</mat-label>
-            <input matInput [matDatepicker]="picker1">
+            <input matInput [matDatepicker]="picker1" [(ngModel)]="startDate" name="startDate">
             <mat-hint>MM/DD/YYYY</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="picker1">
               <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
@@ -59,7 +59,7 @@
 
           <mat-form-field class="date-field" appearance="outline">
             <mat-label>End Date</mat-label>
-            <input matInput [matDatepicker]="picker2">
+            <input matInput [matDatepicker]="picker2" [(ngModel)]="endDate" name="endDate">
             <mat-hint>MM/DD/YYYY</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="picker2">
               <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
@@ -75,7 +75,9 @@
             <input matInput class="input-text" id="supervisor" [(ngModel)]="supervisor" name="supervisor">
           </mat-form-field>
 
-          <mat-checkbox class="active-supervisor-checkbox">Active</mat-checkbox>
+          <mat-checkbox class="active-supervisor-checkbox" [(ngModel)]="activeSupervisor" name="active-supervisor" >
+            Active
+          </mat-checkbox>
         </div>
 
       </div>
@@ -250,40 +252,27 @@
                 <td>Department:</td>
                 <td>{{ selectedDepartment }}</td>
                 <td>Review Year:</td>
-                <td>{{ startYear}} - {{ endYear }}</td>
+                <td>{{ startYear }} &mdash; {{ endYear }}</td>
               </tr>
               <tr>
                 <td>Employee Name:</td>
                 <td>{{ employeeName }}</td>
                 <td>Start Date:</td>
-                <td></td>
+                <td>{{ getFormattedStartDate() }}</td>
               </tr>
 
               <tr>
                 <td>Supervisor:</td>
-                <td>{{ supervisor }}</td>
+                <td>{{ supervisor }} is {{ activeSupervisor ? 'Active' : 'Not Active' }}</td>
                 <td>End Date:</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>Active Supervisor:</td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{ getFormattedEndDate() }}</td>
               </tr>
             </tbody>
         
           </table>
         </div>
 
-        <!-- <p>Department: {{ selectedDepartment }}</p>
-          <p>Employee Name: {{ employeeName }}</p>
-          <p>Review Year: {{ startYear}} - {{ endYear }} </p>
-          <p>Start Date: {{ startDate }}</p>
-          <p>End Date: {{ endDate }}</p>
-          <p>Supervisor: {{ supervisor }}</p>
-          <p>Active Supervisor: {{ activeSupervisor ? 'Yes' : 'No' }}</p> -->
-
+        
         <div class="confirmation-section">
           <h6>Goals</h6>
           <table>

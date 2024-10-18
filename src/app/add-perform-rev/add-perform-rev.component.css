@@ -48,7 +48,7 @@
         }
 
         .date-field {
-            flex: 0 0 20%;
+            flex: 0 0 19.8%;
         }
 
         .supervisor-field {
@@ -270,7 +270,7 @@
     overflow-y: auto; /* Enable vertical scrolling */
 
     .employee-section {
-
+        margin-bottom: 50px;
         h6 {
             color: #555555;
         }
