@@ -1,181 +1,183 @@
-
-<h5 class="title"><i class="fa-solid fa-plus"></i>Add Performance Review</h5> 
+<h5 class="title"><i class="fa-solid fa-plus"></i>Add Performance Review</h5>
 <!-- <i class="fa-solid fa-xmark"></i> -->
 
-  <form>
-    <mat-tab-group #tabGroup dynamicHeight>
-      
-      <!-- ---------- Employee Section ----------- -->
-      <mat-tab label="Employee Details">
-        <div class="employee">
+<form>
+  <mat-tab-group #tabGroup dynamicHeight>
 
-          <h6>Employee Details</h6>
-        
-          <div class="row">
-            <mat-form-field class="name-field" appearance="outline">
-              <mat-label>Name</mat-label>
-              <input class="input-text" matInput>
+    <!-- ---------- Employee Section ----------- -->
+    <mat-tab label="Employee Details">
+      <div class="employee">
+
+        <h6>Employee Details</h6>
+
+        <div class="row">
+          <mat-form-field class="department-field" appearance="outline">
+            <mat-label>Department</mat-label>
+            <mat-select [(ngModel)]="selectedDepartment" name="selectedDepartment">
+              <mat-option *ngFor="let department of departments" [value]="department">
+                {{ department }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div class="review-year-field">
+            <mat-form-field appearance="outline">
+              <mat-label>Start Year</mat-label>
+              <mat-select [(ngModel)]="startYear" name="startYear">
+                <mat-option *ngFor="let year of years" [value]="year">
+                  {{ year }}
+                </mat-option>
+              </mat-select>
             </mat-form-field>
-        
-            <mat-form-field class="review-year-field" appearance="outline">
-              <mat-label>Review Year</mat-label>
-              <mat-date-range-input [rangePicker]="picker">
-                <input matStartDate placeholder="Start date">
-                <input matEndDate placeholder="End date">
-              </mat-date-range-input>
-              <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-date-range-picker #picker></mat-date-range-picker>
+  
+            <mat-form-field appearance="outline">
+              <mat-label>End Year</mat-label>
+              <mat-select [(ngModel)]="endYear" name="endYear">
+                <mat-option *ngFor="let year of years" [value]="year">
+                  {{ year }}
+                </mat-option>
+              </mat-select>
             </mat-form-field>
           </div>
-        
-          <div class="row">
-            <mat-form-field class="employee-field" appearance="outline">
-              <mat-label>Employee</mat-label>
-              <input class="input-text" matInput>
-            </mat-form-field>
-        
-            <mat-form-field class="date-field" appearance="outline">
-              <mat-label>Start Date</mat-label>
-              <input matInput [matDatepicker]="picker1">
-              <mat-hint>MM/DD/YYYY</mat-hint>
-              <mat-datepicker-toggle matIconSuffix [for]="picker1">
-                <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-              </mat-datepicker-toggle>
-              <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
-        
-            <mat-form-field class="date-field" appearance="outline">
-              <mat-label>End Date</mat-label>
-              <input matInput [matDatepicker]="picker2">
-              <mat-hint>MM/DD/YYYY</mat-hint>
-              <mat-datepicker-toggle matIconSuffix [for]="picker2">
-                <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-              </mat-datepicker-toggle>
-              <mat-datepicker #picker2></mat-datepicker>
-            </mat-form-field>
-        
-          </div>
-        
-          <div class="row">
-            <mat-form-field class="supervisor-field" appearance="outline">
-              <mat-label>Supervisor</mat-label>
-              <input matInput>
-            </mat-form-field>
-        
-            <mat-checkbox class="active-supervisor-checkbox">Active</mat-checkbox>
-          </div>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="employee-field" appearance="outline">
+            <mat-label>Employee Name</mat-label>
+            <input class="input-text" id="employeeName" [(ngModel)]="employeeName" name="employeeName" matInput>
+          </mat-form-field>
+
+          <mat-form-field class="date-field" appearance="outline">
+            <mat-label>Start Date</mat-label>
+            <input matInput [matDatepicker]="picker1" [(ngModel)]="startDate" name="startDate">
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker1">
+              <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field class="date-field" appearance="outline">
+            <mat-label>End Date</mat-label>
+            <input matInput [matDatepicker]="picker2" [(ngModel)]="endDate" name="endDate">
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker2">
+              <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
 
         </div>
 
-        <div class="navigation-buttons">
-          
-          <button mat-icon-button class="left-button" (click)="goToPreviousTab()" disabled>
-            <mat-icon>arrow_back</mat-icon>
-          </button>
-          <button mat-icon-button class="right-button" (click)="goToNextTab()">
-            <mat-icon>arrow_forward</mat-icon>
-          </button>
+        <div class="row">
+          <mat-form-field class="supervisor-field" appearance="outline">
+            <mat-label>Supervisor</mat-label>
+            <input matInput class="input-text" id="supervisor" [(ngModel)]="supervisor" name="supervisor">
+          </mat-form-field>
 
-        </div>
-      </mat-tab>
-
-      <!-- ----------- Goals Section ----------- -->
-      <mat-tab label="Goals">
-        <div class="goals">
-
-          <h6>Goals</h6>
-        
-          <table>
-            <thead>
-              <tr>
-                <th rowspan="2">No</th>
-                <th rowspan="2">Individual Goals</th>
-                <th rowspan="2">Weight</th>
-                <th rowspan="2">Date</th>
-                <th colspan="4">Measures</th>
-              </tr>
-              <tr>
-                <th>4-Consistently Exceeds Expectations</th>
-                <th>3-Met and Sometimes Exceeds Expectations</th>
-                <th>2-Met Expectations</th>
-                <th>1-Did Not Meet Expectations</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>1</strong></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-              </tr>
-              <tr>
-                <td><strong>2</strong></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-              </tr>
-              <tr>
-                <td><strong>3</strong></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-              </tr>
-              <tr>
-                <td><strong>4</strong></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-              </tr>
-              <tr>
-                <td><strong>5</strong></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-                <td><input type="text" /></td>
-              </tr>
-        
-            </tbody>
-          </table>
+          <mat-checkbox class="active-supervisor-checkbox" [(ngModel)]="activeSupervisor" name="active-supervisor" >
+            Active
+          </mat-checkbox>
         </div>
 
+      </div>
 
-        <div class="navigation-buttons">
-          <button mat-icon-button class="left-button" (click)="goToPreviousTab()">
-            <mat-icon>arrow_back</mat-icon>
-          </button>
-          <button mat-icon-button class="right-button" (click)="goToNextTab()">
-            <mat-icon>arrow_forward</mat-icon>
-          </button>
-        </div>
-      </mat-tab>
+      <div class="button-section">
+        <button (click)="goToNextTab()">Next</button>
+      </div>
+    </mat-tab>
 
 
-      <!-- ----------- Competency Section ----------- -->
+    <!-- ----------- Goals Section ----------- -->
+    <mat-tab label="Goals">
+      <div class="goals">
+
+        <h6>Goals</h6>
+
+        <table>
+          <thead>
+            <tr>
+              <th rowspan="2">No</th>
+              <th rowspan="2">Individual Goals</th>
+              <th rowspan="2">Weight</th>
+              <th rowspan="2">Date</th>
+              <th colspan="4">Measures</th>
+            </tr>
+            <tr>
+              <th>4-Consistently Exceeds Expectations</th>
+              <th>3-Met and Sometimes Exceeds Expectations</th>
+              <th>2-Met Expectations</th>
+              <th>1-Did Not Meet Expectations</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>1</strong></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+            </tr>
+            <tr>
+              <td><strong>2</strong></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+            </tr>
+            <tr>
+              <td><strong>3</strong></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+            </tr>
+            <tr>
+              <td><strong>4</strong></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+            </tr>
+            <tr>
+              <td><strong>5</strong></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+              <td><input type="text" /></td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+      <div class="button-section">
+        <button (click)="goToNextTab()">Next</button>
+      </div>
+    </mat-tab>
+
+
+    <!-- ----------- Competency Section ----------- -->
     <mat-tab label="Competency">
       <div class="competency">
 
         <h6>Competency</h6>
-      
+
         <table>
           <thead>
             <tr>
@@ -183,7 +185,7 @@
               <th>Competencies</th>
               <th>Weight</th>
               <th>Level</th>
-              <th >Description</th>
+              <th>Description</th>
             </tr>
           </thead>
           <tbody>
@@ -224,34 +226,53 @@
             </tr>
           </tbody>
         </table>
-      
+
       </div>
 
-      <div class="navigation-buttons">
-        <button mat-icon-button class="left-button" (click)="goToPreviousTab()">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
-        <button mat-icon-button class="right-button" (click)="goToNextTab()">
-          <mat-icon>arrow_forward</mat-icon>
-        </button>
+      <div class="button-section">
+        <button (click)="goToNextTab()">Next</button>
       </div>
     </mat-tab>
-    <!-- Confirmation Section -->
+
+
+
+
+
+
+    <!-- ----------- Confirmation Section ----------- -->
     <mat-tab label="Confirmation">
       <div class="confirmation">
-        <h6>Confirmation</h6>
-  
-        <div class="confirmation-section">
+        <h4>Confirmation</h4>
+
+        <div class="employee-section">
           <h6>Employee Details</h6>
-          <p>Name: {{ employeeName }}</p>
-          <p>Review Year: {{ selectedReviewYearStart }} - {{ selectedReviewYearEnd }}</p>
-          <p>Employee: {{ employee }}</p>
-          <p>Start Date: {{ startDate }}</p>
-          <p>End Date: {{ endDate }}</p>
-          <p>Supervisor: {{ supervisor }}</p>
-          <p>Active Supervisor: {{ activeSupervisor ? 'Yes' : 'No' }}</p>
+          <table>
+            <tbody>
+              <tr>
+                <td>Department:</td>
+                <td>{{ selectedDepartment }}</td>
+                <td>Review Year:</td>
+                <td>{{ startYear }} &mdash; {{ endYear }}</td>
+              </tr>
+              <tr>
+                <td>Employee Name:</td>
+                <td>{{ employeeName }}</td>
+                <td>Start Date:</td>
+                <td>{{ getFormattedStartDate() }}</td>
+              </tr>
+
+              <tr>
+                <td>Supervisor:</td>
+                <td>{{ supervisor }} is {{ activeSupervisor ? 'Active' : 'Not Active' }}</td>
+                <td>End Date:</td>
+                <td>{{ getFormattedEndDate() }}</td>
+              </tr>
+            </tbody>
+        
+          </table>
         </div>
-  
+
+        
         <div class="confirmation-section">
           <h6>Goals</h6>
           <table>
@@ -275,7 +296,7 @@
             </tbody>
           </table>
         </div>
-  
+
         <div class="confirmation-section">
           <h6>Competency</h6>
           <table>
@@ -297,17 +318,14 @@
             </tbody>
           </table>
         </div>
-  
+
         <button mat-raised-button color="primary" (click)="submitForm()">Submit</button>
       </div>
-  
-      <div class="navigation-buttons">
-        <button mat-icon-button class="left-button" (click)="goToPreviousTab()">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
-        <button mat-icon-button class="right-button" (click)="goToNextTab()" disabled>
-          <mat-icon>arrow_forward</mat-icon>
-        </button>
+
+      <div class="submit-button">
+        <button (click)="submitForm()">Submit</button>
       </div>
     </mat-tab>
+
   </mat-tab-group>
+</form>

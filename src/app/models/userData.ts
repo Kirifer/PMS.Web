@@ -1,9 +1,12 @@
 export interface IUserData {
     id: number,
-    name: string,
+    selectedDepartment: string,
+    employeeName: string,
+    supervisor: string,
     reviewYear: string,
     startDate: string,
     endDate: string,
-    employee: string,
-    supervisor: string,
+    activeSupervisor: boolean;
+    goals: { goalId: number; description: string; completed: boolean }[];
+    competencies: { competencyId: number; description: string; level: number }[];
 }

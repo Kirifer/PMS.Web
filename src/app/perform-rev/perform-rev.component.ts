@@ -15,11 +15,11 @@ import {MatSort, MatSortModule} from '@angular/material/sort';
 import {MatInputModule} from '@angular/material/input';
 
 import employees from "./data.json"
+import { PerformanceReviewService } from '../services/performanceReview/performance-review.service';
 import { IUserData } from '../models/userData';
 import { HttpClientModule } from '@angular/common/http';
 
 
-const ELEMENT_DATA: IUserData[] = employees;
 @Component({
   selector: 'app-perform-rev',
   standalone: true,
@@ -42,11 +42,11 @@ const ELEMENT_DATA: IUserData[] = employees;
 })
 export class PerformRevComponent implements AfterViewInit {
 
-  constructor(private _dialog: MatDialog) {}
+  constructor(private _dialog: MatDialog, private reviewService: PerformanceReviewService) {}
 
  
-  displayedColumns: string[] = ['id', 'name', 'reviewYear', 'startDate', 'endDate', 'employee', 'supervisor', 'actions'];
-  dataSource: MatTableDataSource<IUserData> = new MatTableDataSource(ELEMENT_DATA);
+  displayedColumns: string[] = ['id', 'department', 'reviewYear', 'startDate', 'endDate', 'employee', 'supervisor', 'actions'];
+  dataSource = new MatTableDataSource<IUserData>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -54,6 +54,17 @@ export class PerformRevComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  getPerformanceReviews() {
+    this.reviewService.getPerformanceReviews().subscribe(
+      (reviews) => {
+        this.dataSource.data = reviews;
+      },
+      (error) => {
+        console.error('Error fetching performance reviews:', error);
+      }
+    );
   }
  
   
@@ -65,19 +76,34 @@ export class PerformRevComponent implements AfterViewInit {
       this.dataSource.paginator.firstPage();
     }
   }
+  
 
 
   readonly dialog = inject(MatDialog);
 
   openDialog() {
-    const dialogRef = this.dialog.open(AddPerformRevComponent, {
+    const dialogRef = this._dialog.open(AddPerformRevComponent, {
       width: '1250px',
       maxWidth: 'none',
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      if (result) {
+        // Refresh the reviews list after a new review is added
+        this.getPerformanceReviews();
+      }
     });
+  }
+
+  deleteReview(id: number) {
+    this.reviewService.deletePerformanceReview(id).subscribe(
+      () => {
+        this.getPerformanceReviews(); // Refresh the list after deletion
+      },
+      (error) => {
+        console.error('Error deleting review:', error);
+      }
+    );
   }
 
 }
