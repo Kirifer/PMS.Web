@@ -16,7 +16,7 @@ import {MatInputModule} from '@angular/material/input';
 
 import employees from "./data.json"
 import { PerformanceReviewService } from '../services/performanceReview/performance-review.service';
-import { IUserData } from '../models/userData';
+import { IUserData } from '../models/entities/userData';
 import { HttpClientModule } from '@angular/common/http';
 
 

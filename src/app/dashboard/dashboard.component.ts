@@ -10,11 +10,10 @@ import { AddReviewComponent } from '../add-review/add-review.component';
 import { MatDialog } from '@angular/material/dialog';
 
 import employees from "../perform-rev/data.json"
-import { IUserData } from '../models/userData';
+import { IUserData } from '../models/entities/userData';
 
 
 
-const ELEMENT_DATA: IUserData[] = employees;
 
 
 @Component({
@@ -28,7 +27,7 @@ export class DashboardComponent implements AfterViewInit {
   constructor(private _dialog: MatDialog) {}
 
   displayedColumns: string[] = ['name', 'reviewYear', 'startDate', 'endDate', 'employee', 'supervisor', 'actions'];
-  dataSource: MatTableDataSource<IUserData> = new MatTableDataSource(ELEMENT_DATA);
+  dataSource = new MatTableDataSource<IUserData>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;

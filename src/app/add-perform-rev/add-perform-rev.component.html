@@ -1,7 +1,7 @@
 <h5 class="title"><i class="fa-solid fa-plus"></i>Add Performance Review</h5>
 <!-- <i class="fa-solid fa-xmark"></i> -->
 
-<form>
+<form (ngSubmit)="submitForm()">
   <mat-tab-group #tabGroup dynamicHeight>
 
     <!-- ---------- Employee Section ----------- -->
@@ -14,8 +14,8 @@
           <mat-form-field class="department-field" appearance="outline">
             <mat-label>Department</mat-label>
             <mat-select [(ngModel)]="selectedDepartment" name="selectedDepartment">
-              <mat-option *ngFor="let department of departments" [value]="department">
-                {{ department }}
+              <mat-option *ngFor="let department of departmentType" [value]="department.display">
+                {{ department.display }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -111,57 +111,16 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td><strong>1</strong></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
+            <tr *ngFor="let row of selectedGoals; let i = index">
+              <td><strong >{{ i + 1 }}</strong></td>
+              <td><input type="text" [(ngModel)]="selectedGoals[i].goals" name="goals" /></td>
+              <td><input type="number" [(ngModel)]="selectedGoals[i].weight" name="weight" /></td>
+              <td>{{ getFormattedStartDate() }} - {{ getFormattedEndDate() }}</td>
+              <td><input type="text" [(ngModel)]="selectedGoals[i].measure4" name="measure4" /></td>
+              <td><input type="text" [(ngModel)]="selectedGoals[i].measure3" name="measure3" /></td>
+              <td><input type="text" [(ngModel)]="selectedGoals[i].measure2" name="measure2" /></td>
+              <td><input type="text" [(ngModel)]="selectedGoals[i].measure1" name="measure1" /></td>
             </tr>
-            <tr>
-              <td><strong>2</strong></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-            </tr>
-            <tr>
-              <td><strong>3</strong></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-            </tr>
-            <tr>
-              <td><strong>4</strong></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-            </tr>
-            <tr>
-              <td><strong>5</strong></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-            </tr>
-
           </tbody>
         </table>
       </div>
@@ -200,19 +159,8 @@
                 </select>
               </td>
               <td>
-                <input type="number" list="numbers" min="1" max="100" step="0.1" required />
-                <datalist id="numbers">
-                  <option value="10">
-                  <option value="20">
-                  <option value="30">
-                  <option value="40">
-                  <option value="50">
-                  <option value="60">
-                  <option value="70">
-                  <option value="80">
-                  <option value="90">
-                  <option value="100">
-                </datalist>
+                <input type="number" min="1" max="100" step="0.1" required 
+                       [(ngModel)]="selectedRows[i].selectedWeight" name="selectedWeight"/>
               </td>
               <td>
                 <select class="select" name="level" id="level" [(ngModel)]="selectedRows[i].selectedLevel">
@@ -222,7 +170,7 @@
                   </option>
                 </select>
               </td>
-              <td>{{ getDescription(i) }}</td>
+              <td>{{ getDescription(i).description }}</td>
             </tr>
           </tbody>
         </table>
@@ -268,7 +216,6 @@
                 <td>{{ getFormattedEndDate() }}</td>
               </tr>
             </tbody>
-        
           </table>
         </div>
 
@@ -278,20 +225,29 @@
           <table>
             <thead>
               <tr>
-                <th>No</th>
-                <th>Description</th>
-                <th>Weight</th>
-                <th>Date</th>
-                <th>Rating</th>
+                <th rowspan="2">No</th>
+                <th rowspan="2">Individual Goals</th>
+                <th rowspan="2">Weight</th>
+                <th rowspan="2">Date</th>
+                <th colspan="4">Measures</th>
+              </tr>
+              <tr>
+                <th>4-Consistently Exceeds Expectations</th>
+                <th>3-Met and Sometimes Exceeds Expectations</th>
+                <th>2-Met Expectations</th>
+                <th>1-Did Not Meet Expectations</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let goal of goals; let i = index">
+              <tr *ngFor="let row of selectedGoals; let i = index">
                 <td>{{ i + 1 }}</td>
-                <td>{{ goal.description }}</td>
-                <td>{{ goal.weight }}</td>
-                <td>{{ goal.date }}</td>
-                <td>{{ goal.rating }}</td>
+                <td>{{ row.goals }}</td>
+                <td>{{ row.weight }}</td>
+                <td>{{ getFormattedStartDate() }} - {{ getFormattedEndDate() }}</td>
+                <td>{{ row.measure4 }}</td>
+                <td>{{ row.measure3 }}</td>
+                <td>{{ row.measure2 }}</td>
+                <td>{{ row.measure1 }}</td>
               </tr>
             </tbody>
           </table>
@@ -304,6 +260,7 @@
               <tr>
                 <th>No</th>
                 <th>Competency</th>
+                <th>Weight</th>
                 <th>Level</th>
                 <th>Description</th>
               </tr>
@@ -312,18 +269,18 @@
               <tr *ngFor="let row of selectedRows; let i = index">
                 <td>{{ i + 1 }}</td>
                 <td>{{ row.selectedCompetency }}</td>
+                <td>{{ row.selectedWeight }}</td>
                 <td>{{ row.selectedLevel }}</td>
-                <td>{{ getDescription(i) }}</td>
+                <td>{{ getDescription(i).description }}</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <button mat-raised-button color="primary" (click)="submitForm()">Submit</button>
       </div>
 
       <div class="submit-button">
-        <button (click)="submitForm()">Submit</button>
+        <button type="submit">Submit</button> 
       </div>
     </mat-tab>
 

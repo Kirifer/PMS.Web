@@ -3,10 +3,12 @@ import { FormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { LookupService } from '../services/lookup/lookup.service';
-import { ICompetency } from '../models/competency';
+import { ICompetency } from '../models/entities/competency';
+import { DepartmentType } from '../models/enumerations/departmentType';
+import { DepartmentTypeDisplay } from '../models/enumerations/departmentType';
 
 import { PerformanceReviewService } from '../services/performanceReview/performance-review.service'; 
-import { IUserData } from '../models/userData';
+import { IUserData } from '../models/entities/userData';
 
 import { MatDialogModule } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
@@ -45,12 +47,18 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 })
 export class AddPerformRevComponent implements OnInit {
   @ViewChild('tabGroup') tabGroup: MatTabGroup | undefined;
+  constructor(private lookupService: LookupService, 
+              private httpClient: HttpClient,
+              private reviewService: PerformanceReviewService) 
+  {}
 
 
-  // Employee Details ----------------------------------------------------------------------
+  // Employee Details -----------------------------------------------------------------------------------
   selectedDepartment: string = '';
   employeeName: string = '';
   supervisor: string = '';
+  activeSupervisor: boolean = false;
+
   // Review Year
   startYear: number | null = null;
   endYear: number | null = null;
@@ -58,11 +66,13 @@ export class AddPerformRevComponent implements OnInit {
   startDate: string = '';
   endDate: string = '';
   
-  activeSupervisor: boolean = false;
+ 
+  departmentType = Object.keys(DepartmentType).map(key => ({
+    value: DepartmentType[key as keyof typeof DepartmentType],
+    display: DepartmentTypeDisplay[key as keyof typeof DepartmentTypeDisplay]
+  }));
 
-  departments: string[] = ['Human Resources', 'Finance', 'Sales', 'Marketing', 'Creative', 'Engaged', 'Engineering', 'Software Development', 'IT'];
   years: number[] = [];
-
   getYears(): number[] {
     const years: number[] = [];
     const startYear = 2000;
@@ -73,39 +83,62 @@ export class AddPerformRevComponent implements OnInit {
     return years;
   }
 
-  constructor(private lookupService: LookupService, 
-              private httpClient: HttpClient,
-              private reviewService: PerformanceReviewService) {
+  // Start Date & End Date
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    
+    const month = monthNames[date.getMonth()];
+    const day = date.getDate(); 
+    const year = date.getFullYear(); 
 
+    return `${month} ${day}, ${year}`;
   }
+  getFormattedStartDate(): string {
+    return this.startDate ? this.formatDate(this.startDate) : '';
+  }
+  getFormattedEndDate(): string {
+    return this.endDate ? this.formatDate(this.endDate) : '';
+  }
+
   
-  // Goals Array for Performance Review Table
-  goals = [
-    { id: 1, description: '', weight: '', date: '', rating: 0 },
-    { id: 2, description: '', weight: '', date: '', rating: 0 },
-    { id: 3, description: '', weight: '', date: '', rating: 0 },
-    { id: 4, description: '', weight: '', date: '', rating: 0 },
-    { id: 5, description: '', weight: '', date: '', rating: 0 }
+  // Goals Section ------------------------------------------------------------------------------------------------
+  selectedGoals: 
+  { goals: string, 
+    weight: number, 
+    measure4: string, 
+    measure3: string, 
+    measure2: string, 
+    measure1: string
+  }[] = 
+  [
+    { goals: '', weight: 0, measure4: '', measure3: '', measure2: '', measure1: '' },
+    { goals: '', weight: 0, measure4: '', measure3: '', measure2: '', measure1: '' },
+    { goals: '', weight: 0, measure4: '', measure3: '', measure2: '', measure1: '' },
+    { goals: '', weight: 0, measure4: '', measure3: '', measure2: '', measure1: '' },
+    { goals: '', weight: 0, measure4: '', measure3: '', measure2: '', measure1: '' },
   ];
+   
+  
   
 
   // Competency Section -------------------------------------------------------------------------------------------------------------------
   competencies: ICompetency[] = [];
 
   ngOnInit(): void {
-    this.lookupService.getData().subscribe(
+    this.lookupService.getCompetency().subscribe(
       (response) => { this.competencies = response.data; },
       (error) => { console.error('Error fetching competencies:', error); }
     );
     this.years = this.getYears();
   }
 
-  selectedRows: { selectedCompetency: string, selectedLevel: string }[] = [
-    { selectedCompetency: '', selectedLevel: '' },
-    { selectedCompetency: '', selectedLevel: '' },
-    { selectedCompetency: '', selectedLevel: '' },
-    { selectedCompetency: '', selectedLevel: '' },
-    { selectedCompetency: '', selectedLevel: '' }
+  selectedRows: { selectedCompetency: string, selectedWeight:string, selectedLevel: string }[] = [
+    { selectedCompetency: '', selectedWeight: '', selectedLevel: '' },
+    { selectedCompetency: '', selectedWeight: '', selectedLevel: '' },
+    { selectedCompetency: '', selectedWeight: '', selectedLevel: '' },
+    { selectedCompetency: '', selectedWeight: '', selectedLevel: '' },
+    { selectedCompetency: '', selectedWeight: '', selectedLevel: '' }
   ];
 
   getUniqueCompetencies(): string[] {
@@ -116,35 +149,19 @@ export class AddPerformRevComponent implements OnInit {
     return [...new Set(this.competencies.map(c => c.level))];
   }
 
-  getDescription(rowIndex: number): string {
+  getDescription(rowIndex: number): { description: string, competencyId: string | null } {
     const selectedCompetency = this.selectedRows[rowIndex].selectedCompetency;
     const selectedLevel = this.selectedRows[rowIndex].selectedLevel;
     const selected = this.competencies.find(c => c.competency === selectedCompetency &&
       c.level === selectedLevel
     );
-    return selected ? selected.description : '';
+
+    const competencyId = selected ? selected.id : null;
+    const description = selected ? selected.description : '';
+  
+    return { description, competencyId };
   }
 
-
-  // Start Date & End Date
-  formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    
-    const month = monthNames[date.getMonth()];
-    const day = date.getDate(); 
-    const year = date.getFullYear(); 
-
-    return `${month} ${day} ${year}`;
-  }
-
-  getFormattedStartDate(): string {
-    return this.startDate ? this.formatDate(this.startDate) : '';
-  }
-
-  getFormattedEndDate(): string {
-    return this.endDate ? this.formatDate(this.endDate) : '';
-  }
 
 
   // Tab navigation functions -------------------------------------------------------------------------------------------------------------
@@ -165,45 +182,44 @@ export class AddPerformRevComponent implements OnInit {
     }
   }
 
+
   submitForm() {
-    const performanceReviewData: IUserData = {
-        id: 0,  
-        selectedDepartment: this.selectedDepartment,
-        employeeName: this.employeeName,
-        supervisor: this.supervisor,
-        reviewYear: this.startYear ? this.startYear.toString() : '', 
-        startDate: this.startDate,
-        endDate: this.endDate,
-        activeSupervisor: this.activeSupervisor,
-        goals: this.goals.map((goal, index) => ({
-            goalId: index + 1, //
-            description: goal.description,
-            completed: goal.rating > 0 
-        })),
-        competencies: this.selectedRows.map(row => ({
-            competencyId: row.selectedCompetency ? this.getCompetencyId(row.selectedCompetency) : 0, 
-            description: this.getDescription(this.selectedRows.indexOf(row)),
-            level: row.selectedLevel ? parseInt(row.selectedLevel) : 0 
-        })),
+    const data = {
+      name: this.employeeName,
+      departmentType: this.selectedDepartment,
+      startYear: this.startYear,
+      endYear: this.endYear,
+      startDate: this.startDate,
+      endDate: this.endDate,
+      // employeeId: "3fa85f64-5717-4562-b3fc-2c963f66afa6", 
+      // supervisorId: "3fa85f64-5717-4562-b3fc-2c963f66afa6", 
+      goals: this.selectedGoals.map((goal, index) => ({
+        orderNo: index + 1,
+        goals: goal.goals,
+        weight: goal.weight,
+        date: `${this.startDate} - ${this.endDate}`,
+        measure4: goal.measure4,
+        measure3: goal.measure3,
+        measure2: goal.measure2,
+        measure1: goal.measure1
+      })),
+      competencies: this.selectedRows.map((row, index) => ({
+        orderNo: index + 1,
+        // competencyId: this.getDescription(i).competencyId,
+        weight: Number(row.selectedWeight)
+      }))
     };
 
-    console.log('Submitting Performance Review Data:', performanceReviewData);
+    
+    // this.performanceReviewService.submitPerformanceReview(data)
+    //   .subscribe(response => {
+    //     console.log('Response from API: ', response);
+    //   }, error => {
+    //     console.error('Error: ', error);
+    //   });
+  }
 
-    this.reviewService.addPerformanceReview(performanceReviewData).subscribe(
-        (response) => {
-            console.log('Performance review submitted successfully:', response);
-        },
-        (error) => {
-            console.error('Error submitting performance review:', error);
-        }
-    );
+
+
 }
 
-// Dummy function to get the competency ID; replace it with your actual logic.
-getCompetencyId(competency: string): number {
-    // Logic to retrieve competency ID based on competency name
-    return 0; // Replace with actual ID retrieval logic
-}
-
-  
-}
