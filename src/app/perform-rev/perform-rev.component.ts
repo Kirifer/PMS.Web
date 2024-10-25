@@ -18,6 +18,8 @@ import employees from "./data.json"
 import { PerformanceReviewService } from '../services/performanceReview/performance-review.service';
 import { IUserData } from '../models/entities/userData';
 import { HttpClientModule } from '@angular/common/http';
+import { Employee } from '../models/class/employee';
+import { ResponseModel } from '../models/entities/response';
 
 
 @Component({
@@ -42,9 +44,11 @@ import { HttpClientModule } from '@angular/common/http';
 })
 export class PerformRevComponent implements AfterViewInit {
 
-  constructor(private _dialog: MatDialog, private reviewService: PerformanceReviewService) {}
+  
 
- 
+
+  constructor(private _dialog: MatDialog) {}
+
   displayedColumns: string[] = ['id', 'department', 'reviewYear', 'startDate', 'endDate', 'employee', 'supervisor', 'actions'];
   dataSource = new MatTableDataSource<IUserData>();
 
@@ -56,17 +60,46 @@ export class PerformRevComponent implements AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
-  getPerformanceReviews() {
-    this.reviewService.getPerformanceReviews().subscribe(
-      (reviews) => {
-        this.dataSource.data = reviews;
-      },
-      (error) => {
-        console.error('Error fetching performance reviews:', error);
-      }
-    );
+  reviewService = inject(PerformanceReviewService);
+
+  employeeList: Employee[] = [];
+
+  ngOnInit(): void {
+    this.loadEmployee();
   }
+
+  loadEmployee() {
+    this.reviewService.getAllEmployees().subscribe((res:ResponseModel) => {
+      this.employeeList = res.data;
+    })
+  }
+
+
+
+  
+  // getPerformanceReviews() {
+  //   this.reviewService.getPerformanceReviews().subscribe(
+  //     (reviews) => {
+  //       this.dataSource.data = reviews;
+  //     },
+  //     (error) => {
+  //       console.error('Error fetching performance reviews:', error);
+  //     }
+  //   );
+  // }
  
+  
+  
+  
+
+
+  
+  
+  
+  
+  
+  
+  
   
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -77,8 +110,7 @@ export class PerformRevComponent implements AfterViewInit {
     }
   }
   
-
-
+  
   readonly dialog = inject(MatDialog);
 
   openDialog() {
@@ -89,21 +121,8 @@ export class PerformRevComponent implements AfterViewInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // Refresh the reviews list after a new review is added
-        this.getPerformanceReviews();
+        // this.getPerformanceReviews();
       }
     });
   }
-
-  deleteReview(id: number) {
-    this.reviewService.deletePerformanceReview(id).subscribe(
-      () => {
-        this.getPerformanceReviews(); // Refresh the list after deletion
-      },
-      (error) => {
-        console.error('Error deleting review:', error);
-      }
-    );
-  }
-
 }

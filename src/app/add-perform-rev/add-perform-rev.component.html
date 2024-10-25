@@ -13,7 +13,7 @@
         <div class="row">
           <mat-form-field class="department-field" appearance="outline">
             <mat-label>Department</mat-label>
-            <mat-select [(ngModel)]="selectedDepartment" name="selectedDepartment">
+            <mat-select [(ngModel)]="employeeObj.departmentType" name="selectedDepartment">
               <mat-option *ngFor="let department of departmentType" [value]="department.display">
                 {{ department.display }}
               </mat-option>
@@ -23,7 +23,7 @@
           <div class="review-year-field">
             <mat-form-field appearance="outline">
               <mat-label>Start Year</mat-label>
-              <mat-select [(ngModel)]="startYear" name="startYear">
+              <mat-select [(ngModel)]="employeeObj.startYear" name="startYear">
                 <mat-option *ngFor="let year of years" [value]="year">
                   {{ year }}
                 </mat-option>
@@ -32,7 +32,7 @@
   
             <mat-form-field appearance="outline">
               <mat-label>End Year</mat-label>
-              <mat-select [(ngModel)]="endYear" name="endYear">
+              <mat-select [(ngModel)]="employeeObj.endYear" name="endYear">
                 <mat-option *ngFor="let year of years" [value]="year">
                   {{ year }}
                 </mat-option>
@@ -44,12 +44,12 @@
         <div class="row">
           <mat-form-field class="employee-field" appearance="outline">
             <mat-label>Employee Name</mat-label>
-            <input class="input-text" id="employeeName" [(ngModel)]="employeeName" name="employeeName" matInput>
+            <input class="input-text" id="employeeName" [(ngModel)]="employeeObj.name" name="employeeName" matInput>
           </mat-form-field>
 
           <mat-form-field class="date-field" appearance="outline">
             <mat-label>Start Date</mat-label>
-            <input matInput [matDatepicker]="picker1" [(ngModel)]="startDate" name="startDate">
+            <input matInput [matDatepicker]="picker1" (dateChange)="onStartDateChange($event.value)">
             <mat-hint>MM/DD/YYYY</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="picker1">
               <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
@@ -59,7 +59,7 @@
 
           <mat-form-field class="date-field" appearance="outline">
             <mat-label>End Date</mat-label>
-            <input matInput [matDatepicker]="picker2" [(ngModel)]="endDate" name="endDate">
+            <input matInput [matDatepicker]="picker2" (dateChange)="onEndDateChange($event.value)">
             <mat-hint>MM/DD/YYYY</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="picker2">
               <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
@@ -72,7 +72,7 @@
         <div class="row">
           <mat-form-field class="supervisor-field" appearance="outline">
             <mat-label>Supervisor</mat-label>
-            <input matInput class="input-text" id="supervisor" [(ngModel)]="supervisor" name="supervisor">
+            <input matInput class="input-text" id="supervisor" [(ngModel)]="employeeObj.supervisorId" name="supervisor">
           </mat-form-field>
 
           <mat-checkbox class="active-supervisor-checkbox" [(ngModel)]="activeSupervisor" name="active-supervisor" >
@@ -111,18 +111,22 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let row of selectedGoals; let i = index">
-              <td><strong >{{ i + 1 }}</strong></td>
-              <td><input type="text" [(ngModel)]="selectedGoals[i].goals" name="goals" /></td>
-              <td><input type="number" [(ngModel)]="selectedGoals[i].weight" name="weight" /></td>
-              <td>{{ getFormattedStartDate() }} - {{ getFormattedEndDate() }}</td>
-              <td><input type="text" [(ngModel)]="selectedGoals[i].measure4" name="measure4" /></td>
-              <td><input type="text" [(ngModel)]="selectedGoals[i].measure3" name="measure3" /></td>
-              <td><input type="text" [(ngModel)]="selectedGoals[i].measure2" name="measure2" /></td>
-              <td><input type="text" [(ngModel)]="selectedGoals[i].measure1" name="measure1" /></td>
+            <tr *ngFor="let row of employeeObj.goals; let i = index">
+              <td><strong>{{ i + 1 }}</strong></td>
+              <td><input type="text" [(ngModel)]="row.goals" name="goals{{i}}" (ngModelChange)="updateGoals(i)" /></td>
+              <td><input type="number" [(ngModel)]="row.weight" name="weight{{i}}" (ngModelChange)="updateGoals(i)" /></td>
+              <td>{{ employeeObj.startDate.month }}/{{ employeeObj.startDate.day }}/{{ employeeObj.startDate.year }} - 
+                  {{ employeeObj.endDate.month }}/{{ employeeObj.endDate.day }}/{{ employeeObj.endDate.year }}
+              </td>
+              <td><input type="text" [(ngModel)]="row.measure4" name="measure4{{i}}" (ngModelChange)="updateGoals(i)" /></td>
+              <td><input type="text" [(ngModel)]="row.measure3" name="measure3{{i}}" (ngModelChange)="updateGoals(i)" /></td>
+              <td><input type="text" [(ngModel)]="row.measure2" name="measure2{{i}}" (ngModelChange)="updateGoals(i)" /></td>
+              <td><input type="text" [(ngModel)]="row.measure1" name="measure1{{i}}" (ngModelChange)="updateGoals(i)" /></td>
             </tr>
           </tbody>
         </table>
+
+        <button (click)="debugEmployee()">Debug Employee</button>
       </div>
 
       <div class="button-section">
@@ -148,10 +152,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let row of selectedRows; let i = index">
-              <td>{{ i + 1 }}</td>
+            <tr *ngFor="let row of employeeObj.competencies; let i = index">
+              <td>{{ i + 1 }}</td> 
               <td>
-                <select class="comp" name="competency" id="competency" [(ngModel)]="selectedRows[i].selectedCompetency">
+                <select class="comp" name="competency{{i}}" [(ngModel)]="row.competency" (change)="updateCompetency(i)">
                   <option value="" disabled selected hidden>Select competency</option>
                   <option *ngFor="let competency of getUniqueCompetencies()" [value]="competency">
                     {{ competency }}
@@ -159,22 +163,22 @@
                 </select>
               </td>
               <td>
-                <input type="number" min="1" max="100" step="0.1" required 
-                       [(ngModel)]="selectedRows[i].selectedWeight" name="selectedWeight"/>
+                <input type="number" min="1" max="100" step="0.1" required [(ngModel)]="row.weight" name="weight{{i}}" />
               </td>
               <td>
-                <select class="select" name="level" id="level" [(ngModel)]="selectedRows[i].selectedLevel">
+                <select class="select" name="level{{i}}" [(ngModel)]="row.level" (change)="updateCompetency(i)">
                   <option value="" disabled selected hidden>Select level</option>
-                  <option *ngFor="let level of getUniqueLevelsForCompetency()" [value]="level">
+                  <option *ngFor="let level of getUniqueLevels(employeeObj.competencies[i].competency)" [value]="level">
                     {{ level }}
                   </option>
                 </select>
               </td>
-              <td>{{ getDescription(i).description }}</td>
+              <td>
+                {{ row.description }} <strong>{{ row.competencyId }}</strong>
+              </td>
             </tr>
           </tbody>
         </table>
-
       </div>
 
       <div class="button-section">
@@ -198,22 +202,22 @@
             <tbody>
               <tr>
                 <td>Department:</td>
-                <td>{{ selectedDepartment }}</td>
+                <td>{{ this.employeeObj.departmentType }}</td>
                 <td>Review Year:</td>
-                <td>{{ startYear }} &mdash; {{ endYear }}</td>
+                <td>{{ this.employeeObj.startYear }} &mdash; {{ this.employeeObj.endYear }}</td>
               </tr>
               <tr>
                 <td>Employee Name:</td>
-                <td>{{ employeeName }}</td>
+                <td>{{ this.employeeObj.name }}</td>
                 <td>Start Date:</td>
-                <td>{{ getFormattedStartDate() }}</td>
+                <td>{{ this.employeeObj.startDate.month }}/{{ this.employeeObj.startDate.day }}/{{ this.employeeObj.startDate.year }}</td>
               </tr>
 
               <tr>
                 <td>Supervisor:</td>
-                <td>{{ supervisor }} is {{ activeSupervisor ? 'Active' : 'Not Active' }}</td>
+                <td>{{ this.employeeObj.supervisorId }} is {{ activeSupervisor ? 'Active' : 'Not Active' }}</td>
                 <td>End Date:</td>
-                <td>{{ getFormattedEndDate() }}</td>
+                <td>{{ this.employeeObj.endDate.month }}/{{ this.employeeObj.endDate.day }}/{{ this.employeeObj.endDate.year }}</td>
               </tr>
             </tbody>
           </table>
@@ -239,11 +243,13 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let row of selectedGoals; let i = index">
+              <tr *ngFor="let row of employeeObj.goals; let i = index">
                 <td>{{ i + 1 }}</td>
                 <td>{{ row.goals }}</td>
                 <td>{{ row.weight }}</td>
-                <td>{{ getFormattedStartDate() }} - {{ getFormattedEndDate() }}</td>
+                <td>{{ employeeObj.startDate.month }}/{{ employeeObj.startDate.day }}/{{ employeeObj.startDate.year }} - 
+                    {{ employeeObj.endDate.month }}/{{ employeeObj.endDate.day }}/{{ employeeObj.endDate.year }}
+                </td>
                 <td>{{ row.measure4 }}</td>
                 <td>{{ row.measure3 }}</td>
                 <td>{{ row.measure2 }}</td>
@@ -266,11 +272,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let row of selectedRows; let i = index">
+              <tr *ngFor="let row of employeeObj.competencies; let i = index">
                 <td>{{ i + 1 }}</td>
-                <td>{{ row.selectedCompetency }}</td>
-                <td>{{ row.selectedWeight }}</td>
-                <td>{{ row.selectedLevel }}</td>
+                <td>{{ row.competency }}</td>
+                <td>{{ row.weight }}</td>
+                <td>{{ row.level }}</td>
                 <td>{{ getDescription(i).description }}</td>
               </tr>
             </tbody>
@@ -280,7 +286,7 @@
       </div>
 
       <div class="submit-button">
-        <button type="submit">Submit</button> 
+        <button (click)="submitForm()">Submit</button> 
       </div>
     </mat-tab>
 

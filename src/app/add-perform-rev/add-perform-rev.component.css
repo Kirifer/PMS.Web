@@ -148,8 +148,8 @@
     width: 97%;
     margin: 10px 15px 10px 15px;
     position: relative;
-    overflow-y: auto; /* Enable vertical scrolling */
-    max-height: 600px; /* Adjust the height as needed */
+    overflow-y: auto; 
+    max-height: 600px; 
 
     table {
         width: 100%;
@@ -266,8 +266,8 @@
     width: 97%;
     margin: 10px 15px 10px 15px;
     position: relative;
-    max-height: 600px; /* Adjust the height as needed */
-    overflow-y: auto; /* Enable vertical scrolling */
+    max-height: 600px; 
+    overflow-y: auto; 
 
     .employee-section {
         margin-bottom: 50px;

@@ -3,37 +3,43 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { IUserData } from '../../models/entities/userData'; 
+import { Employee } from '../../models/class/employee';
+import { ResponseModel } from '../../models/entities/response';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PerformanceReviewService {
-  private prUrl = `${environment.apiUrl}/performance-reviews`;
+  private performanceUrl = `${environment.API_URL}/performance-reviews`;
   
   constructor(private http: HttpClient) { }
 
 
-  getPerformanceReviews(): Observable<IUserData[]> {
-    return this.http.get<IUserData[]>(this.prUrl);
+  getAllEmployees (): Observable<ResponseModel> {
+    return this.http.get<ResponseModel>(this.performanceUrl);
   }
+
+  addEmployee(obj:Employee): Observable<ResponseModel> {
+    return this.http.post<ResponseModel>(this.performanceUrl, obj); 
+  } 
   
-  getPerformanceReviewById(id: number): Observable<IUserData> {
-    return this.http.get<IUserData>(`${this.prUrl}/${id}`);
+  deletePerformanceReview(id: string): Observable<ResponseModel> {  
+    return this.http.delete<ResponseModel>(`${this.performanceUrl}/${id}`);
   }
 
-  addPerformanceReview(review: IUserData): Observable<IUserData> {
-    return this.http.post<IUserData>(environment.apiUrl + '/performance-reviews/3fa85f64-5717-4562-b3fc-2c963f66afa6', review);
-  }
+}
 
-  // submitPerformanceReview(payload: any): Observable<any> {
-  //   return this.http.post(this.apiUrl, payload);
+
+
+
+
+
+  // getPerformanceReviewById(id: string): Observable<IUserData> { 
+  //   return this.http.get<IUserData>(`${this.performanceUrl}/${id}`);
   // }
 
-  updatePerformanceReview(id: number, review: IUserData): Observable<IUserData> {
-    return this.http.put<IUserData>(`${this.prUrl}/${id}`, review);
-  }
+  // updatePerformanceReview(id: string, data: IUserData): Observable<IUserData> {  
+  //   return this.http.put<IUserData>(`${this.performanceUrl}/${id}`, data);
+  // }
 
-  deletePerformanceReview(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.prUrl}/${id}`);
-  }
-}
+
