@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit, OnInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, OnInit, Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
@@ -10,6 +10,7 @@ import { DepartmentTypeDisplay } from '../models/enumerations/departmentType';
 import { PerformanceReviewService } from '../services/performanceReview/performance-review.service'; 
 import { IUserData } from '../models/entities/userData';
 
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -51,29 +52,23 @@ export class AddPerformRevComponent implements OnInit {
   @ViewChild('tabGroup') tabGroup: MatTabGroup | undefined;
 
   ngOnInit(): void {
-    this.lookupService.getCompetency().subscribe(
-      (response) => {
-        this.competencies = response.data;
-      },
-      (error) => {
-        console.error('Error fetching competencies:', error);
-      }
-    );
+    this.getCompetencyLookUp();
     this.years = this.getYears();
   }
   constructor(
+    private dialogRef: MatDialogRef<AddPerformRevComponent>,
     private lookupService: LookupService,
     private httpClient: HttpClient,
-    private reviewService: PerformanceReviewService
+    private reviewService: PerformanceReviewService,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.employeeObj.goals = Array.from({ length: 5 }, () => new Goal());
     this.employeeObj.competencies = Array.from({ length: 5 }, () => new Competency());
   }
 
-
+  
   // Employee Object Data------------------------------------------------------------->
   employeeObj: Employee = new Employee();
-  employeeList: Employee[] = [];
 
   onStartDateChange(date: Date): void {
     this.employeeObj.startDate.setDate(date);
@@ -121,6 +116,17 @@ export class AddPerformRevComponent implements OnInit {
     display: DepartmentTypeDisplay[key as keyof typeof DepartmentTypeDisplay],
   }));
 
+
+  getCompetencyLookUp() {
+    this.lookupService.getCompetency().subscribe(
+      (response: ResponseModel) => {
+        this.competencies = response.data; 
+      },
+      (error) => {
+        console.error('Error fetching competencies:', error);
+      }
+    );
+  }
   years: number[] = [];
   getYears(): number[] {
     const years: number[] = [];
@@ -136,25 +142,92 @@ export class AddPerformRevComponent implements OnInit {
 
   debugEmployee(): void {
 
+  }
 
-    console.log(this.employeeObj);
-    console.log(`Employee Name: ${this.employeeObj.name}`);
-    console.log(`Department: ${this.employeeObj.departmentType}`);
-    console.log(`Review Year: ${this.employeeObj.startYear} - ${this.employeeObj.endYear}`);
-    console.log(`Start Date: ${this.employeeObj.startDate}`);
-    console.log(`Year: ${this.employeeObj.startDate.year}`);
-    console.log(`Month: ${this.employeeObj.startDate.month}`);
-    console.log(`Day: ${this.employeeObj.startDate.day}`);
-    console.log(`Dayofthe Week: ${this.employeeObj.startDate.dayOfWeek}`);
+  
 
-    console.log(`End Date: ${this.employeeObj.endDate}`);
-    console.log(`Year: ${this.employeeObj.endDate.year}`);
-    console.log(`Month: ${this.employeeObj.endDate.month}`);
-    console.log(`Day: ${this.employeeObj.endDate.day}`);
-    console.log(`Dayofthe Week: ${this.employeeObj.endDate.dayOfWeek}`);
+  submitForm() {
+    const employeeData = {
+      payload: {
+        name: this.employeeObj.name,
+        departmentType: this.employeeObj.departmentType,
+        startYear: this.employeeObj.startYear,
+        endYear: this.employeeObj.endYear,
+        startDate: {
+            year: this.employeeObj.startDate.year,
+            month: this.employeeObj.startDate.month,
+            day: this.employeeObj.startDate.day,
+            dayOfWeek: this.employeeObj.startDate.dayOfWeek 
+        },
+        endDate: {
+            year: this.employeeObj.endDate.year,
+            month: this.employeeObj.endDate.month,
+            day: this.employeeObj.endDate.day,
+            dayOfWeek: this.employeeObj.endDate.dayOfWeek 
+        },
+        employeeId: '1b8f8c6e-f48c-4b43-9274-65f022c2a57e',
+        supervisorId: this.employeeObj.supervisorId,
+        goals: this.employeeObj.goals.map(goal => ({
+            orderNo: goal.orderNo,
+            goals: goal.goals,
+            weight: goal.weight,
+            date: `${this.employeeObj.startDate.year}-${String(this.employeeObj.startDate.month).padStart(2, '0')}-${String(this.employeeObj.startDate.day).padStart(2, '0')} - ${this.employeeObj.endDate.year}-${String(this.employeeObj.endDate.month).padStart(2, '0')}-${String(this.employeeObj.endDate.day).padStart(2, '0')}`,
+            measure4: goal.measure4,
+            measure3: goal.measure3,
+            measure2: goal.measure2,
+            measure1: goal.measure1
+        })),
+        competencies: this.employeeObj.competencies
+        .filter(competency => competency.competencyId !== null)  
+        .map(competency => ({
+            orderNo: competency.orderNo,
+            competencyId: competency.competencyId as string,  
+            weight: competency.weight
+        }))
+      }
+       
+    };
+
+    console.log('Employee data to be sent:', employeeData);
+
+    this.reviewService.addEmployee(employeeData).subscribe(
+        (res: ResponseModel) => {
+            console.log('Employee added successfully:', res);
+            this.dialogRef.close(true);
+        },
+        (error) => {
+            console.error('Error adding employee:', error);
+            console.log('API validation errors:', error.error?.errors);
+        }
+    );
+}
+
+
+
+
+
+}
+
+
+
+    // console.log(this.employeeObj);
+    // console.log(`Employee Name: ${this.employeeObj.name}`);
+    // console.log(`Department: ${this.employeeObj.departmentType}`);
+    // console.log(`Review Year: ${this.employeeObj.startYear} - ${this.employeeObj.endYear}`);
+    // console.log(`Start Date: ${this.employeeObj.startDate}`);
+    // console.log(`Year: ${this.employeeObj.startDate.year}`);
+    // console.log(`Month: ${this.employeeObj.startDate.month}`);
+    // console.log(`Day: ${this.employeeObj.startDate.day}`);
+    // console.log(`Dayofthe Week: ${this.employeeObj.startDate.dayOfWeek}`);
+
+    // console.log(`End Date: ${this.employeeObj.endDate}`);
+    // console.log(`Year: ${this.employeeObj.endDate.year}`);
+    // console.log(`Month: ${this.employeeObj.endDate.month}`);
+    // console.log(`Day: ${this.employeeObj.endDate.day}`);
+    // console.log(`Dayofthe Week: ${this.employeeObj.endDate.dayOfWeek}`);
     
-    console.log(`Employee ID: ${this.employeeObj.employeeId}`);
-    console.log(`Supervisor ID: ${this.employeeObj.supervisorId}`);
+    // console.log(`Employee ID: ${this.employeeObj.employeeId}`);
+    // console.log(`Supervisor ID: ${this.employeeObj.supervisorId}`);
     // this.employeeObj.goals.forEach((goals, index) => {
     //   console.log(`Goals ${index + 1}:`, goals);
     //   console.log(`Order No: ${goals.orderNo}`);
@@ -174,42 +247,3 @@ export class AddPerformRevComponent implements OnInit {
     //   console.log(`Level: ${competency.level}`);
     //   console.log(`Description: ${competency.description}`);
     // });
-
-  }
-
-  // Tab navigation functions -------------------------------------------------------------------------------------------------------------
-  goToNextTab() {
-    if (
-      this.tabGroup &&
-      this.tabGroup.selectedIndex !== undefined &&
-      this.tabGroup._tabs
-    ) {
-      const tabsLength = this.tabGroup._tabs.length;
-      if (this.tabGroup.selectedIndex! < tabsLength - 1) {
-        this.tabGroup.selectedIndex! += 1;
-      }
-    }
-  }
-
-  goToPreviousTab() {
-    if (this.tabGroup && this.tabGroup.selectedIndex !== undefined) {
-      if (this.tabGroup.selectedIndex! > 0) {
-        this.tabGroup.selectedIndex! -= 1;
-      }
-    }
-  }
-
-  submitForm() {
-    this.reviewService.addEmployee(this.employeeObj).subscribe(
-      response => {
-        console.log('Employee added successfully', response);
-      },
-      error => {
-        console.error('Error adding employee', error);
-      }
-    );
-  }
-
-
-}
-

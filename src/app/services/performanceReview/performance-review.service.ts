@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import { IUserData } from '../../models/entities/userData'; 
 import { Employee } from '../../models/class/employee';
 import { ResponseModel } from '../../models/entities/response';
+import { EmployeeObj } from '../../models/class/employeeObj';
 
 @Injectable({
   providedIn: 'root'
@@ -19,11 +20,11 @@ export class PerformanceReviewService {
     return this.http.get<ResponseModel>(this.performanceUrl);
   }
 
-  addEmployee(obj:Employee): Observable<ResponseModel> {
+  addEmployee(obj: any): Observable<ResponseModel> {
     return this.http.post<ResponseModel>(this.performanceUrl, obj); 
   } 
   
-  deletePerformanceReview(id: string): Observable<ResponseModel> {  
+  deleteEmployeeById(id: string): Observable<ResponseModel> {  
     return this.http.delete<ResponseModel>(`${this.performanceUrl}/${id}`);
   }
 

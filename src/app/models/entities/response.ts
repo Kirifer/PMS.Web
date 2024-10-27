@@ -1,5 +1,5 @@
 export interface ResponseModel {
-    data: [],
+    data: any,
     totalCount: number,
     code: number,
     succeeded: boolean

@@ -26,7 +26,7 @@ import { IUserData } from '../models/entities/userData';
 export class DashboardComponent implements AfterViewInit {
   constructor(private _dialog: MatDialog) {}
 
-  displayedColumns: string[] = ['name', 'reviewYear', 'startDate', 'endDate', 'employee', 'supervisor', 'actions'];
+  displayedColumns: string[] = ['id', 'departmentType', 'reviewYear', 'startDate', 'endDate', 'name', 'supervisor', 'actions'];
   dataSource = new MatTableDataSource<IUserData>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;

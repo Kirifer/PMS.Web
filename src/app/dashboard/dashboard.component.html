@@ -47,16 +47,22 @@
         <div class="mat-elevation-z8">
             <table mat-table [dataSource]="dataSource" matSort>
 
-                <!-- Name Column -->
-                <ng-container matColumnDef="name">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-                    <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+                <!-- ID Column -->
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                    <td mat-cell *matCellDef="let row; let i = index"> {{ i + 1 }} </td>
+                </ng-container>
+
+                <!-- Department Column -->
+                <ng-container matColumnDef="departmentType">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Department </th>
+                    <td mat-cell *matCellDef="let row"> {{row.departmentType}} </td>
                 </ng-container>
 
                 <!-- Review Year Column -->
                 <ng-container matColumnDef="reviewYear">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Review Year </th>
-                    <td mat-cell *matCellDef="let row"> {{row.reviewYear}}</td>
+                    <td mat-cell *matCellDef="let row"> {{row.startYear}} - {{row.endYear}}</td>
                 </ng-container>
 
                 <!-- Start Date Column -->
@@ -71,16 +77,16 @@
                     <td mat-cell *matCellDef="let row"> {{row.endDate}} </td>
                 </ng-container>
 
-                <!-- Employee Column -->
-                <ng-container matColumnDef="employee">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Employee </th>
-                    <td mat-cell *matCellDef="let row"> {{row.employee}} </td>
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                    <td mat-cell *matCellDef="let row"> {{row.name}} </td>
                 </ng-container>
 
                 <!-- Supervisor Column -->
                 <ng-container matColumnDef="supervisor">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Supervisor </th>
-                    <td mat-cell *matCellDef="let row"> {{row.supervisor}} </td>
+                    <td mat-cell *matCellDef="let row"> {{row.supervisorId}} </td>
                 </ng-container>
 
                 <!-- Actions Column -->

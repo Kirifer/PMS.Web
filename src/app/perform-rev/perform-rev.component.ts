@@ -42,15 +42,15 @@ import { ResponseModel } from '../models/entities/response';
   templateUrl: './perform-rev.component.html',
   styleUrl: './perform-rev.component.css',
 })
-export class PerformRevComponent implements AfterViewInit {
+export class PerformRevComponent implements OnInit {
 
   
 
 
-  constructor(private _dialog: MatDialog) {}
+  constructor(private _dialog: MatDialog, private reviewService: PerformanceReviewService) {}
 
-  displayedColumns: string[] = ['id', 'department', 'reviewYear', 'startDate', 'endDate', 'employee', 'supervisor', 'actions'];
-  dataSource = new MatTableDataSource<IUserData>();
+  displayedColumns: string[] = ['id', 'departmentType', 'reviewYear', 'startDate', 'endDate', 'name', 'supervisor', 'actions'];
+  dataSource = new MatTableDataSource<Employee>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -60,8 +60,6 @@ export class PerformRevComponent implements AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
-  reviewService = inject(PerformanceReviewService);
-
   employeeList: Employee[] = [];
 
   ngOnInit(): void {
@@ -69,34 +67,18 @@ export class PerformRevComponent implements AfterViewInit {
   }
 
   loadEmployee() {
-    this.reviewService.getAllEmployees().subscribe((res:ResponseModel) => {
-      this.employeeList = res.data;
-    })
+    this.reviewService.getAllEmployees().subscribe(
+      (res:ResponseModel) => {
+        this.employeeList = res.data;
+        this.dataSource.data = this.employeeList;
+      }, error=> {
+        alert("API error")
+      }
+    );
   }
 
-
-
-  
-  // getPerformanceReviews() {
-  //   this.reviewService.getPerformanceReviews().subscribe(
-  //     (reviews) => {
-  //       this.dataSource.data = reviews;
-  //     },
-  //     (error) => {
-  //       console.error('Error fetching performance reviews:', error);
-  //     }
-  //   );
-  // }
  
-  
-  
-  
-
-
-  
-  
-  
-  
+ 
   
   
   
@@ -113,15 +95,16 @@ export class PerformRevComponent implements AfterViewInit {
   
   readonly dialog = inject(MatDialog);
 
-  openDialog() {
+  openDialog(): void {
     const dialogRef = this._dialog.open(AddPerformRevComponent, {
       width: '1250px',
       maxWidth: 'none',
+      data: {}
     });
-
+  
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // this.getPerformanceReviews();
+        this.loadEmployee();
       }
     });
   }
