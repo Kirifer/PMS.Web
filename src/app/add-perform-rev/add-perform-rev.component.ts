@@ -1,6 +1,5 @@
 import { Component, ViewChild, AfterViewInit, OnInit, Inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormsModule, FormBuilder } from '@angular/forms';
 
 import { LookupService } from '../services/lookup/lookup.service';
 import { ICompetency } from '../models/entities/competency';
@@ -24,8 +23,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Competency, Employee, Goal } from '../models/class/employee';
 import { ResponseModel } from '../models/entities/response';
-
-
+import { Payload } from '../models/class/payload';
 
 @Component({
   selector: 'app-add-perform-rev',
@@ -58,17 +56,84 @@ export class AddPerformRevComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<AddPerformRevComponent>,
     private lookupService: LookupService,
-    private httpClient: HttpClient,
+    private http: HttpClient,
     private reviewService: PerformanceReviewService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+
+
     this.employeeObj.goals = Array.from({ length: 5 }, () => new Goal());
     this.employeeObj.competencies = Array.from({ length: 5 }, () => new Competency());
+    
+ 
   }
 
   
-  // Employee Object Data------------------------------------------------------------->
+  
+  //#region Employee
   employeeObj: Employee = new Employee();
+
+  activeSupervisor: boolean = false;
+ 
+  //#endregion 
+  
+
+  submitForm() {
+    const payload: Payload = {
+        name: this.employeeObj.name,
+        departmentType: this.employeeObj.departmentType,
+        startYear: this.employeeObj.startYear,
+        endYear: this.employeeObj.endYear,
+        startDate: `${this.employeeObj.startDate.year}-${String(this.employeeObj.startDate.month).padStart(2, '0')}-${String(this.employeeObj.startDate.day).padStart(2, '0')}`,
+        endDate: `${this.employeeObj.endDate.year}-${String(this.employeeObj.endDate.month).padStart(2, '0')}-${String(this.employeeObj.endDate.day).padStart(2, '0')}`,
+        employeeId: '4f7b83d1-4495-4420-9b56-12a07becc9bb',
+        supervisorId: 'b058d5eb-3f8c-4790-9e39-10a3f7efcc65',
+        goals: this.employeeObj.goals.map((goal, index) => ({
+            orderNo: index + 1, 
+            goals: goal.goals,
+            weight: goal.weight,
+            date: `${this.employeeObj.startDate.year}-${String(this.employeeObj.startDate.month).padStart(2, '0')}-${String(this.employeeObj.startDate.day).padStart(2, '0')} - ${this.employeeObj.endDate.year}-${String(this.employeeObj.endDate.month).padStart(2, '0')}-${String(this.employeeObj.endDate.day).padStart(2, '0')}`,
+            measure4: goal.measure4,
+            measure3: goal.measure3,
+            measure2: goal.measure2,
+            measure1: goal.measure1
+        })),
+        competencies: this.employeeObj.competencies
+            .filter(competency => competency.competencyId)  
+            .map(competency => ({
+                orderNo: competency.orderNo,
+                competencyId: `${competency.competencyId}`,  
+                weight: competency.weight
+            }))
+    };
+
+    console.log('Employee data to be sent:', payload);
+
+    this.reviewService.addEmployee(payload).subscribe(
+      (res: ResponseModel) => {
+        console.log('Employee added successfully:', res);
+        this.dialogRef.close(true);
+      },
+      (error) => {
+        alert("Error to submit!");
+        this.dialogRef.close();
+        // console.error('Error adding employee:', error);
+        // console.log('API validation errors:', error.error?.errors);
+      }
+    );
+}
+
+
+
+  onCancel(): void {
+    this.dialogRef.close();
+  }
+  
+
+
+
+
+  //#region Function
 
   onStartDateChange(date: Date): void {
     this.employeeObj.startDate.setDate(date);
@@ -76,9 +141,6 @@ export class AddPerformRevComponent implements OnInit {
   onEndDateChange(date: Date): void {
     this.employeeObj.endDate.setDate(date);
   }
-  activeSupervisor: boolean = false;
-
-
   competencies: ICompetency[] = [];
 
   getUniqueCompetencies(): string[] {
@@ -94,7 +156,7 @@ export class AddPerformRevComponent implements OnInit {
     const selected = this.competencies.find(
       (c) => c.competency === selectedCompetency && c.level === selectedLevel
     );
-    const competencyId = selected ? selected.id : null;
+    const competencyId = selected?.id || '';
     const description = selected ? selected.description : '';
   
     return { description, competencyId };
@@ -108,7 +170,7 @@ export class AddPerformRevComponent implements OnInit {
     const { description, competencyId } = this.getDescription(index);
   
     this.employeeObj.competencies[index].description = description;
-    this.employeeObj.competencies[index].competencyId = competencyId;
+    this.employeeObj.competencies[index].competencyId = competencyId as string;
   }
 
   departmentType = Object.keys(DepartmentType).map((key) => ({
@@ -137,78 +199,14 @@ export class AddPerformRevComponent implements OnInit {
     }
     return years;
   }
-
-  // -----------------------------------------------------------------------------------------------------------------------------
-
-  debugEmployee(): void {
-
-  }
-
-  
-
-  submitForm() {
-    const employeeData = {
-      payload: {
-        name: this.employeeObj.name,
-        departmentType: this.employeeObj.departmentType,
-        startYear: this.employeeObj.startYear,
-        endYear: this.employeeObj.endYear,
-        startDate: {
-            year: this.employeeObj.startDate.year,
-            month: this.employeeObj.startDate.month,
-            day: this.employeeObj.startDate.day,
-            dayOfWeek: this.employeeObj.startDate.dayOfWeek 
-        },
-        endDate: {
-            year: this.employeeObj.endDate.year,
-            month: this.employeeObj.endDate.month,
-            day: this.employeeObj.endDate.day,
-            dayOfWeek: this.employeeObj.endDate.dayOfWeek 
-        },
-        employeeId: '1b8f8c6e-f48c-4b43-9274-65f022c2a57e',
-        supervisorId: this.employeeObj.supervisorId,
-        goals: this.employeeObj.goals.map(goal => ({
-            orderNo: goal.orderNo,
-            goals: goal.goals,
-            weight: goal.weight,
-            date: `${this.employeeObj.startDate.year}-${String(this.employeeObj.startDate.month).padStart(2, '0')}-${String(this.employeeObj.startDate.day).padStart(2, '0')} - ${this.employeeObj.endDate.year}-${String(this.employeeObj.endDate.month).padStart(2, '0')}-${String(this.employeeObj.endDate.day).padStart(2, '0')}`,
-            measure4: goal.measure4,
-            measure3: goal.measure3,
-            measure2: goal.measure2,
-            measure1: goal.measure1
-        })),
-        competencies: this.employeeObj.competencies
-        .filter(competency => competency.competencyId !== null)  
-        .map(competency => ({
-            orderNo: competency.orderNo,
-            competencyId: competency.competencyId as string,  
-            weight: competency.weight
-        }))
-      }
-       
-    };
-
-    console.log('Employee data to be sent:', employeeData);
-
-    this.reviewService.addEmployee(employeeData).subscribe(
-        (res: ResponseModel) => {
-            console.log('Employee added successfully:', res);
-            this.dialogRef.close(true);
-        },
-        (error) => {
-            console.error('Error adding employee:', error);
-            console.log('API validation errors:', error.error?.errors);
-        }
-    );
-}
-
-
-
+  //#endregion
 
 
 }
 
+// debugEmployee(): void {
 
+// }
 
     // console.log(this.employeeObj);
     // console.log(`Employee Name: ${this.employeeObj.name}`);

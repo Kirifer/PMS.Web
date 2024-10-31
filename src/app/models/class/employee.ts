@@ -70,7 +70,7 @@ export class Goal {
 }
 
 export class Competency {
-    competencyId: string | null;
+    competencyId: string;
     orderNo: number;
     competency: string;
     weight: number;

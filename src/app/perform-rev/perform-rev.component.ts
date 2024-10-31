@@ -43,10 +43,8 @@ import { ResponseModel } from '../models/entities/response';
   styleUrl: './perform-rev.component.css',
 })
 export class PerformRevComponent implements OnInit {
-
+  employees: any[] = [];
   
-
-
   constructor(private _dialog: MatDialog, private reviewService: PerformanceReviewService) {}
 
   displayedColumns: string[] = ['id', 'departmentType', 'reviewYear', 'startDate', 'endDate', 'name', 'supervisor', 'actions'];
@@ -60,29 +58,48 @@ export class PerformRevComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
-  employeeList: Employee[] = [];
+
 
   ngOnInit(): void {
-    this.loadEmployee();
+    this.getEmployees();
   }
 
-  loadEmployee() {
+  getEmployees() {
     this.reviewService.getAllEmployees().subscribe(
       (res:ResponseModel) => {
-        this.employeeList = res.data;
-        this.dataSource.data = this.employeeList;
+        this.employees = res.data;
+        this.dataSource.data = this.employees;
       }, error=> {
-        alert("API error")
+        alert("API error");
       }
     );
   }
 
- 
- 
+  openDialog(): void {
+    const dialogRef = this._dialog.open(AddPerformRevComponent, {
+      width: '1250px',
+      maxWidth: 'none',
+    });
   
-  
-  
-  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+          console.log('Dialog closed with result:', result);
+          this.getEmployees();
+      }
+  });
+  }
+
+
+
+
+
+
+
+
+
+
+  readonly dialog = inject(MatDialog);
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -90,22 +107,5 @@ export class PerformRevComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
-  }
-  
-  
-  readonly dialog = inject(MatDialog);
-
-  openDialog(): void {
-    const dialogRef = this._dialog.open(AddPerformRevComponent, {
-      width: '1250px',
-      maxWidth: 'none',
-      data: {}
-    });
-  
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.loadEmployee();
-      }
-    });
   }
 }
