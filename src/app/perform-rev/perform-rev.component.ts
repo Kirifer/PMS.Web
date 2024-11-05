@@ -75,6 +75,27 @@ export class PerformRevComponent implements OnInit {
     );
   }
 
+
+  onDelete (id: string) {
+    const isDelete = confirm("Are you sure you want to delete?");
+    if(isDelete) {
+      this.reviewService.deleteEmployeeById(id).subscribe((res: ResponseModel) => {
+        if (res.succeeded) {
+          alert("Deleted successfully");
+          this.getEmployees();
+        } else {
+          alert("Error to delete");
+        }
+      })
+    }
+  }
+
+
+  
+
+
+
+
   openDialog(): void {
     const dialogRef = this._dialog.open(AddPerformRevComponent, {
       width: '1250px',

@@ -56,7 +56,7 @@
             <!-- Supervisor Column -->
             <ng-container matColumnDef="supervisor">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Supervisor </th>
-                <td mat-cell *matCellDef="let row"> {{row.supervisor}} </td>
+                <td mat-cell *matCellDef="let row"> {{row.supervisorId}} </td>
             </ng-container>
 
 
@@ -66,7 +66,7 @@
                   <td mat-cell *matCellDef="let row" class="action-column">
                     <div class="button-section">
                         <button id="edit" mat-icon-button>Edit</button>
-                        <button id="del" mat-icon-button>Delete</button>
+                        <button id="del" mat-icon-button (click)="onDelete(row.id)">Delete</button>
                         <button id="info" mat-icon-button>Info</button>
                     </div>
                   </td>
