@@ -15,15 +15,11 @@ import {MatSort, MatSortModule} from '@angular/material/sort';
 import {MatInputModule} from '@angular/material/input';
 
 import employees from "./data.json"
-import { IUserData } from '../models/userData';
+import { PerformanceReviewService } from '../services/performanceReview/performance-review.service';
+import { IUserData } from '../models/entities/userData';
 import { HttpClientModule } from '@angular/common/http';
-
-
-
-
-
-const ELEMENT_DATA: IUserData[] = employees;
-
+import { Employee } from '../models/class/employee';
+import { ResponseModel } from '../models/entities/response';
 
 
 @Component({
@@ -46,13 +42,13 @@ const ELEMENT_DATA: IUserData[] = employees;
   templateUrl: './perform-rev.component.html',
   styleUrl: './perform-rev.component.css',
 })
-export class PerformRevComponent implements AfterViewInit {
+export class PerformRevComponent implements OnInit {
+  employees: any[] = [];
+  
+  constructor(private _dialog: MatDialog, private reviewService: PerformanceReviewService) {}
 
-  constructor(private _dialog: MatDialog) {}
-
- 
-  displayedColumns: string[] = ['id', 'name', 'reviewYear', 'startDate', 'endDate', 'employee', 'supervisor', 'actions'];
-  dataSource: MatTableDataSource<IUserData> = new MatTableDataSource(ELEMENT_DATA);
+  displayedColumns: string[] = ['id', 'departmentType', 'reviewYear', 'startDate', 'endDate', 'name', 'supervisor', 'actions'];
+  dataSource = new MatTableDataSource<Employee>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -61,8 +57,70 @@ export class PerformRevComponent implements AfterViewInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
- 
+
+
+
+  ngOnInit(): void {
+    this.getEmployees();
+  }
+
+  getEmployees() {
+    this.reviewService.getAllEmployees().subscribe(
+      (res:ResponseModel) => {
+        this.employees = res.data;
+        this.dataSource.data = this.employees;
+      }, error=> {
+        alert("API error");
+      }
+    );
+  }
+
+
+  onDelete (id: string) {
+    const isDelete = confirm("Are you sure you want to delete?");
+    if(isDelete) {
+      this.reviewService.deleteEmployeeById(id).subscribe((res: ResponseModel) => {
+        if (res.succeeded) {
+          alert("Deleted successfully");
+          this.getEmployees();
+        } else {
+          alert("Error to delete");
+        }
+      })
+    }
+  }
+
+
   
+
+
+
+
+  openDialog(): void {
+    const dialogRef = this._dialog.open(AddPerformRevComponent, {
+      width: '1250px',
+      maxWidth: 'none',
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+          console.log('Dialog closed with result:', result);
+          this.getEmployees();
+      }
+  });
+  }
+
+
+
+
+
+
+
+
+
+
+  readonly dialog = inject(MatDialog);
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -71,19 +129,4 @@ export class PerformRevComponent implements AfterViewInit {
       this.dataSource.paginator.firstPage();
     }
   }
-
-
-  readonly dialog = inject(MatDialog);
-
-  openDialog() {
-    const dialogRef = this.dialog.open(AddPerformRevComponent, {
-      width: '1250px',
-      maxWidth: 'none',
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
-  }
-
 }

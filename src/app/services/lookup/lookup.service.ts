@@ -2,22 +2,30 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
-import { ICompetency } from '../../models/competency';
 import { environment } from '../../../environments/environment';
-
+import { ICompetency } from '../../models/entities/competency';
+import { IEmployee } from '../../models/entities/employee';
+import { ISupervisor } from '../../models/entities/supervisor';
+import { ResponseModel } from '../../models/entities/response';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LookupService {
 
-  private apiUrl = environment.lookupUrl;
-
   constructor(private http: HttpClient) { }
 
-  getData(): Observable<{ data: ICompetency[] }> {
-    return this.http.get<{ data: ICompetency[] }>(this.apiUrl);
+  getCompetency(): Observable<ResponseModel> {
+    return this.http.get<ResponseModel>(environment.API_URL + '/lookup/competencies');
   }
+
+  // getEmployee(): Observable<{ data: ResponseModel[] }>  {
+  //   return this.http.get<{ data: ResponseModel[] }>(environment.API_URL)
+  // }
+
+  // getSupervisor(): Observable<{ data: ResponseModel[] }>  {
+  //   return this.http.get<{ data: ResponseModel[] }>(environment.API_URL)
+  // }
 }
 
 

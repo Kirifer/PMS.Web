@@ -42,6 +42,7 @@ export const appConfig: ApplicationConfig = {
     MatInputModule,
     BrowserAnimationsModule,
     NgModule, 
+    provideHttpClient(),
     provideHttpClient(withFetch())
     ],
 };
