@@ -199,49 +199,5 @@ export class AddPerformRevComponent implements OnInit {
     }
     return years;
   }
-  //#endregion
-
 
 }
-
-// debugEmployee(): void {
-
-// }
-
-    // console.log(this.employeeObj);
-    // console.log(`Employee Name: ${this.employeeObj.name}`);
-    // console.log(`Department: ${this.employeeObj.departmentType}`);
-    // console.log(`Review Year: ${this.employeeObj.startYear} - ${this.employeeObj.endYear}`);
-    // console.log(`Start Date: ${this.employeeObj.startDate}`);
-    // console.log(`Year: ${this.employeeObj.startDate.year}`);
-    // console.log(`Month: ${this.employeeObj.startDate.month}`);
-    // console.log(`Day: ${this.employeeObj.startDate.day}`);
-    // console.log(`Dayofthe Week: ${this.employeeObj.startDate.dayOfWeek}`);
-
-    // console.log(`End Date: ${this.employeeObj.endDate}`);
-    // console.log(`Year: ${this.employeeObj.endDate.year}`);
-    // console.log(`Month: ${this.employeeObj.endDate.month}`);
-    // console.log(`Day: ${this.employeeObj.endDate.day}`);
-    // console.log(`Dayofthe Week: ${this.employeeObj.endDate.dayOfWeek}`);
-    
-    // console.log(`Employee ID: ${this.employeeObj.employeeId}`);
-    // console.log(`Supervisor ID: ${this.employeeObj.supervisorId}`);
-    // this.employeeObj.goals.forEach((goals, index) => {
-    //   console.log(`Goals ${index + 1}:`, goals);
-    //   console.log(`Order No: ${goals.orderNo}`);
-    //   console.log(`Goals: ${goals.goals}`);
-    //   console.log(`Weight: ${goals.weight}`);
-    //   console.log(`Measure4: ${goals.measure4}`);
-    //   console.log(`Measure3: ${goals.measure3}`);
-    //   console.log(`Measure2: ${goals.measure2}`);
-    //   console.log(`Measure1: ${goals.measure1}`);
-    // });
-    // this.employeeObj.competencies.forEach((competency, index) => {
-    //   console.log(`Competency ${index + 1}:`, competency);
-    //   console.log(`Id: ${competency.competencyId}`);
-    //   console.log(`OrderNo: ${competency.orderNo}`);
-    //   console.log(`Competency: ${competency.competency}`);
-    //   console.log(`Weight: ${competency.weight}`);
-    //   console.log(`Level: ${competency.level}`);
-    //   console.log(`Description: ${competency.description}`);
-    // });
