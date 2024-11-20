@@ -5,6 +5,12 @@ export const navbarData = [
         label: 'Dashboard'
     },
     {
+        routeLink: 'admin/users',
+        icon: ' fal fa-light fa-users ',
+        label: 'Users'
+    },
+    
+    {
         routeLink: 'performance',
         icon: 'fal fa-chart-bar',
         label: 'Performance Review'
@@ -14,5 +20,7 @@ export const navbarData = [
         icon: 'fal fa-sign-out  ',
         label: 'Logout'
     },
+   
+
     
 ]
