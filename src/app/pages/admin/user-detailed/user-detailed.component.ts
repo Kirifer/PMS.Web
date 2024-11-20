@@ -8,5 +8,10 @@ import { Component } from '@angular/core';
   styleUrl: './user-detailed.component.css'
 })
 export class UserDetailedComponent {
+  isModalVisible = false;
+  
+  closeProfile(): void {
+    this.isModalVisible = false;
+  }
 
 }

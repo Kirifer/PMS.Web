@@ -31,7 +31,7 @@ export const routes: Routes = [
 
     },
     {
-        path: 'admin/users/{id}',
+        path: 'admin/users/:id',
         component: UserDetailedComponent
     }
 
