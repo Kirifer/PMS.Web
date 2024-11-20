@@ -12,7 +12,7 @@
 
         <div class="row">
           <mat-form-field class="department-field" appearance="outline">
-            <mat-label>Department</mat-label>
+            <p>Department</p>
             <mat-select [(ngModel)]="employeeObj.departmentType" name="selectedDepartment">
               <mat-option *ngFor="let department of departmentType" [value]="department.display">
                 {{ department.display }}
@@ -22,7 +22,7 @@
 
           <div class="review-year-field">
             <mat-form-field appearance="outline">
-              <mat-label>Start Year</mat-label>
+              <p>Start Year</p>
               <mat-select [(ngModel)]="employeeObj.startYear" name="startYear">
                 <mat-option *ngFor="let year of years" [value]="year">
                   {{ year }}
@@ -31,7 +31,7 @@
             </mat-form-field>
   
             <mat-form-field appearance="outline">
-              <mat-label>End Year</mat-label>
+              <p>End Year</p>
               <mat-select [(ngModel)]="employeeObj.endYear" name="endYear">
                 <mat-option *ngFor="let year of years" [value]="year">
                   {{ year }}
@@ -43,12 +43,12 @@
 
         <div class="row">
           <mat-form-field class="employee-field" appearance="outline">
-            <mat-label>Employee Name</mat-label>
+            <p>Employee Name</p>
             <input class="input-text" id="employeeName" [(ngModel)]="employeeObj.name" name="employeeName" matInput>
           </mat-form-field>
 
           <mat-form-field class="date-field" appearance="outline">
-            <mat-label>Start Date</mat-label>
+            <p>Start Date</p>
             <input matInput [matDatepicker]="picker1" (dateChange)="onStartDateChange($event.value)">
             <mat-hint>MM/DD/YYYY</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="picker1">
@@ -58,7 +58,7 @@
           </mat-form-field>
 
           <mat-form-field class="date-field" appearance="outline">
-            <mat-label>End Date</mat-label>
+            <p>End Date</p>
             <input matInput [matDatepicker]="picker2" (dateChange)="onEndDateChange($event.value)">
             <mat-hint>MM/DD/YYYY</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="picker2">
@@ -71,7 +71,7 @@
 
         <div class="row">
           <mat-form-field class="supervisor-field" appearance="outline">
-            <mat-label>Supervisor</mat-label>
+            <p>Supervisor</p>
             <input matInput class="input-text" id="supervisor" [(ngModel)]="employeeObj.supervisorId" name="supervisor">
           </mat-form-field>
 
