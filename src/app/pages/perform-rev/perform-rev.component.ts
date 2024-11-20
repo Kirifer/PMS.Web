@@ -56,7 +56,7 @@ export class PerformRevComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-
+  
 
 
   ngOnInit(): void {
@@ -112,7 +112,21 @@ export class PerformRevComponent implements OnInit {
 
 
 
+  // New method to handle edit
+  editDialog(row: Employee): void {
+    const dialogRef = this._dialog.open(AddPerformRevComponent, {
+      width: '1250px',
+      maxWidth: 'none',
+      data: row  // Pass the selected row to the dialog
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Dialog closed with result:', result);
+        this.getEmployees();  // Refresh the list after the dialog closes
+      }
+    });
+  }
 
 
 
