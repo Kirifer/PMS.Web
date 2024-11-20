@@ -68,6 +68,7 @@ export class PerformRevComponent implements OnInit {
       (res:ResponseModel) => {
         this.employees = res.data;
         this.dataSource.data = this.employees;
+        console.log(this.employees);
       }, error=> {
         alert("API error");
       }
