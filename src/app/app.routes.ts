@@ -3,6 +3,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { BodyComponent } from './components/body/body.component';
 import { PerformRevComponent } from './pages/perform-rev/perform-rev.component';
+import { UsersComponent } from './pages/admin/users/users.component';
 
 
 export const routes: Routes = [
@@ -19,10 +20,14 @@ export const routes: Routes = [
     {
         path: 'login', 
         component: LoginComponent
-    }
-        ,
+    },
     {
         path: 'performance',
         component: PerformRevComponent
+    },
+    {
+        path: 'admin/users',
+        component: UsersComponent
     }
+
 ];
