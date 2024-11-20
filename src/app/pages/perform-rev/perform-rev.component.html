@@ -1,87 +1,86 @@
-<div class="container">
+<div class="container mt-6 rounded-2xl p-5 w-full bg-white">
 
-  <div class="title-add">
-      <h2>Performance Review</h2>
-
-      <button mat-fab aria-label="add performance review" (click)="openDialog()">
-          <mat-icon>add</mat-icon>
-      </button>
-  </div>
-
-  <mat-form-field appearance="outline">
-      <!-- <mat-label>Search</mat-label> -->
-      <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Ash" #input>
-  </mat-form-field>
-
-  <div class="table-container">
-      <div class="mat-elevation-z8">
-          <table mat-table [dataSource]="dataSource" matSort>
-
-            <!-- ID Column -->
-            <ng-container matColumnDef="id">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-                <td mat-cell *matCellDef="let row; let i = index">{{ i + 1 }}</td>
-            </ng-container>
-
-            <!-- Department Column -->
-            <ng-container matColumnDef="departmentType">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Department </th>
-                <td mat-cell *matCellDef="let row"> {{row.departmentType}} </td>
-            </ng-container>
-
-            <!-- Review Year Column -->
-            <ng-container matColumnDef="reviewYear">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Review Year </th>
-                <td mat-cell *matCellDef="let row"> {{row.startYear}} - {{row.endYear}}</td>
-            </ng-container>
-
-            <!-- Start Date Column -->
-            <ng-container matColumnDef="startDate">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Start Date </th>
-                <td mat-cell *matCellDef="let row"> {{row.startDate}} </td>
-            </ng-container>
-
-            <!-- End Date Column -->
-            <ng-container matColumnDef="endDate">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> End Date </th>
-                <td mat-cell *matCellDef="let row"> {{row.endDate}} </td>
-            </ng-container>
-
-            <!-- Name Column -->
-            <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-                <td mat-cell *matCellDef="let row"> {{row.name}} </td>
-            </ng-container>
-
-            <!-- Supervisor Column -->
-            <ng-container matColumnDef="supervisor">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Supervisor </th>
-                <td mat-cell *matCellDef="let row"> {{row.supervisorId}} </td>
-            </ng-container>
-
-
-              <!-- Actions Column -->
-              <ng-container matColumnDef="actions">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Actions </th>
-                  <td mat-cell *matCellDef="let row" class="action-column">
-                    <div class="button-section">
-                        <button id="edit" mat-icon-button>Edit</button>
-                        <button id="del" mat-icon-button (click)="onDelete(row.id)">Delete</button>
-                        <button id="info" mat-icon-button>Info</button>
-                    </div>
-                  </td>
+    <div class="title-add w-full flex justify-between">
+        <h2 class="relative">Performance Review</h2>
+  
+        <button mat-fab aria-label="add performance review" (click)="openDialog()" class="bg-gradient-to-tr from-cyan-500 to-white text-black rounded-lg border border-black w-14 h-14 cursor-pointer transition-all duration-300 transform hover:scale-110 active:scale-90 active:opacity-70">
+            <mat-icon class="transition-transform hover:animate-spin">add</mat-icon>
+        </button>
+    </div>
+  
+    <mat-form-field appearance="outline" class="mat-mdc-form-field text-sm w-full">
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Ash" #input>
+    </mat-form-field>
+  
+    <div class="table-container">
+        <div class="mat-elevation-z8 shadow-none">
+            <table mat-table [dataSource]="dataSource" matSort class="w-full bg-white">
+  
+              <!-- ID Column -->
+              <ng-container matColumnDef="id">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-gray-200 border-none first:rounded-l-xl last:rounded-r-xl">ID</th>
+                  <td mat-cell *matCellDef="let row; let i = index" class="border border-gray-300">{{ i + 1 }}</td>
               </ng-container>
-
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-              <!-- Row shown when there is no matching data. -->
-              <tr class="mat-row" *matNoDataRow>
-                  <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
-              </tr>
-          </table>
-
-          <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" aria-label="Select page of users"></mat-paginator>
-      </div>
+  
+              <!-- Department Column -->
+              <ng-container matColumnDef="departmentType">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-gray-200 border-none first:rounded-l-xl last:rounded-r-xl">Department</th>
+                  <td mat-cell *matCellDef="let row" class="border border-gray-300">{{row.departmentType}}</td>
+              </ng-container>
+  
+              <!-- Review Year Column -->
+              <ng-container matColumnDef="reviewYear">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-gray-200 border-none first:rounded-l-xl last:rounded-r-xl">Review Year</th>
+                  <td mat-cell *matCellDef="let row" class="border border-gray-300">{{row.startYear}} - {{row.endYear}}</td>
+              </ng-container>
+  
+              <!-- Start Date Column -->
+              <ng-container matColumnDef="startDate">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-gray-200 border-none first:rounded-l-xl last:rounded-r-xl">Start Date</th>
+                  <td mat-cell *matCellDef="let row" class="border border-gray-300">{{row.startDate}}</td>
+              </ng-container>
+  
+              <!-- End Date Column -->
+              <ng-container matColumnDef="endDate">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-gray-200 border-none first:rounded-l-xl last:rounded-r-xl">End Date</th>
+                  <td mat-cell *matCellDef="let row" class="border border-gray-300">{{row.endDate}}</td>
+              </ng-container>
+  
+              <!-- Name Column -->
+              <ng-container matColumnDef="name">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-gray-200 border-none first:rounded-l-xl last:rounded-r-xl">Name</th>
+                  <td mat-cell *matCellDef="let row" class="border border-gray-300">{{row.name}}</td>
+              </ng-container>
+  
+              <!-- Supervisor Column -->
+              <ng-container matColumnDef="supervisor">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-gray-200 border-none first:rounded-l-xl last:rounded-r-xl">Supervisor</th>
+                  <td mat-cell *matCellDef="let row" class="border border-gray-300">{{row.supervisorId}}</td>
+              </ng-container>
+  
+                <!-- Actions Column -->
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-gray-200 border-none first:rounded-l-xl last:rounded-r-xl">Actions</th>
+                    <td mat-cell *matCellDef="let row" class="action-column border border-gray-300">
+                      <div class="button-section flex items-center space-x-2">
+                          <button id="edit" mat-icon-button class="border-2 border-blue-900 text-blue-900 bg-white rounded-md px-2 hover:bg-blue-900 hover:text-white">Edit</button>
+                          <button id="del" mat-icon-button (click)="onDelete(row.id)" class="border-2 border-red-600 text-red-600 bg-white rounded-md px-2 hover:bg-red-600 hover:text-white">Delete</button>
+                          <button id="info" mat-icon-button class="border-2 border-gray-700 text-gray-700 bg-white rounded-md px-2 hover:bg-gray-700 hover:text-white">Info</button>
+                      </div>
+                    </td>
+                </ng-container>
+  
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  
+                <!-- Row shown when there is no matching data. -->
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                </tr>
+            </table>
+  
+            <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" aria-label="Select page of users" class="bg-white"></mat-paginator>
+        </div>
+    </div>
   </div>
-</div>
+  

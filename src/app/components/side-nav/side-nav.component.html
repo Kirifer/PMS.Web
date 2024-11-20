@@ -1,74 +1,30 @@
-
-<div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed': ''">
-    <div class="logo-container">
-        
-        <button class="logo" (click)="toggleCollapse()">
-            <img class = "logo-img" src="images/logo.png" alt="logo">
+<div class="sidenav fixed z-10 top-0 w-20 h-screen mt-14 bg-gradient-to-tr from-cyan-500 to-white border border-gray-400 shadow-md transition-all duration-500" [ngClass]="collapsed ? 'sidenav-collapsed': ''">
+    <div class="logo-container flex items-center p-3 w-full">
+        <button class="logo bg-white text-center rounded-md cursor-pointer border-none h-12 w-12"  (click)="toggleCollapse()">
+            <img class="logo-img w-12" src="images/logo.png" alt="logo">
         </button>
-        
-        <div class="logo-text" @fadeInOut *ngIf="collapsed">IT Squarehub
-            <div class="logo-text1" @fadeInOut *ngIf="collapsed"><p>Performance Management System</p></div>
+
+        <div class="logo-text text-center mt-[-5px] ml-10 leading-relaxed text-lg font-extrabold text-black collapsed:block" @fadeInOut *ngIf="collapsed">
+            IT Squarehub
+            <div class="logo-text1 text-center fixed left-[5.25rem] text-xs text-black/75 w-40 h-7 leading-none transform -translate-x-2.5 collapsed:block" @fadeInOut *ngIf="collapsed">
+                <p>Performance Management System</p>
+            </div>
         </div>
-        
-        <button class="btn-close" @rotate *ngIf="collapsed" (click)="closeSidenav()">
-            <i class="fal fa-times close-icon"></i>
-        </button>
 
+        <button class="btn-close ml-auto cursor-pointer w-8 h-8 rounded-full bg-white transform translate-x-[7.75rem] border border-black hidden collapsed:block">
+            <i class="fal fa-times close-icon text-cyan-800 text-2xl transition duration-600 hover:transform hover:translate-x-[-0.75rem]"></i>
+        </button>
     </div>
-    
-    <ul class="sidenav-nav">
-        <li class="sidenav-nav-item" *ngFor="let data of navData">
-            <a class="sidenav-nav-link" [routerLink]="[data.routeLink]"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{exact: true}"
-            >
-                <i class="sidenav-link-icon" [class]="data.icon"></i>
-                <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">
-                    {{data.label}}
-                </span>
+
+    <ul class="sidenav-nav list-none p-3 m-0 flex flex-col items-center h-[calc(100%-3.65rem)] cursor-pointer">
+        <li class="sidenav-nav-item w-full mb-2.5" *ngFor="let data of navData">
+            <a class="sidenav-nav-link flex items-center h-12 text-black transition duration-300 ease-in-out no-underline rounded-lg" 
+               [routerLink]="[data.routeLink]" 
+               routerLinkActive="active" 
+               [routerLinkActiveOptions]="{exact: true}">
+                <i class="sidenav-link-icon text-2xl w-8 min-w-[2rem] mx-2 text-center" [class]="data.icon"></i>
+                <span class="sidenav-link-text ml-2" @fadeInOut *ngIf="collapsed">{{data.label}}</span>
             </a>
         </li>
     </ul>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <div class="sidenav">
-    <div class="logo-container">
-        <button class="logo">  
-            <img class = "logo-img" src="assets/logo.png" alt="logo">
-        </button>
-    </div>
-
-
-    <ul class="sidenav-nav">
-        <li></li>
-    </ul>
-</div> -->
-
