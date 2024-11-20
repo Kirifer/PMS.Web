@@ -63,8 +63,14 @@
                     <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-gray-200 border-none first:rounded-l-xl last:rounded-r-xl">Actions</th>
                     <td mat-cell *matCellDef="let row" class="action-column border border-gray-300">
                       <div class="button-section flex items-center space-x-2">
-                          <button id="edit" mat-icon-button class="border-2 border-blue-900 text-blue-900 bg-white rounded-md px-2 hover:bg-blue-900 hover:text-white">Edit</button>
-                          <button id="del" mat-icon-button (click)="onDelete(row.id)" class="border-2 border-red-600 text-red-600 bg-white rounded-md px-2 hover:bg-red-600 hover:text-white">Delete</button>
+                        <button id="edit" mat-icon-button class="border-2 border-blue-900 text-blue-900 bg-white rounded-md px-2 hover:bg-blue-900 hover:text-white">
+                            <i class="fa-regular fa-pen-to-square"></i>
+                          </button>
+                          
+                          <button id="del" mat-icon-button (click)="onDelete(row.id)" class="border-2 border-red-600 text-red-600 bg-white rounded-md px-2 hover:bg-red-600 hover:text-white">
+                            <i class="fa-solid fa-trash"></i>
+                          </button>
+                          
                           <button id="info" mat-icon-button class="border-2 border-gray-700 text-gray-700 bg-white rounded-md px-2 hover:bg-gray-700 hover:text-white">Info</button>
                       </div>
                     </td>
