@@ -16,7 +16,7 @@
           </tr>
         </thead>
         <tbody>
-          <!-- Example Row 1 -->
+          <!--  Row 1 -->
           <tr
             (click)="openProfile('Arrian Pascual', 'arian.pascual.com', 'Manager')"
             class="cursor-pointer hover:bg-gray-100"
@@ -28,7 +28,8 @@
             <td class="border p-2">arian.pascual.com</td>
             <td class="border p-2">Manager</td>
           </tr>
-          <!-- Example Row 2 -->
+
+          <!--  Row 2 -->
           <tr
             (click)="openProfile('Kristine Pascual', 'kristine.pascual.com', 'HR')"
             class="cursor-pointer hover:bg-gray-100"
@@ -43,9 +44,8 @@
         </tbody>
       </table>
   
-      <!-- Render the modal component -->
       <div *ngIf="isModalVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-        <app-user-detailed>
+        <app-user-detailed (close)="closeProfile()">
         </app-user-detailed>
       </div>
     </main>

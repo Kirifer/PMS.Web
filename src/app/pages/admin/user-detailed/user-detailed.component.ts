@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-user-detailed',
@@ -8,10 +8,10 @@ import { Component } from '@angular/core';
   styleUrl: './user-detailed.component.css'
 })
 export class UserDetailedComponent {
-  isModalVisible = false;
-  
-  closeProfile(): void {
-    this.isModalVisible = false;
+  @Output() close = new EventEmitter<void>();
+
+  closeProfile() {
+    this.close.emit(); 
   }
 
 }
