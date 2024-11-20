@@ -1,7 +1,6 @@
 import { Component, OnInit, inject, AfterViewInit, ViewChild } from '@angular/core';
-
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-import { AddPerformRevComponent } from '../add-perform-rev/add-perform-rev.component';
+import { AddPerformRevComponent } from '../../components/add-perform-rev/add-perform-rev.component';
 import { MatDialog, MatDialogModule} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,11 +14,11 @@ import {MatSort, MatSortModule} from '@angular/material/sort';
 import {MatInputModule} from '@angular/material/input';
 
 import employees from "./data.json"
-import { PerformanceReviewService } from '../services/performanceReview/performance-review.service';
-import { IUserData } from '../models/entities/userData';
+import { PerformanceReviewService } from '../../services/performanceReview/performance-review.service';
+import { IUserData } from '../../models/entities/userData';
 import { HttpClientModule } from '@angular/common/http';
-import { Employee } from '../models/class/employee';
-import { ResponseModel } from '../models/entities/response';
+import { Employee } from '../../models/class/employee';
+import { ResponseModel } from '../../models/entities/response';
 
 
 @Component({

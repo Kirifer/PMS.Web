@@ -3,9 +3,9 @@ import { RouterOutlet } from '@angular/router';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { SideNavComponent } from './side-nav/side-nav.component';
-import { BodyComponent } from './body/body.component';
-import { LoginComponent } from './login/login.component';
+import { SideNavComponent } from './components/side-nav/side-nav.component';
+import { BodyComponent } from './components/body/body.component';
+import { LoginComponent } from './pages/login/login.component';
 
 interface SideNavToggle{
   screenWidth: number;

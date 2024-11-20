@@ -1,13 +1,13 @@
 import { Component, ViewChild, AfterViewInit, OnInit, Inject } from '@angular/core';
 import { FormsModule, FormBuilder } from '@angular/forms';
 
-import { LookupService } from '../services/lookup/lookup.service';
-import { ICompetency } from '../models/entities/competency';
-import { DepartmentType } from '../models/enumerations/departmentType';
-import { DepartmentTypeDisplay } from '../models/enumerations/departmentType';
+import { LookupService } from '../../services/lookup/lookup.service';
+import { ICompetency } from '../../models/entities/competency';
+import { DepartmentType } from '../../models/enumerations/departmentType';
+import { DepartmentTypeDisplay } from '../../models/enumerations/departmentType';
 
-import { PerformanceReviewService } from '../services/performanceReview/performance-review.service'; 
-import { IUserData } from '../models/entities/userData';
+import { PerformanceReviewService } from '../../services/performanceReview/performance-review.service'; 
+import { IUserData } from '../../models/entities/userData';
 
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -21,9 +21,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule, MatTabGroup } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Competency, Employee, Goal } from '../models/class/employee';
-import { ResponseModel } from '../models/entities/response';
-import { Payload } from '../models/class/payload';
+import { Competency, Employee, Goal } from '../../models/class/employee';
+import { ResponseModel } from '../../models/entities/response';
+import { Payload } from '../../models/class/payload';
 
 @Component({
   selector: 'app-add-perform-rev',

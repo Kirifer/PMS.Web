@@ -6,11 +6,11 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { AddReviewComponent } from '../add-review/add-review.component';
+import { AddReviewComponent } from '../../components/add-review/add-review.component';
 import { MatDialog } from '@angular/material/dialog';
 
 import employees from "../perform-rev/data.json"
-import { IUserData } from '../models/entities/userData';
+import { IUserData } from '../../models/entities/userData';
 
 
 
