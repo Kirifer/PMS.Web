@@ -3,185 +3,163 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
-		<script src="https://unpkg.com/unlazy@0.11.3/dist/unlazy.with-hashing.iife.js" defer init></script>
-		<script type="text/javascript">
-			window.tailwind.config = {
-				darkMode: ['class'],
-				theme: {
-					extend: {
-						colors: {
-							border: 'hsl(var(--border))',
-							input: 'hsl(var(--input))',
-							ring: 'hsl(var(--ring))',
-							background: 'hsl(var(--background))',
-							foreground: 'hsl(var(--foreground))',
-							primary: {
-								DEFAULT: 'hsl(var(--primary))',
-								foreground: 'hsl(var(--primary-foreground))'
-							},
-							secondary: {
-								DEFAULT: 'hsl(var(--secondary))',
-								foreground: 'hsl(var(--secondary-foreground))'
-							},
-							destructive: {
-								DEFAULT: 'hsl(var(--destructive))',
-								foreground: 'hsl(var(--destructive-foreground))'
-							},
-							muted: {
-								DEFAULT: 'hsl(var(--muted))',
-								foreground: 'hsl(var(--muted-foreground))'
-							},
-							accent: {
-								DEFAULT: 'hsl(var(--accent))',
-								foreground: 'hsl(var(--accent-foreground))'
-							},
-							popover: {
-								DEFAULT: 'hsl(var(--popover))',
-								foreground: 'hsl(var(--popover-foreground))'
-							},
-							card: {
-								DEFAULT: 'hsl(var(--card))',
-								foreground: 'hsl(var(--card-foreground))'
-							},
-						},
-					}
-				}
-			}
-		</script>
-		<style type="text/tailwindcss">
-			@layer base {
-				:root {
-					--background: 0 0% 100%;
---foreground: 240 10% 3.9%;
---card: 0 0% 100%;
---card-foreground: 240 10% 3.9%;
---popover: 0 0% 100%;
---popover-foreground: 240 10% 3.9%;
---primary: 240 5.9% 10%;
---primary-foreground: 0 0% 98%;
---secondary: 240 4.8% 95.9%;
---secondary-foreground: 240 5.9% 10%;
---muted: 240 4.8% 95.9%;
---muted-foreground: 240 3.8% 46.1%;
---accent: 240 4.8% 95.9%;
---accent-foreground: 240 5.9% 10%;
---destructive: 0 84.2% 60.2%;
---destructive-foreground: 0 0% 98%;
---border: 240 5.9% 90%;
---input: 240 5.9% 90%;
---ring: 240 5.9% 10%;
---radius: 0.5rem;
-				}
-				.dark {
-					--background: 240 10% 3.9%;
---foreground: 0 0% 98%;
---card: 240 10% 3.9%;
---card-foreground: 0 0% 98%;
---popover: 240 10% 3.9%;
---popover-foreground: 0 0% 98%;
---primary: 0 0% 98%;
---primary-foreground: 240 5.9% 10%;
---secondary: 240 3.7% 15.9%;
---secondary-foreground: 0 0% 98%;
---muted: 240 3.7% 15.9%;
---muted-foreground: 240 5% 64.9%;
---accent: 240 3.7% 15.9%;
---accent-foreground: 0 0% 98%;
---destructive: 0 62.8% 30.6%;
---destructive-foreground: 0 0% 98%;
---border: 240 3.7% 15.9%;
---input: 240 3.7% 15.9%;
---ring: 240 4.9% 83.9%;
-				}
-			}
-		</style>
+    <script src="https://unpkg.com/unlazy@0.11.3/dist/unlazy.with-hashing.iife.js" defer init></script>
+    <script type="text/javascript">
+      window.tailwind.config = {
+        darkMode: ['class'],
+        theme: {
+          extend: {
+            colors: {
+              border: 'hsl(var(--border))',
+              input: 'hsl(var(--input))',
+              ring: 'hsl(var(--ring))',
+              background: 'hsl(var(--background))',
+              foreground: 'hsl(var(--foreground))',
+              primary: {
+                DEFAULT: 'hsl(var(--primary))',
+                foreground: 'hsl(var(--primary-foreground))'
+              },
+              secondary: {
+                DEFAULT: 'hsl(var(--secondary))',
+                foreground: 'hsl(var(--secondary-foreground))'
+              },
+              destructive: {
+                DEFAULT: 'hsl(var(--destructive))',
+                foreground: 'hsl(var(--destructive-foreground))'
+              },
+              muted: {
+                DEFAULT: 'hsl(var(--muted))',
+                foreground: 'hsl(var(--muted-foreground))'
+              },
+              accent: {
+                DEFAULT: 'hsl(var(--accent))',
+                foreground: 'hsl(var(--accent-foreground))'
+              },
+              popover: {
+                DEFAULT: 'hsl(var(--popover))',
+                foreground: 'hsl(var(--popover-foreground))'
+              },
+              card: {
+                DEFAULT: 'hsl(var(--card))',
+                foreground: 'hsl(var(--card-foreground))'
+              },
+            },
+          }
+        }
+      }
+    </script>
+    <style type="text/tailwindcss">
+      @layer base {
+        :root {
+          --background: 0 0% 100%;
+          --foreground: 240 10% 3.9%;
+          --card: 0 0% 100%;
+          --card-foreground: 240 10% 3.9%;
+          --popover: 0 0% 100%;
+          --popover-foreground: 240 10% 3.9%;
+          --primary: 240 5.9% 10%;
+          --primary-foreground: 0 0% 98%;
+          --secondary: 240 4.8% 95.9%;
+          --secondary-foreground: 240 5.9% 10%;
+          --muted: 240 4.8% 95.9%;
+          --muted-foreground: 240 3.8% 46.1%;
+          --accent: 240 4.8% 95.9%;
+          --accent-foreground: 240 5.9% 10%;
+          --destructive: 0 84.2% 60.2%;
+          --destructive-foreground: 0 0% 98%;
+          --border: 240 5.9% 90%;
+          --input: 240 5.9% 90%;
+          --ring: 240 5.9% 10%;
+          --radius: 0.5rem;
+        }
+        .dark {
+          --background: 240 10% 3.9%;
+          --foreground: 0 0% 98%;
+          --card: 240 10% 3.9%;
+          --card-foreground: 0 0% 98%;
+          --popover: 240 10% 3.9%;
+          --popover-foreground: 0 0% 98%;
+          --primary: 0 0% 98%;
+          --primary-foreground: 240 5.9% 10%;
+          --secondary: 240 3.7% 15.9%;
+          --secondary-foreground: 0 0% 98%;
+          --muted: 240 3.7% 15.9%;
+          --muted-foreground: 240 5% 64.9%;
+          --accent: 240 3.7% 15.9%;
+          --accent-foreground: 0 0% 98%;
+          --destructive: 0 62.8% 30.6%;
+          --destructive-foreground: 0 0% 98%;
+          --border: 240 3.7% 15.9%;
+          --input: 240 3.7% 15.9%;
+          --ring: 240 4.9% 83.9%;
+        }
+      }
+    </style>
   </head>
   <body>
     <div class="flex">
-    <aside class="w-1/4 bg-zinc-100 p-4">
-        <h2 class="text-lg font-semibold">Employee Management</h2>
-        <ul class="mt-4">
-            <li><a href="#" class="block py-2 text-zinc-700 hover:bg-zinc-200">Users</a></li>
-            <li><a href="#" class="block py-2 text-zinc-700 hover:bg-zinc-200">Settings</a></li>
-            <li><a href="#" class="block py-2 text-zinc-700 hover:bg-zinc-200">Clients</a></li>
-            <li><a href="#" class="block py-2 text-zinc-700 hover:bg-zinc-200">Approval Paths</a></li>
-            <li><a href="#" class="block py-2 text-zinc-700 hover:bg-zinc-200">Requests</a></li>
-            <li><a href="#" class="block py-2 text-zinc-700 hover:bg-zinc-200">Positions</a></li>
-            <li><a href="#" class="block py-2 text-zinc-700 hover:bg-zinc-200">Departments</a></li>
-            <li><a href="#" class="block py-2 text-zinc-700 hover:bg-zinc-200">Time Off Types</a></li>
-            <li><a href="#" class="block py-2 text-zinc-700 hover:bg-zinc-200">Time Adjustment Types</a></li>
-            <li><a href="#" class="block py-2 text-zinc-700 hover:bg-zinc-200">Timeoff Earned Types</a></li>
-        </ul>
-    </aside>
-    <main class="flex-1 p-4">
-        <h1 class="text-xl font-bold">Admin</h1>
-        <p class="text-zinc-600">Manage the settings for each resources including the main company details.</p>
+      <main class="flex-1 p-4">
         <h2 class="mt-6 text-lg font-semibold">Users</h2>
-        <p class="text-zinc-600">Manage the settings of each users in the table below. If you want to manage the main subscription of the user. Please see the link.</p>
+        <p class="text-zinc-600">Manage the settings of each user in the table below. If you want to manage the main subscription of the user, please see the link.</p>
         <div class="mt-4">
-            <input type="text" placeholder="Filter Users" class="border border-zinc-300 p-2 rounded w-full" />
+          <input type="text" placeholder="Filter Users" class="border border-zinc-300 p-2 rounded w-full" />
         </div>
         <table class="mt-4 w-full border-collapse">
-            <thead>
-                <tr class="bg-zinc-200">
-                    <th class="border p-2">Name</th>
-                    <th class="border p-2">Employee No.</th>
-                    <th class="border p-2">Status</th>
-                    <th class="border p-2">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="border p-2"><span class="bg-purple-500 text-white rounded-full px-2">AP</span> Arrian Pascual</td>
-                    <td class="border p-2">ITS-1710854922</td>
-                    <td class="border p-2 text-green-600">Active</td>
-                    <td class="border p-2"><button class="text-blue-500">View</button></td>
-                </tr>
-                <tr>
-                    <td class="border p-2"><span class="bg-purple-500 text-white rounded-full px-2">KP</span> Kristine Pascual</td>
-                    <td class="border p-2">ITS-1710854956</td>
-                    <td class="border p-2 text-green-600">Active</td>
-                    <td class="border p-2"><button class="text-blue-500">View</button></td>
-                </tr>
-                <tr>
-                    <td class="border p-2"><span class="bg-purple-500 text-white rounded-full px-2">JA</span> Josh Alan Manuel Payumo Jr.</td>
-                    <td class="border p-2">ITS-1710855031</td>
-                    <td class="border p-2 text-green-600">Active</td>
-                    <td class="border p-2"><button class="text-blue-500">View</button></td>
-                </tr>
-                <tr>
-                    <td class="border p-2"><span class="bg-purple-500 text-white rounded-full px-2">NN</span> Nina Nogot</td>
-                    <td class="border p-2">ITS-1710855084</td>
-                    <td class="border p-2 text-green-600">Active</td>
-                    <td class="border p-2"><button class="text-blue-500">View</button></td>
-                </tr>
-                <tr>
-                    <td class="border p-2"><span class="bg-purple-500 text-white rounded-full px-2">DP</span> Darwin Pascual</td>
-                    <td class="border p-2">ITS-1711043769</td>
-                    <td class="border p-2 text-green-600">Active</td>
-                    <td class="border p-2"><button class="text-blue-500">View</button></td>
-                </tr>
-                <tr>
-                    <td class="border p-2"><span class="bg-purple-500 text-white rounded-full px-2">AE</span> Allan Espiritu</td>
-                    <td class="border p-2">ITS-1711440912</td>
-                    <td class="border p-2 text-green-600">Active</td>
-                    <td class="border p-2"><button class="text-blue-500">View</button></td>
-                </tr>
-                <tr>
-                    <td class="border p-2"><span class="bg-purple-500 text-white rounded-full px-2">SJ</span> Shykie Jean Bagabaldo</td>
-                    <td class="border p-2">ITS-1711542921</td>
-                    <td class="border p-2 text-red-600">Blocked</td>
-                    <td class="border p-2"><button class="text-blue-500">View</button></td>
-                </tr>
-                <tr>
-                    <td class="border p-2"><span class="bg-purple-500 text-white rounded-full px-2">KS</span> Kaith Sampang</td>
-                    <td class="border p-2">ITS-171154926</td>
-                    <td class="border p-2 text-green-600">Active</td>
-                    <td class="border p-2"><button class="text-blue-500">View</button></td>
-                </tr>
-            </tbody>
+          <thead>
+            <tr class="bg-zinc-200">
+              <th class="border p-2">Name</th>
+              <th class="border p-2">Email Address</th>
+              <th class="border p-2">Position</th>
+              <th class="border p-2">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="border p-2 flex items-center space-x-2">
+                <img src="https://www.w3schools.com/w3images/avatar2.png" alt="Arrian's Avatar" class="w-8 h-8 rounded-full">
+                <span>Arrian Pascual</span>
+              </td>
+              <td class="border p-2">arian.pascual.com</td>
+              <td class="border p-2">Manager</td>
+              <td class="border p-2"><button class="text-blue-500" onclick="openProfile('Arrian Pascual', 'arian.pascual.com', 'Manager')">View</button></td>
+            </tr>
+            <tr>
+              <td class="border p-2 flex items-center space-x-2">
+                <img src="https://www.w3schools.com/w3images/avatar5.png" alt="Kristine's Avatar" class="w-8 h-8 rounded-full">
+                <span>Kristine Pascual</span>
+              </td>
+              <td class="border p-2">kristine.pascual.com</td>
+              <td class="border p-2">HR</td>
+              <td class="border p-2"><button class="text-blue-500" onclick="openProfile('Kristine Pascual', 'kristine.pascual.com', 'HR')">View</button></td>
+            </tr>
+            <!-- Add more users here -->
+          </tbody>
         </table>
-    </main>
-</div>
+
+        <!-- Modal for Profile View -->
+        <div id="profileModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+          <div class="bg-white p-4 rounded-lg max-w-md w-full">
+            <h2 id="profileName" class="text-xl font-semibold">User Profile</h2>
+            <p><strong>Name:</strong> <span id="profileUserName"></span></p>
+            <p><strong>Email:</strong> <span id="profileUserEmail"></span></p>
+            <p><strong>Position:</strong> <span id="profileUserPosition"></span></p>
+            <button class="mt-4 bg-blue-500 text-white py-1 px-4 rounded" onclick="closeProfile()">Close</button>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      function openProfile(name, email, position) {
+        document.getElementById('profileUserName').innerText = name;
+        document.getElementById('profileUserEmail').innerText = email;
+        document.getElementById('profileUserPosition').innerText = position;
+        document.getElementById('profileModal').classList.remove('hidden');
+      }
+
+      function closeProfile() {
+        document.getElementById('profileModal').classList.add('hidden');
+      }
+    </script>
   </body>
 </html>
