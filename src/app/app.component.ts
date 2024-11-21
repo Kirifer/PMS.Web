@@ -13,7 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   <app-side-nav></app-side-nav>
 
   <!-- Main Content Area -->
-  <div class="flex-1 p-4 overflow-y-auto">
+  <div class="flex-1 overflow-y-auto">
     <router-outlet></router-outlet>
   </div>
 </div>
