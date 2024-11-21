@@ -31,10 +31,10 @@ import { FormEmployeeComponent } from "./form-employee-component.ts";
       <div class="bg-white rounded-lg shadow-lg max-w-4xl w-full p-6">
         <!-- Dialog Header -->
         <div class="flex justify-between items-center">
-          <h2 class="text-lg font-semibold text-gray-800">Dialog with Tabs</h2>
+          <h2 class="text-lg font-semibold text-gray-800">Add a Record</h2>
           <button
             (click)="closeDialog()"
-            class="text-gray-500 hover:text-gray-700 focus:outline-none"
+            class="text-blue-900 focus:outline-none"
           >
             ✖
           </button>
