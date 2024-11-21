@@ -133,7 +133,7 @@ export class PerformanceReviewTableComponent implements OnInit {
       departmentType: record.departmentType,
       startYear: record.startYear,
       endYear: record.endYear,
-      // Map additional fields like competencies and goals as necessary
+      // Map additional fields like competencies and goals as necessarys
     });
     this.isEditFormVisible = true;
   }
