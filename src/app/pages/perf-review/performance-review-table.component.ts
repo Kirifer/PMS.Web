@@ -108,9 +108,24 @@ export class PerformanceReviewTableComponent implements OnInit {
         console.error('Error fetching performance reviews:', error);
       }
     );
-    // this.getCompetencies();
+    this.getCompetencies();
   }
 
+  private getCompetencies(): void {
+    this.http.get<any>('https://localhost:7012/lookup/competencies').subscribe(
+      (competencyData) => {
+        if (competencyData && competencyData.data) {
+          // Assuming each competency object contains 'id' or 'uuid' as the identifier
+          this.competencies = competencyData.data.map((competency: { id: string }) => competency.id); // Explicitly define the type as 'id'
+          console.log('Competency IDs:', this.competencies);
+        }
+      },
+      (error) => {
+        console.error('Error fetching competencies:', error);
+      }
+    );
+  }
+  
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value
       .trim()
@@ -284,22 +299,6 @@ export class PerformanceReviewTableComponent implements OnInit {
         });
     }
   }
-
-  private getCompetencies(): void {
-    this.http.get<any>('https://localhost:7012/lookup/competencies').subscribe(
-      (competencyData) => {
-        if (competencyData && competencyData.data) {
-          // Assuming each competency object contains 'id' or 'uuid' as the identifier
-          this.competencies = competencyData.data.map((competency: { id: string }) => competency.id); // Explicitly define the type as 'id'
-          console.log('Competency IDs:', this.competencies);
-        }
-      },
-      (error) => {
-        console.error('Error fetching competencies:', error);
-      }
-    );
-  }
-  
 
   readonly Edit = Edit;
   readonly Trash = Trash;

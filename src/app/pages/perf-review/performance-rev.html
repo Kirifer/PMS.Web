@@ -100,6 +100,159 @@
   </form>
 </div>
 
+<!-- Edit Form -->
+<div *ngIf="isEditFormVisible" class="bg-white p-6 rounded-lg shadow-md max-w-xl mx-auto">
+  <h3 class="text-2xl font-semibold mb-4 text-gray-800">Edit Performance Review</h3>
+  <form [formGroup]="editUserForm" (ngSubmit)="onEditSubmit()">
+    <!-- Name Field -->
+    <div class="mb-4">
+      <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+      <input
+        type="text"
+        id="name"
+        formControlName="name"
+        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        placeholder="Enter name"
+      />
+      <div
+        *ngIf="
+          editUserForm.get('name')?.invalid &&
+          editUserForm.get('name')?.touched
+        "
+        class="text-red-500 text-sm mt-1"
+      >
+        Name is required.
+      </div>
+    </div>
+
+    <!-- Department Type Field -->
+    <div class="mb-4">
+      <label for="departmentType" class="block text-sm font-medium text-gray-700">Department Type</label>
+      <input
+        type="text"
+        id="departmentType"
+        formControlName="departmentType"
+        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        placeholder="Enter department type"
+      />
+      <div
+        *ngIf="
+          editUserForm.get('departmentType')?.invalid &&
+          editUserForm.get('departmentType')?.touched
+        "
+        class="text-red-500 text-sm mt-1"
+      >
+        Department Type is required.
+      </div>
+    </div>
+
+    <!-- Start Year Field -->
+    <div class="mb-4">
+      <label for="startYear" class="block text-sm font-medium text-gray-700">Start Year</label>
+      <input
+        type="number"
+        id="startYear"
+        formControlName="startYear"
+        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        placeholder="Enter start year"
+      />
+      <div
+        *ngIf="
+          editUserForm.get('startYear')?.invalid &&
+          editUserForm.get('startYear')?.touched
+        "
+        class="text-red-500 text-sm mt-1"
+      >
+        Start Year is required.
+      </div>
+    </div>
+
+    <!-- End Year Field -->
+    <div class="mb-4">
+      <label for="endYear" class="block text-sm font-medium text-gray-700">End Year</label>
+      <input
+        type="number"
+        id="endYear"
+        formControlName="endYear"
+        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        placeholder="Enter end year"
+      />
+      <div
+        *ngIf="
+          editUserForm.get('endYear')?.invalid &&
+          editUserForm.get('endYear')?.touched
+        "
+        class="text-red-500 text-sm mt-1"
+      >
+        End Year is required.
+      </div>
+    </div>
+
+    <!-- Competencies Field -->
+    <div class="mb-4">
+      <label for="competencies" class="block text-sm font-medium text-gray-700">Competencies</label>
+      <select
+        id="competencies"
+        formControlName="competencies"
+        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+      >
+        <option *ngFor="let competency of competencies" [value]="competency.id">
+          {{ competency.name }}
+        </option>
+      </select>
+      <div
+        *ngIf="
+          editUserForm.get('competencies')?.invalid &&
+          editUserForm.get('competencies')?.touched
+        "
+        class="text-red-500 text-sm mt-1"
+      >
+        Competencies are required.
+      </div>
+    </div>
+
+    <!-- Goals Field -->
+    <div class="mb-4">
+      <label for="goals" class="block text-sm font-medium text-gray-700">Goals</label>
+      <textarea
+        id="goals"
+        formControlName="goals"
+        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        placeholder="Enter goals"
+      ></textarea>
+      <div
+        *ngIf="
+          editUserForm.get('goals')?.invalid &&
+          editUserForm.get('goals')?.touched
+        "
+        class="text-red-500 text-sm mt-1"
+      >
+        Goals are required.
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="flex space-x-4">
+      <button
+        type="submit"
+        class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 disabled:opacity-50"
+        [disabled]="editUserForm.invalid"
+      >
+        Save Changes
+      </button>
+
+      <!-- Cancel Button -->
+      <button
+        type="button"
+        class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400"
+        (click)="cancelEdit()"
+      >
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>
+
 <div class="overflow-x-auto bg-white rounded-lg shadow-lg">
   <table class="min-w-full divide-y divide-gray-200">
     <thead class="bg-gray-50">
@@ -136,8 +289,8 @@
           {{ record.supervisorId }}
         </td>
         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-          <button class="text-indigo-600 hover:text-indigo-900 mr-3">
-            <i-lucide [img]="Edit" class="w-5 h-5" (click)="openEditForm(record)"></i-lucide>
+          <button class="text-indigo-600 hover:text-indigo-900 mr-3" (click)="openEditForm(record)">
+            <i-lucide [img]="Edit" class="w-5 h-5" ></i-lucide>
           </button>
           <button
             class="text-red-600 hover:text-red-900"
