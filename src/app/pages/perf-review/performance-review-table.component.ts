@@ -5,7 +5,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 interface PerformanceRecord {
-  id: number;
+  id: string;
   departmentType: string;
   startYear: number;
   endYear: number;
@@ -76,7 +76,10 @@ interface PerformanceRecord {
               <button class="text-indigo-600 hover:text-indigo-900 mr-3">
                 <i-lucide [img]="Edit" class="w-5 h-5"></i-lucide>
               </button>
-              <button class="text-red-600 hover:text-red-900">
+              <button
+                class="text-red-600 hover:text-red-900"
+                (click)="deleteRecord(record.id)"
+              >
                 <i-lucide [img]="Trash" class="w-5 h-5"></i-lucide>
               </button>
             </td>
@@ -123,6 +126,29 @@ export class PerformanceReviewTableComponent implements OnInit {
 
   addRecord() {
     console.log('Add Record button clicked');
+  }
+
+  deleteRecord(id: string) {
+    const isDelete = confirm('Are you sure you want to delete?');
+    if (isDelete) {
+      this.http
+        .delete<any>(`https://localhost:7012/performance-reviews/${id}`)
+        .subscribe({
+          next: () => {
+            // Remove the record from the local array
+            this.performanceReviews = this.performanceReviews.filter(
+              (record) => record.id !== id
+            );
+            this.allPerformanceReviews = this.allPerformanceReviews.filter(
+              (record) => record.id !== id
+            );
+          },
+          error: (err) => {
+            console.error('Error deleting record:', err);
+            alert('Failed to delete the record. Please try again.');
+          },
+        });
+    }
   }
 
   readonly Edit = Edit;
