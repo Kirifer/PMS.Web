@@ -107,7 +107,7 @@ export class PerformanceReviewTableComponent implements OnInit {
         console.error('Error fetching performance reviews:', error);
       }
     );
-    this.getCompetencies();
+    // this.getCompetencies();
   }
 
   applyFilter(event: Event) {
@@ -269,20 +269,6 @@ export class PerformanceReviewTableComponent implements OnInit {
           },
         });
     }
-  }
-
-  private getCompetencies(): void {
-    this.http.get<any>('https://localhost:7012/lookup/competencies').subscribe(
-      (competencyData) => {
-        if (competencyData && competencyData.data) {
-          this.competencies = competencyData.data;
-          console.log('Competencies:', this.competencies);
-        }
-      },
-      (error) => {
-        console.error('Error fetching competencies:', error);
-      }
-    );
   }
 
   readonly Edit = Edit;
