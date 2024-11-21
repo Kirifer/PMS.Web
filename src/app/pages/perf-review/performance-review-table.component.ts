@@ -20,6 +20,7 @@ interface PerformanceRecord {
   supervisorId: string;
   goals: Goal[];
   competencies: Competency[];
+  
 }
 
 interface Goal {
@@ -70,7 +71,7 @@ export class PerformanceReviewTableComponent implements OnInit {
       departmentType: ['', Validators.required],
       startYear: ['', Validators.required],
       endYear: ['', Validators.required],
-      competencies: ['', Validators.required],
+      competencies: [[], Validators.required], // This expects an array of competency IDs
       goals: ['', Validators.required], 
     });
   
@@ -80,7 +81,7 @@ export class PerformanceReviewTableComponent implements OnInit {
       departmentType: ['', Validators.required],
       startYear: ['', Validators.required],
       endYear: ['', Validators.required],
-      competencies: ['', Validators.required], // Same fields as add form, modify as needed
+      competencies: [[], Validators.required], // Same fields as add form, modify as needed
       goals: ['', Validators.required],
     });
   }
@@ -132,7 +133,8 @@ export class PerformanceReviewTableComponent implements OnInit {
       departmentType: record.departmentType,
       startYear: record.startYear,
       endYear: record.endYear,
-      // Map additional fields like competencies and goals as necessarys
+      competencies: record.competencies.map(comp => comp.competencyId),  // Pre-fill competencies
+      goals: record.goals,  // Assuming goals are handled similarly
     });
     this.isEditFormVisible = true;
   }
@@ -145,30 +147,42 @@ export class PerformanceReviewTableComponent implements OnInit {
 
   
   onEditSubmit() {
-    if (this.editUserForm.valid) {
-      const updatedRecord = this.editUserForm.value;
-      console.log('Edit Form is Valid:', updatedRecord);
+    if (this.editUserForm.valid && this.editRecordId) {
+      const updatedRecord = {
+        ...this.editUserForm.value,
+        id: this.editRecordId,
+      };
   
-      // Example backend submission
-      this.http
-        .put<any>(`https://localhost:7012/performance-reviews/${updatedRecord.id}`, updatedRecord)
+      // Ensure competencies are populated correctly as an array of competency ids
+      const competencies = updatedRecord.competencies.map((competencyId: string) => ({
+        competencyId,  // Use competencyId as string
+        orderNo: 1,    // Example orderNo
+        weight: 5,     // Example weight
+      }));
+  
+      const updatedData = { ...updatedRecord, competencies };
+  
+      console.log('Updated Record:', updatedData); // Log the updated data
+  
+      this.http.put<any>(`https://localhost:7012/performance-reviews/${this.editRecordId}`, updatedData)
         .subscribe({
           next: (response) => {
             console.log('Record successfully updated:', response);
+            this.performanceReviews = this.performanceReviews.map(record =>
+              record.id === this.editRecordId ? { ...record, ...updatedData } : record
+            );
             alert('Record updated successfully!');
           },
           error: (error) => {
             console.error('Error updating record:', error);
-            alert('Failed to update the record.');
+            alert('Failed to update the record. Please try again.');
           },
         });
     } else {
-      console.error('Edit Form Errors:', this.editUserForm.errors);
+      console.error('Edit Form is invalid or record ID is missing:', this.editUserForm.errors);
       alert('Please fill out all required fields.');
     }
   }
-  
-
   
   onSubmit() {
     if (this.addUserForm.valid) {
@@ -273,8 +287,9 @@ export class PerformanceReviewTableComponent implements OnInit {
     this.http.get<any>('https://localhost:7012/lookup/competencies').subscribe(
       (competencyData) => {
         if (competencyData && competencyData.data) {
-          this.competencies = competencyData.data;
-          console.log('Competencies:', this.competencies);
+          // Assuming each competency object contains 'id' or 'uuid' as the identifier
+          this.competencies = competencyData.data.map((competency: { id: string }) => competency.id); // Explicitly define the type as 'id'
+          console.log('Competency IDs:', this.competencies);
         }
       },
       (error) => {
@@ -282,6 +297,7 @@ export class PerformanceReviewTableComponent implements OnInit {
       }
     );
   }
+  
 
   readonly Edit = Edit;
   readonly Trash = Trash;
