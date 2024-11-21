@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { NgFor } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
+// import { MatDialog } from '@angular/material/dialog';
 import { LucideAngularModule, Edit, Trash } from 'lucide-angular';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -54,23 +54,39 @@ interface Competency {
   templateUrl: './performance-rev.html',
 })
 export class PerformanceReviewTableComponent implements OnInit {
+  
+  editRecordId: string | null = null; 
   performanceReviews: PerformanceRecord[] = [];
   allPerformanceReviews: PerformanceRecord[] = [];
   http = inject(HttpClient);
-  addUserForm: FormGroup;
-  isAddFormVisible = false;
-  competencies: any[] = [];
+  addUserForm: FormGroup; 
+  isAddFormVisible = false; 
+  competencies: any[] = []; 
+  editUserForm: FormGroup; 
+  isEditFormVisible = false; 
 
+  
   constructor(private fb: FormBuilder) {
     this.addUserForm = this.fb.group({
       name: ['', Validators.required],
       departmentType: ['', Validators.required],
       startYear: ['', Validators.required],
       endYear: ['', Validators.required],
-      competencies: ['', Validators.required], // Control for selecting competencies
-      goals: ['', Validators.required], // Control for entering goals
+      competencies: ['', Validators.required],
+      goals: ['', Validators.required], 
+    });
+  
+    // Initialize the edit user form
+    this.editUserForm = this.fb.group({
+      name: ['', Validators.required],
+      departmentType: ['', Validators.required],
+      startYear: ['', Validators.required],
+      endYear: ['', Validators.required],
+      competencies: ['', Validators.required], // Same fields as add form, modify as needed
+      goals: ['', Validators.required],
     });
   }
+  
 
   performanceReviews$ = this.getPerformanceReviews();
 
@@ -108,9 +124,54 @@ export class PerformanceReviewTableComponent implements OnInit {
   }
 
   openAddUserForm() {
-    this.isAddFormVisible = true;
+    this.isAddFormVisible = true; // Show the form when the button is clicked
   }
 
+  openEditForm(record: PerformanceRecord) {
+    this.editRecordId = record.id;
+    this.editUserForm.patchValue({
+      name: record.name,
+      departmentType: record.departmentType,
+      startYear: record.startYear,
+      endYear: record.endYear,
+      // Map additional fields like competencies and goals as necessarys
+    });
+    this.isEditFormVisible = true;
+  }
+
+  cancelEdit() {
+    this.isEditFormVisible = false;
+    this.editUserForm.reset();
+    this.editRecordId = null;
+  }
+
+  
+  onEditSubmit() {
+    if (this.editUserForm.valid) {
+      const updatedRecord = this.editUserForm.value;
+      console.log('Edit Form is Valid:', updatedRecord);
+  
+      // Example backend submission
+      this.http
+        .put<any>(`https://localhost:7012/performance-reviews/${updatedRecord.id}`, updatedRecord)
+        .subscribe({
+          next: (response) => {
+            console.log('Record successfully updated:', response);
+            alert('Record updated successfully!');
+          },
+          error: (error) => {
+            console.error('Error updating record:', error);
+            alert('Failed to update the record.');
+          },
+        });
+    } else {
+      console.error('Edit Form Errors:', this.editUserForm.errors);
+      alert('Please fill out all required fields.');
+    }
+  }
+  
+
+  
   onSubmit() {
     if (this.addUserForm.valid) {
       const newRecord = this.addUserForm.value;
