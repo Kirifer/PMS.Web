@@ -150,18 +150,35 @@ export class PerformanceReviewTableComponent implements OnInit {
       };
 
       this.http
-        .post<any>('https://localhost:7012/performance-reviews', performanceData)
+        .post<any>(
+          'https://localhost:7012/performance-reviews',
+          performanceData
+        )
         .subscribe({
           next: (response) => {
-            console.log('Response from server:', response);
-            this.performanceReviews.push(response);
-            this.allPerformanceReviews.push(response);
-            this.isAddFormVisible = false;
-            this.addUserForm.reset();
+            // Add the returned performance review with its ID
+            if (response && response.data.id) {
+              const performanceReviewWithId: PerformanceRecord = {
+                ...performanceData,
+                id: response.data.id, // Add the ID from the server response
+              };
+
+              // Add to the local arrays
+              this.performanceReviews.push(performanceReviewWithId);
+              this.allPerformanceReviews.push(performanceReviewWithId);
+
+              // Close the form and reset it
+              this.isAddFormVisible = false;
+              this.addUserForm.reset();
+            } else {
+              alert('Failed to retrieve the ID after creation.');
+            }
           },
           error: (err) => {
             console.error('Error adding record:', err);
-            alert('Failed to add the record. Please check the console for more details.');
+            alert(
+              'Failed to add the record. Please check the console for more details.'
+            );
           },
         });
     } else {
