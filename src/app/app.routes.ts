@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { PerfReviewComponent } from './pages/perf-review/perf-review.component';
+import { TableComponent } from './components/table/table.component';
 
 export const routes: Routes = [
     {
@@ -13,4 +14,8 @@ export const routes: Routes = [
         component: PerfReviewComponent
     
     },
+    {
+        path: 'table',
+        component: TableComponent
+    }
 ];

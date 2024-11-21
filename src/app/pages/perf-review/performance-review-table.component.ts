@@ -1,8 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { NgFor } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
 import { LucideAngularModule, Edit, Trash } from 'lucide-angular';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
+
+// Components
+// import { AddRecordDialogComponent } from '../../components/add-record-dialog/add-record-dialog.component';
 
 interface PerformanceRecord {
   id: string;
@@ -31,7 +35,6 @@ interface PerformanceRecord {
       <!-- Add Record Button -->
       <button
         class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300"
-        (click)="addRecord()"
       >
         Add Record
       </button>
@@ -124,9 +127,22 @@ export class PerformanceReviewTableComponent implements OnInit {
     }
   }
 
-  addRecord() {
-    console.log('Add Record button clicked');
-  }
+  constructor(private dialog: MatDialog) {}
+
+  // addRecord() {
+  //   const dialogRef = this.dialog.open(AddRecordDialogComponent, {
+  //     width: '600px',
+  //     height: 'auto',
+  //     disableClose: false, // Optional: Allows closing the dialog by clicking outside
+  //   });
+
+  //   dialogRef.afterClosed().subscribe((result) => {
+  //     if (result) {
+  //       // Handle the submitted data (POST request)
+  //       console.log('Dialog result:', result);
+  //     }
+  //   });
+  // }
 
   deleteRecord(id: string) {
     const isDelete = confirm('Are you sure you want to delete?');
