@@ -53,26 +53,25 @@ interface Competency {
 })
 export class PerformanceReviewTableComponent implements OnInit {
   
-  editRecordId: string | null = null; // ID of the record being edited
+  editRecordId: string | null = null; 
   performanceReviews: PerformanceRecord[] = [];
   allPerformanceReviews: PerformanceRecord[] = [];
   http = inject(HttpClient);
-  addUserForm: FormGroup; // FormGroup for adding a user
-  isAddFormVisible = false; // Flag to toggle Add User form
-  competencies: any[] = []; // Add this property to hold competencies
-  editUserForm: FormGroup; // FormGroup for editing
-  isEditFormVisible = false; // Toggle for the Edit Form
+  addUserForm: FormGroup; 
+  isAddFormVisible = false; 
+  competencies: any[] = []; 
+  editUserForm: FormGroup; 
+  isEditFormVisible = false; 
 
   
   constructor(private fb: FormBuilder) {
-    // Initialize the add user form
     this.addUserForm = this.fb.group({
       name: ['', Validators.required],
       departmentType: ['', Validators.required],
       startYear: ['', Validators.required],
       endYear: ['', Validators.required],
-      competencies: ['', Validators.required], // New control for competencies
-      goals: ['', Validators.required], // New control for goals
+      competencies: ['', Validators.required],
+      goals: ['', Validators.required], 
     });
   
     // Initialize the edit user form
