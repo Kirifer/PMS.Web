@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { EventEmitter, Output } from '@angular/core';
 import { TableCompetenciesComponent } from './table-competencies.component';
 import { TableGoalsComponent } from "./table-goals.component";
+import { FormEmployeeComponent } from "./form-employee-component.ts";
 
 @Component({
   selector: 'app-add-performance-review',
@@ -20,7 +21,8 @@ import { TableGoalsComponent } from "./table-goals.component";
     HttpClientModule,
     CommonModule,
     TableCompetenciesComponent,
-    TableGoalsComponent
+    TableGoalsComponent,
+    FormEmployeeComponent
 ],
   template: `
     <div
@@ -56,7 +58,7 @@ import { TableGoalsComponent } from "./table-goals.component";
         <!-- Tab Content -->
         <div class="mt-4">
           <ng-container *ngIf="activeTab === 0">
-          <p>Content for Tab 1</p>
+          <app-form-employee/>
           </ng-container>
           <ng-container *ngIf="activeTab === 1">
           <app-table-goals />
