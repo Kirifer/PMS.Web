@@ -1,14 +1,21 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { SideNavComponent } from './components/side-nav/side-nav.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, SideNavComponent],
   template: `
-    <h1>Welcome to {{title}}!</h1>
+<div class="flex h-screen">
+  <!-- Side Navigation -->
+  <app-side-nav></app-side-nav>
 
-    <router-outlet />
+  <!-- Main Content Area -->
+  <div class="flex-1 p-4 overflow-y-auto">
+    <router-outlet></router-outlet>
+  </div>
+</div>
   `,
   styles: [],
 })
