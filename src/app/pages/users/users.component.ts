@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { NgFor } from '@angular/common';
+import { CommonModule, NgFor } from '@angular/common';
 import { LucideAngularModule, Edit, Trash } from 'lucide-angular'; // Import Lucide icons
+import { AddUserComponent } from '../../components/add-user/add-user.component';  // Import AddUserComponent
 
 interface UserRecord {
   id: number;
@@ -12,7 +13,7 @@ interface UserRecord {
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [NgFor, LucideAngularModule], // Add LucideAngularModule
+  imports: [NgFor, LucideAngularModule, AddUserComponent, CommonModule], // Add LucideAngularModule
   template: `
     <div class="min-h-screen bg-gray-50 py-6 px-4 sm:px-6 lg:px-8">
       <div class="max-w-full mx-auto px-4">
@@ -24,8 +25,9 @@ interface UserRecord {
         <p class="text-sm text-gray-600 mt-[-20px] mb-4">
           A comprehensive list of users showcasing their names, email addresses, and positions within the organization.
         </p>
-         <!-- Search and Add User -->
-         <div class="flex justify-between items-center mb-6">
+        
+        <!-- Search and Add User -->
+        <div class="flex justify-between items-center mb-6">
           <input
             matInput
             (keyup)="applyFilter($event)"
@@ -35,7 +37,7 @@ interface UserRecord {
           />
           <button
             class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300"
-            (click)="addUser()"
+            (click)="openAddUserModal()"
           >
             Add User
           </button>
@@ -79,6 +81,9 @@ interface UserRecord {
             </tbody>
           </table>
         </div>
+
+        <!-- Add User Modal -->
+        <app-add-user *ngIf="isModalOpen" (close)="closeAddUserModal()"></app-add-user>
       </div>
     </div>
   `,
@@ -111,6 +116,7 @@ export class UsersComponent {
   ];
 
   filteredUsers: UserRecord[] = [...this.users];
+  isModalOpen = false;
 
   // Apply filter when typing in the search input
   applyFilter(event: Event) {
@@ -124,6 +130,17 @@ export class UsersComponent {
     }
   }
 
+  // Open the modal
+  openAddUserModal() {
+    this.isModalOpen = true;
+  }
+
+  // Close the modal
+  closeAddUserModal() {
+    this.isModalOpen = false;
+  }
+
+  // Placeholder for Add User logic
   addUser() {
     console.log('Add User button clicked');
     // Logic for adding a new user can go here
