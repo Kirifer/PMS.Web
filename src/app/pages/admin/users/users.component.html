@@ -1,53 +1,72 @@
 <div class="flex">
-    <main class="flex-1 p-4 mt-8">
-      <h2 class="mt-6 text-lg font-semibold">Users</h2>
-      <p class="text-zinc-600">
-        Manage the settings of each user in the table below. If you want to manage the main subscription of the user, please see the link.
-      </p>
-      <div class="mt-4">
-        <input type="text" placeholder="Filter Users" class="border border-zinc-300 p-2 rounded w-full" />
-      </div>
-      <table class="mt-4 w-full border-collapse">
-        <thead>
-          <tr class="bg-zinc-200">
-            <th class="border p-2">Name</th>
-            <th class="border p-2">Email Address</th>
-            <th class="border p-2">Position</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!--  Row 1 -->
-          <tr
-            (click)="openProfile('Arrian Pascual', 'arian.pascual.com', 'Manager')"
-            class="cursor-pointer hover:bg-gray-100"
-          >
-            <td class="border p-2 flex items-center space-x-2">
-              <img src="https://www.w3schools.com/w3images/avatar2.png" alt="Arrian's Avatar" class="w-8 h-8 rounded-full">
-              <span>Arrian Pascual</span>
-            </td>
-            <td class="border p-2">arian.pascual.com</td>
-            <td class="border p-2">Manager</td>
-          </tr>
+  <main class="flex-1 p-4">
+    <h2 class="mt-6 text-lg font-semibold">Users</h2>
+    <p class="text-zinc-600">
+      Manage the settings of each user in the table below. If you want to manage the main subscription of the user, please see the link.
+    </p>
 
-          <!--  Row 23 -->
-          <tr
-            (click)="openProfile('Kristine Pascual', 'kristine.pascual.com', 'HR')"
-            class="cursor-pointer hover:bg-gray-100"
-          >
-            <td class="border p-2 flex items-center space-x-2">
-              <img src="https://www.w3schools.com/w3images/avatar5.png" alt="Kristine's Avatar" class="w-8 h-8 rounded-full">
-              <span>Kristine Pascual</span>
-            </td>
-            <td class="border p-2">kristine.pascual.com</td>
-            <td class="border p-2">HR</td>
-          </tr>
-        </tbody>
-      </table>
-  
-      <div *ngIf="isModalVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-        <app-user-detailed (close)="closeProfile()">
-        </app-user-detailed>
-      </div>
-    </main>
-  </div>
-  
+    <div class="mt-4 flex items-center">
+      <input 
+        type="text" 
+        placeholder="Filter Users" 
+        class="border border-zinc-300 p-2 rounded flex-1" 
+      />
+
+      <!-- Button to trigger the Add User Modal -->
+      <button
+        (click)="openAddUserModal()"
+        class="ml-4 bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
+      >
+        Add User
+      </button>
+    </div>
+
+    <table class="mt-4 w-full border-collapse">
+      <thead>
+        <tr class="bg-zinc-200">
+          <th class="border p-2">Name</th>
+          <th class="border p-2">Email Address</th>
+          <th class="border p-2">Position</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Row 1 -->
+        <tr
+          (click)="openProfile('Arrian Pascual', 'arian.pascual.com', 'Manager')"
+          class="cursor-pointer hover:bg-gray-100"
+        >
+          <td class="border p-2 flex items-center space-x-2">
+            <img src="https://www.w3schools.com/w3images/avatar2.png" alt="Arrian's Avatar" class="w-8 h-8 rounded-full">
+            <span>Arrian Pascual</span>
+          </td>
+          <td class="border p-2">arian.pascual.com</td>
+          <td class="border p-2">Manager</td>
+        </tr>
+
+        <!-- Row 2 -->
+        <tr
+          (click)="openProfile('Kristine Pascual', 'kristine.pascual.com', 'HR')"
+          class="cursor-pointer hover:bg-gray-100"
+        >
+          <td class="border p-2 flex items-center space-x-2">
+            <img src="https://www.w3schools.com/w3images/avatar5.png" alt="Kristine's Avatar" class="w-8 h-8 rounded-full">
+            <span>Kristine Pascual</span>
+          </td>
+          <td class="border p-2">kristine.pascual.com</td>
+          <td class="border p-2">HR</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Modal for viewing user details -->
+    <div *ngIf="isModalVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+      <app-user-detailed (close)="closeProfile()"></app-user-detailed>
+    </div>
+
+    <!-- Modal for adding a new user -->
+    <div *ngIf="isModalAddUserVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+      <app-add-user (close)="closeAddUserModal()"></app-add-user>
+    </div>
+
+  </main>
+</div>
