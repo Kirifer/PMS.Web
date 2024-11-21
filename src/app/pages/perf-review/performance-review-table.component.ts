@@ -8,18 +8,35 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-// Components
-// import { AddRecordDialogComponent } from '../../components/add-record-dialog/add-record-dialog.component';
-
 interface PerformanceRecord {
   id: string;
+  name: string;
   departmentType: string;
   startYear: number;
   endYear: number;
   startDate: string;
   endDate: string;
-  name: string;
+  employeeId: string;
   supervisorId: string;
+  goals: Goal[];
+  competencies: Competency[];
+}
+
+interface Goal {
+  orderNo: number;
+  goals: string;
+  weight: number;
+  date: string;
+  measure4: string;
+  measure3: string;
+  measure2: string;
+  measure1: string;
+}
+
+interface Competency {
+  competencyId: string;
+  orderNo: number;
+  weight: number;
 }
 
 @Component({
@@ -38,9 +55,9 @@ export class PerformanceReviewTableComponent implements OnInit {
   performanceReviews: PerformanceRecord[] = [];
   allPerformanceReviews: PerformanceRecord[] = [];
   http = inject(HttpClient);
-  addUserForm: FormGroup; // FormGroup for adding a user
-  isAddFormVisible = false; // Flag to toggle Add User form
-  competencies: any[] = []; // Add this property to hold competencies
+  addUserForm: FormGroup;
+  isAddFormVisible = false;
+  competencies: any[] = [];
 
   constructor(private fb: FormBuilder) {
     this.addUserForm = this.fb.group({
@@ -48,8 +65,8 @@ export class PerformanceReviewTableComponent implements OnInit {
       departmentType: ['', Validators.required],
       startYear: ['', Validators.required],
       endYear: ['', Validators.required],
-      competencies: ['', Validators.required], // New control for competencies
-      goals: ['', Validators.required], // New control for goals
+      competencies: ['', Validators.required], // Control for selecting competencies
+      goals: ['', Validators.required], // Control for entering goals
     });
   }
 
@@ -60,7 +77,6 @@ export class PerformanceReviewTableComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Fetch performance reviews
     this.performanceReviews$.subscribe(
       (data: any) => {
         if (data && data.data) {
@@ -73,8 +89,6 @@ export class PerformanceReviewTableComponent implements OnInit {
         console.error('Error fetching performance reviews:', error);
       }
     );
-
-    // Fetch competencies
     this.getCompetencies();
   }
 
@@ -92,18 +106,18 @@ export class PerformanceReviewTableComponent implements OnInit {
   }
 
   openAddUserForm() {
-    this.isAddFormVisible = true; // Show the form when the button is clicked
+    this.isAddFormVisible = true;
   }
 
   onSubmit() {
     if (this.addUserForm.valid) {
       const newRecord = this.addUserForm.value;
-      console.log('Form Validity:', this.addUserForm.valid); // Check if the form is valid
-      console.log('Form Control Status:', this.addUserForm.controls); // Check each control's status
+      console.log('Form Data being sent:', newRecord);
+
       // Construct competencies and goals
       const competencies = [
         {
-          competencyId: newRecord.competencies, // Competency ID
+          competencyId: newRecord.competencies,
           orderNo: 1,
           weight: 5,
         },
@@ -112,9 +126,9 @@ export class PerformanceReviewTableComponent implements OnInit {
       const goals = [
         {
           orderNo: 1,
-          goals: newRecord.goals, // Goal details from form
+          goals: newRecord.goals,
           weight: 10,
-          date: new Date().toISOString().split('T')[0], // Current date in YYYY-MM-DD format
+          date: new Date().toISOString().split('T')[0],
           measure1: 'string',
           measure2: 'string',
           measure3: 'string',
@@ -127,35 +141,27 @@ export class PerformanceReviewTableComponent implements OnInit {
         departmentType: newRecord.departmentType,
         startYear: newRecord.startYear,
         endYear: newRecord.endYear,
-        startDate: new Date().toISOString().split('T')[0], // Current date in YYYY-MM-DD format
-        endDate: new Date().toISOString().split('T')[0], // Current date in YYYY-MM-DD format
-        employeeId: '3fa85f64-5717-4562-b3fc-2c963f66afa6', // Example employee ID
-        supervisorId: '3fa85f64-5717-4562-b3fc-2c963f66afa6', // Example supervisor ID
+        startDate: new Date().toISOString().split('T')[0],
+        endDate: new Date().toISOString().split('T')[0],
+        employeeId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        supervisorId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
         goals: goals,
         competencies: competencies,
       };
 
-      console.log('Form Data being sent:', performanceData); // Log the data being sent to the backend
-
-      // Send the data to the backend
       this.http
-        .post<any>(
-          'https://localhost:7012/performance-reviews',
-          performanceData
-        )
+        .post<any>('https://localhost:7012/performance-reviews', performanceData)
         .subscribe({
           next: (response) => {
             console.log('Response from server:', response);
-            this.performanceReviews.push(response); // Add the new record to the table
-            this.allPerformanceReviews.push(response); // Add to the all records list
+            this.performanceReviews.push(response);
+            this.allPerformanceReviews.push(response);
             this.isAddFormVisible = false;
-            this.addUserForm.reset(); // Reset the form after submission
+            this.addUserForm.reset();
           },
           error: (err) => {
             console.error('Error adding record:', err);
-            alert(
-              'Failed to add the record. Please check the console for more details.'
-            );
+            alert('Failed to add the record. Please check the console for more details.');
           },
         });
     } else {
@@ -170,7 +176,6 @@ export class PerformanceReviewTableComponent implements OnInit {
         .delete<any>(`https://localhost:7012/performance-reviews/${id}`)
         .subscribe({
           next: () => {
-            // Remove the record from the local array
             this.performanceReviews = this.performanceReviews.filter(
               (record) => record.id !== id
             );
@@ -187,12 +192,11 @@ export class PerformanceReviewTableComponent implements OnInit {
   }
 
   private getCompetencies(): void {
-    // The HTTP call should return an observable
     this.http.get<any>('https://localhost:7012/lookup/competencies').subscribe(
       (competencyData) => {
         if (competencyData && competencyData.data) {
-          this.competencies = competencyData.data; // Store the competencies data
-          console.log('Competencies:', this.competencies); // Log competencies data
+          this.competencies = competencyData.data;
+          console.log('Competencies:', this.competencies);
         }
       },
       (error) => {
