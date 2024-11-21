@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SideNavComponent } from './components/side-nav/side-nav.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, SideNavComponent],
+  imports: [RouterOutlet, SideNavComponent, ReactiveFormsModule],
   template: `
 <div class="flex h-screen">
   <!-- Side Navigation -->
