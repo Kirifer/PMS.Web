@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { AddPerformanceReviewComponent } from './add-performance-review.component';
 
 @Component({
-  selector: 'app-table',
+  selector: 'app-table-goals',
   standalone: true,
   imports: [FormsModule, CommonModule],
   template: `
@@ -62,6 +63,9 @@ import { FormsModule } from '@angular/forms';
   `,
   styles: [],
 })
-export class TableComponent {
+export class TableGoalsComponent {
   rows = new Array(5); 
+
+
+  
 }

@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AddPerformanceReviewComponent } from './add-performance-review.component';
 
 interface PerformanceRecord {
   id: string;
@@ -48,6 +49,7 @@ interface Competency {
     LucideAngularModule,
     HttpClientModule,
     CommonModule,
+    AddPerformanceReviewComponent, 
   ],
   templateUrl: './performance-rev.html',
 })
@@ -235,4 +237,14 @@ export class PerformanceReviewTableComponent implements OnInit {
     'Supervisor',
     'Actions',
   ];
+
+  isDialogOpen = false;
+
+  openDialog() {
+    this.isDialogOpen = true;
+  }
+
+  closeDialog() {
+    this.isDialogOpen = false;
+  }
 }
