@@ -113,6 +113,50 @@
   </form>
 </div>
 
+<!-- Edit Form -->
+<div *ngIf="isEditFormVisible" class="mb-4">
+  <form [formGroup]="editUserForm" (ngSubmit)="onSubmit()">
+    <div class="mb-2">
+      <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+      <input formControlName="name" id="name" type="text" class="mt-1 p-2 border rounded-lg" />
+    </div>
+    <div class="mb-2">
+      <label for="departmentType" class="block text-sm font-medium text-gray-700">Department Type</label>
+      <input formControlName="departmentType" id="departmentType" type="text" class="mt-1 p-2 border rounded-lg" />
+    </div>
+    <div class="mb-2">
+      <label for="startYear" class="block text-sm font-medium text-gray-700">Start Year</label>
+      <input formControlName="startYear" id="startYear" type="number" class="mt-1 p-2 border rounded-lg" />
+    </div>
+    <div class="mb-2">
+      <label for="endYear" class="block text-sm font-medium text-gray-700">End Year</label>
+      <input formControlName="endYear" id="endYear" type="number" class="mt-1 p-2 border rounded-lg" />
+    </div>
+    <!-- Competencies Input Field -->
+    <div class="mb-2">
+      <label for="competencies" class="block text-sm font-medium text-gray-700">Competencies (ID)</label>
+      <input
+        formControlName="competencies"
+        id="competencies"
+        type="text"
+        class="mt-1 p-2 border rounded-lg"
+        placeholder="Enter competency ID"
+        (keyup)="applyFilter($event)"
+      />
+    </div>
+    <!-- Add Goals -->
+    <div class="mb-2">
+      <label for="goals" class="block text-sm font-medium text-gray-700">Goals</label>
+      <input formControlName="goals" id="goals" type="text" class="mt-1 p-2 border rounded-lg" placeholder="Enter goal details" />
+    </div>
+
+    <button type="submit" class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600">
+      Add Record
+    </button>
+  </form>
+</div>
+
+
 <div class="overflow-x-auto bg-white rounded-lg shadow-lg">
   <table class="min-w-full divide-y divide-gray-200">
     <thead class="bg-gray-50">
@@ -149,7 +193,7 @@
           {{ record.supervisorId }}
         </td>
         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-          <button class="text-indigo-600 hover:text-indigo-900 mr-3">
+          <button class="text-indigo-600 hover:text-indigo-900 mr-3" (click)="openEditForm(record)">
             <i-lucide [img]="Edit" class="w-5 h-5" ></i-lucide>
           </button>
           <button

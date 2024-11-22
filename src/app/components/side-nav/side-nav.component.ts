@@ -97,6 +97,7 @@ export class SideNavComponent implements OnInit {
     { icon: this.HouseIcon, label: 'Home', link: '/dashboard' },
     { icon: this.UsersIcon, label: 'Users', link: '/users' },
     { icon: this.TicketIcon, label: 'Performance Review', link: '/perf-rev' },
+    { icon: this.TicketIcon, label: 'Performance Review 2', link: '/perf-rev-2' },
   ];
 
   ngOnInit() {

@@ -1,5 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { NgFor } from '@angular/common';
+// import { MatDialog } from '@angular/material/dialog';
 import { LucideAngularModule, Edit, Trash } from 'lucide-angular';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -62,6 +63,9 @@ export class PerformanceReviewTableComponent implements OnInit {
   addUserForm: FormGroup; 
   isAddFormVisible = false; 
   competencies: any[] = []; 
+  editUserForm: FormGroup; 
+  isEditFormVisible = false; 
+
   
   constructor(private fb: FormBuilder) {
     this.addUserForm = this.fb.group({
@@ -73,8 +77,18 @@ export class PerformanceReviewTableComponent implements OnInit {
       goals: ['', Validators.required], 
     });
   
+    // Initialize the edit user form
+    this.editUserForm = this.fb.group({
+      name: ['', Validators.required],
+      departmentType: ['', Validators.required],
+      startYear: ['', [Validators.required, Validators.min(1900)]],
+      endYear: ['', [Validators.required, Validators.min(1900)]],
+      competencies: ['', Validators.required],  // Ensure competencies is required
+      goals: ['', Validators.required],
+    });
+    
   }
-
+  
 
   performanceReviews$ = this.getPerformanceReviews();
 
@@ -130,7 +144,68 @@ export class PerformanceReviewTableComponent implements OnInit {
     this.isAddFormVisible = true; // Show the form when the button is clicked
   }
 
+  openEditForm(record: PerformanceRecord) {
+    this.editRecordId = record.id;
+    this.editUserForm.patchValue({
+      name: record.name,
+      departmentType: record.departmentType,
+      startYear: record.startYear,
+      endYear: record.endYear,
+      competencies: record.competencies.map(comp => comp.competencyId),  // Pre-fill competencies
+      goals: record.goals,  // Assuming goals are handled similarly
+    });
+    this.isEditFormVisible = true;
+  }
 
+  cancelEdit() {
+    this.isEditFormVisible = false;
+    this.editUserForm.reset();
+    this.editRecordId = null;
+  }
+
+  onEditSubmit() {
+    console.log('Form Values:', this.editUserForm.value); // Log the form values
+  
+    if (this.editUserForm.valid && this.editRecordId) {
+      const updatedRecord = {
+        ...this.editUserForm.value,
+        id: this.editRecordId,
+      };
+  
+      // Ensure competencies are populated correctly as an array of competency IDs
+      const competencies = updatedRecord.competencies?.map((competencyId: string) => ({
+        competencyId,  // Use competencyId as string
+        orderNo: 1,    // Example orderNo
+        weight: 5,     // Example weight
+      }));
+      
+      
+
+      const updatedData = { ...updatedRecord, competencies };
+  
+      console.log('Updated Record:', updatedData); // Log the updated data
+  
+      this.http.put<any>(`https://localhost:7012/performance-reviews/${this.editRecordId}`, updatedData)
+        .subscribe({
+          next: (response) => {
+            console.log('Record successfully updated:', response);
+            this.performanceReviews = this.performanceReviews.map(record =>
+              record.id === this.editRecordId ? { ...record, ...updatedData } : record
+            );
+            alert('Record updated successfully!');
+          },
+          error: (error) => {
+            console.error('Error updating record:', error);
+            alert('Failed to update the record. Please try again.');
+          },
+        });
+    } else {
+      console.error('Edit Form is invalid or record ID is missing:', this.editUserForm.errors);
+      alert('Please fill out all required fields.');
+    }
+  }
+  
+  
   onSubmit() {
     if (this.addUserForm.valid) {
       const newRecord = this.addUserForm.value;
