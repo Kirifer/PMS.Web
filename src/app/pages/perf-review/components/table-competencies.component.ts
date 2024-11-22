@@ -95,7 +95,6 @@ export class TableCompetenciesComponent {
       (competencyData) => {
         if (competencyData && competencyData.data) {
           this.competencies = competencyData.data;
-
           // Extract unique competencies
           this.competencyOptions = [
             ...new Set(this.competencies.map((item: any) => item.competency)),

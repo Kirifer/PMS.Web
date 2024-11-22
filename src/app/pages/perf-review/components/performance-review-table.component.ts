@@ -3,7 +3,6 @@ import { NgFor } from '@angular/common';
 import { LucideAngularModule, Edit, Trash } from 'lucide-angular';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AddPerformanceReviewComponent } from './add-performance-review.component';
@@ -37,6 +36,15 @@ interface Competency {
   competencyId: string;
   orderNo: number;
   weight: number;
+  competency: competency;
+}
+
+interface competency {
+  id: string;
+  description: string;
+  competency: string;
+  level: string;
+  isActive: boolean;
 }
 
 @Component({
@@ -52,7 +60,6 @@ interface Competency {
   ],
   template: `<div class="flex justify-between items-center mb-6">
       <input
-        matInput
         (keyup)="applyFilter($event)"
         placeholder="Search records"
         #input
@@ -60,7 +67,8 @@ interface Competency {
       />
       <!-- Add Record Button -->
       <button
-        class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300"
+        (click)="openDialog()"
+        class="px-4 py-2 bg-blue-500 rounded-md text-white hover:bg-blue-600"
       >
         Add Record
       </button>
@@ -115,14 +123,6 @@ interface Competency {
           </tr>
         </tbody>
       </table>
-      <div class="p-6">
-        <button
-          (click)="openDialog()"
-          class="px-4 py-2 bg-blue-500 rounded-md text-white hover:bg-blue-600"
-        >
-          Open Dialog
-        </button>
-      </div>
       <app-add-performance-review
         *ngIf="isDialogOpen"
         (close)="closeDialog()"
@@ -147,28 +147,11 @@ export class PerformanceReviewTableComponent implements OnInit {
         if (data && data.data) {
           this.performanceReviews = data.data;
           this.allPerformanceReviews = [...this.performanceReviews];
-          console.log('Performance Review Data:', this.performanceReviews);
+          console.log('Performance Review Data:', this.performanceReviews[0].competencies[0].competency.description);
         }
       },
       (error) => {
         console.error('Error fetching performance reviews:', error);
-      }
-    );
-    this.getCompetencies();
-  }
-
-  private getCompetencies(): void {
-    this.http.get<any>('https://localhost:7012/lookup/competencies').subscribe(
-      (competencyData) => {
-        if (competencyData && competencyData.data) {
-          this.competencies = competencyData.data.map(
-            (competency: { id: string }) => competency.id
-          );
-          console.log('Competency IDs:', this.competencies);
-        }
-      },
-      (error) => {
-        console.error('Error fetching competencies:', error);
       }
     );
   }

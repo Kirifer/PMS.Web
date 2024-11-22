@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { NgFor } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { LucideAngularModule, Edit, Trash, Table } from 'lucide-angular';
@@ -9,8 +9,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { EventEmitter, Output } from '@angular/core';
 import { TableCompetenciesComponent } from './table-competencies.component';
-import { TableGoalsComponent } from "./table-goals.component";
-import { FormEmployeeComponent } from "./form-employee.component";
+import { TableGoalsComponent } from './table-goals.component';
+import { FormEmployeeComponent } from './form-employee.component';
 
 @Component({
   selector: 'app-add-performance-review',
@@ -22,8 +22,8 @@ import { FormEmployeeComponent } from "./form-employee.component";
     CommonModule,
     TableCompetenciesComponent,
     TableGoalsComponent,
-    FormEmployeeComponent
-],
+    FormEmployeeComponent,
+  ],
   template: `
     <div
       class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50"
@@ -58,10 +58,10 @@ import { FormEmployeeComponent } from "./form-employee.component";
         <!-- Tab Content -->
         <div class="mt-4">
           <ng-container *ngIf="activeTab === 0">
-          <app-form-employee/>
+            <app-form-employee />
           </ng-container>
           <ng-container *ngIf="activeTab === 1">
-          <app-table-goals />
+            <app-table-goals />
           </ng-container>
           <ng-container *ngIf="activeTab === 2">
             <app-table-competencies />
@@ -80,6 +80,7 @@ import { FormEmployeeComponent } from "./form-employee.component";
             Cancel
           </button>
           <button
+            (click)="submitForm()"
             class="px-4 py-2 bg-blue-500 rounded-md text-white hover:bg-blue-600"
           >
             Confirm
@@ -90,7 +91,10 @@ import { FormEmployeeComponent } from "./form-employee.component";
   `,
 })
 export class AddPerformanceReviewComponent {
-  @Output() close = new EventEmitter<void>();
+  @ViewChild(FormEmployeeComponent) formEmployee!: FormEmployeeComponent;
+  @ViewChild(TableGoalsComponent) tableGoals!: TableGoalsComponent;
+  @ViewChild(TableCompetenciesComponent)
+  tableCompetencies!: TableCompetenciesComponent;
 
   tabs = [
     { label: 'Employee Details' },
@@ -101,7 +105,24 @@ export class AddPerformanceReviewComponent {
 
   activeTab = 0;
 
+  @Output() close = new EventEmitter<void>();
+
   closeDialog() {
     this.close.emit();
+  }
+
+  // constructor(
+  //   private formSectionOne: FormEmployeeComponent,
+  //   private formSectionTwo: TableGoalsComponent,
+  //   private formSectionThree: TableCompetenciesComponent
+  // ) {}
+
+  submitForm() {
+    const formData = {
+      employee: this.formEmployee.getData(),
+      // goals: this.tableGoals.getData(),
+      // competencies: this.tableCompetencies.getData(),
+    };
+    console.log('test', formData);
   }
 }
