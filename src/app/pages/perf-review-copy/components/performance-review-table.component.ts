@@ -51,8 +51,6 @@ interface CompetencyDetails {
   isActive: boolean;
 }
 
-
-
 @Component({
   selector: 'app-performance-review-table',
   standalone: true,
@@ -265,32 +263,68 @@ interface CompetencyDetails {
     </div>
 
     <!-- Competency Section -->
-    <div *ngIf="competencies && competencies.length > 0" class="mb-4">
-      <h3 class="text-lg font-semibold">Competency</h3>
-      <div formArrayName="competencies">
-        <div *ngFor="let competency of competencies.controls; let i = index" [formGroupName]="i" class="mb-4">
-          <div class="mb-2">
-            <label for="competencyName{{i}}" class="block text-sm font-medium text-gray-700">Competency Name</label>
-            <input formControlName="competency" id="competencyName{{i}}" type="text" class="mt-1 p-2 border rounded-lg" placeholder="Enter competency name" />
-          </div>
+<div *ngIf="competencies && competencies.length > 0" class="mb-4">
+  <h3 class="text-lg font-semibold">Competency</h3>
+  <div formArrayName="competencies">
+    <div *ngFor="let competency of competencies.controls; let i = index" [formGroupName]="i" class="mb-4">
+      <!-- Competency ID -->
+      <div class="mb-2">
+        <label for="competencyId{{i}}" class="block text-sm font-medium text-gray-700">Competency ID</label>
+        <input 
+          formControlName="id" 
+          id="competencyId{{i}}" 
+          type="text" 
+          class="mt-1 p-2 border rounded-lg" 
+          placeholder="Enter competency ID" />
+      </div>
 
-          <div class="mb-2">
-            <label for="competencyLevel{{i}}" class="block text-sm font-medium text-gray-700">Competency Level</label>
-            <input formControlName="level" id="competencyLevel{{i}}" type="text" class="mt-1 p-2 border rounded-lg" placeholder="Enter competency level" />
-          </div>
+      <!-- Competency Name -->
+      <div class="mb-2">
+        <label for="competencyName{{i}}" class="block text-sm font-medium text-gray-700">Competency Name</label>
+        <input 
+          formControlName="competency" 
+          id="competencyName{{i}}" 
+          type="text" 
+          class="mt-1 p-2 border rounded-lg" 
+          placeholder="Enter competency name" />
+      </div>
 
-          <div class="mb-2">
-            <label for="competencyDescription{{i}}" class="block text-sm font-medium text-gray-700">Competency Description</label>
-            <input formControlName="description" id="competencyDescription{{i}}" type="text" class="mt-1 p-2 border rounded-lg" placeholder="Enter competency description" />
-          </div>
+      <!-- Competency Level -->
+      <div class="mb-2">
+        <label for="competencyLevel{{i}}" class="block text-sm font-medium text-gray-700">Competency Level</label>
+        <input 
+          formControlName="level" 
+          id="competencyLevel{{i}}" 
+          type="text" 
+          class="mt-1 p-2 border rounded-lg" 
+          placeholder="Enter competency level" />
+      </div>
 
-          <div class="mb-2">
-            <label for="competencyWeight{{i}}" class="block text-sm font-medium text-gray-700">Competency Weight</label>
-            <input formControlName="weight" id="competencyWeight{{i}}" type="number" class="mt-1 p-2 border rounded-lg" placeholder="Enter competency weight" />
-          </div>
-        </div>
+      <!-- Competency Description -->
+      <div class="mb-2">
+        <label for="competencyDescription{{i}}" class="block text-sm font-medium text-gray-700">Competency Description</label>
+        <input 
+          formControlName="description" 
+          id="competencyDescription{{i}}" 
+          type="text" 
+          class="mt-1 p-2 border rounded-lg" 
+          placeholder="Enter competency description" />
+      </div>
+
+      <!-- Competency Weight -->
+      <div class="mb-2">
+        <label for="competencyWeight{{i}}" class="block text-sm font-medium text-gray-700">Competency Weight</label>
+        <input 
+          formControlName="weight" 
+          id="competencyWeight{{i}}" 
+          type="number" 
+          class="mt-1 p-2 border rounded-lg" 
+          placeholder="Enter competency weight" />
       </div>
     </div>
+  </div>
+</div>
+
 
     <!-- Goals Section -->
     <div *ngIf="goals && goals.length > 0" class="mb-4">
@@ -473,15 +507,40 @@ export class PerformanceReviewTableComponent implements OnInit {
 
   setCompetencies(): void {
     const competenciesControl = this.editUserForm.get('competencies') as FormArray;
-    this.record.competencies.forEach(competency => {
-      competenciesControl.push(this.fb.group({
-        competency: [competency.competency.competency, Validators.required],
-        level: [competency.competency.level, Validators.required],
-        description: [competency.competency.description, Validators.required],
-        weight: [competency.weight, Validators.required]
-      }));
-    });
+  
+    if (competenciesControl) {
+      this.record.competencies.forEach((competency, index) => {
+        // Prepare the values to be added
+        const competencyData = {
+          id: competency.competencyId,
+          competency: competency.competency.competency,
+          level: competency.competency.level,
+          description: competency.competency.description,
+          weight: competency.weight,
+        };
+  
+        // Log the data being added
+        console.log(`Competency at index ${index}:`, competencyData);
+  
+        // Add the data to the FormArray
+        competenciesControl.push(
+          this.fb.group({
+            id: [competencyData.id, Validators.required],
+            competency: [competencyData.competency, Validators.required],
+            level: [competencyData.level, Validators.required],
+            description: [competencyData.description, Validators.required],
+            weight: [competencyData.weight, Validators.required],
+          })
+        );
+      });
+  
+      // Log the entire FormArray after adding all entries
+      console.log('Final Competencies FormArray:', competenciesControl.value);
+    } else {
+      console.error('Competencies FormArray not found in editUserForm');
+    }
   }
+  
 
   // SEARCH FUNCTION
   applyFilter(event: Event) {
@@ -523,7 +582,6 @@ export class PerformanceReviewTableComponent implements OnInit {
   }
 
   // GET METHODS
-  
   private getCompetencies(): void {
     this.http.get<any>('https://localhost:7012/lookup/competencies').subscribe(
       (competencyData) => {
@@ -545,76 +603,69 @@ export class PerformanceReviewTableComponent implements OnInit {
   
   // BUTTON FUNCITONS
   editRecord(record: PerformanceRecord) {
-  if (this.editUserForm.valid) {
-    const updatedRecord = this.editUserForm.value;
-
-    // Find the index of the record to be updated
-    const index = this.performanceReviews.findIndex(r => r.id === record.id);
-
-    if (index !== -1) {
-      // Prepare the updated performance review data
-      const updatedPerformanceReview = {
-        ...this.performanceReviews[index],
-        ...updatedRecord,
-        competencies: updatedRecord.competencies.map((comp: any) => ({
-          competencyId: comp.competencyId || this.performanceReviews[index].competencies[0].competency.id,  // Preserve existing competencyId
-          competency: {
-            id: comp.competencyId || this.performanceReviews[index].competencies[0].competency.id,  // Preserve existing competency ID
-            competency: comp.competency || this.performanceReviews[index].competencies[0].competency,  // Preserve existing competency name
+    if (this.editUserForm.valid) {
+      const updatedRecord = this.editUserForm.value;
+  
+      // Find the index of the record to be updated
+      const index = this.performanceReviews.findIndex(r => r.id === record.id);
+  
+      if (index !== -1) {
+        // Prepare the updated performance review data
+        const updatedPerformanceReview = {
+          ...this.performanceReviews[index],
+          ...updatedRecord,
+          competencies: updatedRecord.competencies.map((comp: any) => ({
+            // Only include competency.id instead of the whole competency object
+            competencyId: comp.competencyId || this.performanceReviews[index].competencies[0].competency.id,  // Preserve existing competencyId
+            competency: comp.competencyId || this.performanceReviews[index].competencies[0].competency.id,  // Use the competencyId directly
             level: comp.level || this.performanceReviews[index].competencies[0].competency.level,  // Preserve existing level
             description: comp.description || this.performanceReviews[index].competencies[0].competency.description,  // Preserve existing description
-            isActive: comp.isActive !== undefined ? comp.isActive : this.performanceReviews[index].competencies[0].competency.isActive, // Preserve existing isActive status
+            weight: comp.weight || this.performanceReviews[index].competencies[0].weight,  // Preserve existing weight
+          })),
+          goals: updatedRecord.goals.map((goal: any) => ({
+            id: goal.id || this.performanceReviews[index].goals[0].id,  // Preserve existing goal ID
+            orderNo: goal.orderNo || this.performanceReviews[index].goals[0].orderNo,  // Preserve existing orderNo
+            goals: goal.goals || this.performanceReviews[index].goals[0].goals,  // Preserve existing goal text
+            weight: goal.weight || this.performanceReviews[index].goals[0].weight,  // Preserve existing weight
+            date: goal.date || this.performanceReviews[index].goals[0].date,  // Preserve existing date
+            measure1: goal.measure1 || this.performanceReviews[index].goals[0].measure1,  // Preserve existing measure1
+            measure2: goal.measure2 || this.performanceReviews[index].goals[0].measure2,  // Preserve existing measure2
+            measure3: goal.measure3 || this.performanceReviews[index].goals[0].measure3,  // Preserve existing measure3
+            measure4: goal.measure4 || this.performanceReviews[index].goals[0].measure4,  // Preserve existing measure4
+          }))
+        };
+  
+        console.log('Updated Performance Review:', updatedPerformanceReview);
+  
+        this.http.put<any>(`https://localhost:7012/performance-reviews/${record.id}`, {
+          id: updatedPerformanceReview.id,
+          name: updatedPerformanceReview.name,
+          departmentType: updatedPerformanceReview.departmentType,
+          startYear: updatedPerformanceReview.startYear,
+          endYear: updatedPerformanceReview.endYear,
+          startDate: updatedPerformanceReview.startDate,
+          endDate: updatedPerformanceReview.endDate,
+          employeeId: updatedPerformanceReview.employeeId,
+          supervisorId: updatedPerformanceReview.supervisorId,
+          goals: updatedPerformanceReview.goals,
+          competencies: updatedPerformanceReview.competencies
+        })
+        .subscribe({
+          next: (response) => {
+            // Update the local performanceReviews array
+            this.allPerformanceReviews[index] = { ...updatedPerformanceReview };
+            this.isEditFormVisible = false;  // Close the form
           },
-          orderNo: comp.orderNo || this.performanceReviews[index].competencies[0].orderNo,  // Preserve existing orderNo
-          weight: comp.weight || this.performanceReviews[index].competencies[0].weight,  // Preserve existing weight
-        })),
-        goals: updatedRecord.goals.map((goal: any) => ({
-          id: goal.id || this.performanceReviews[index].goals[0].id,  // Preserve existing goal ID
-          orderNo: goal.orderNo || this.performanceReviews[index].goals[0].orderNo,  // Preserve existing orderNo
-          goals: goal.goals || this.performanceReviews[index].goals[0].goals,  // Preserve existing goal text
-          weight: goal.weight || this.performanceReviews[index].goals[0].weight,  // Preserve existing weight
-          date: goal.date || this.performanceReviews[index].goals[0].date,  // Preserve existing date
-          measure1: goal.measure1 || this.performanceReviews[index].goals[0].measure1,  // Preserve existing measure1
-          measure2: goal.measure2 || this.performanceReviews[index].goals[0].measure2,  // Preserve existing measure2
-          measure3: goal.measure3 || this.performanceReviews[index].goals[0].measure3,  // Preserve existing measure3
-          measure4: goal.measure4 || this.performanceReviews[index].goals[0].measure4,  // Preserve existing measure4
-        }))
-      };
-
-      // Log the updated performance review before sending
-      console.log('Updated Performance Review:', updatedPerformanceReview);
-
-      // Send the updated record to the backend using PUT request
-      this.http.put<any>(`https://localhost:7012/performance-reviews/${record.id}`, {
-        id: updatedPerformanceReview.id,
-        name: updatedPerformanceReview.name,
-        departmentType: updatedPerformanceReview.departmentType,
-        startYear: updatedPerformanceReview.startYear,
-        endYear: updatedPerformanceReview.endYear,
-        startDate: updatedPerformanceReview.startDate,
-        endDate: updatedPerformanceReview.endDate,
-        employeeId: updatedPerformanceReview.employeeId,
-        supervisorId: updatedPerformanceReview.supervisorId,
-        goals: updatedPerformanceReview.goals,
-        competencies: updatedPerformanceReview.competencies
-      })
-      .subscribe({
-        next: (response) => {
-          // Update the local performanceReviews array
-          this.allPerformanceReviews[index] = { ...updatedPerformanceReview };
-          this.isEditFormVisible = false;  // Close the form
-        },
-        error: (err) => {
-          console.error('Error updating record:', err);
-          alert('Failed to update the record. Please try again.');
-        },
-      });
+          error: (err) => {
+            console.error('Error updating record:', err);
+            alert('Failed to update the record. Please try again.');
+          },
+        });
+      }
+    } else {
+      alert('Please fill out all required fields.');
     }
-  } else {
-    alert('Please fill out all required fields.');
   }
-}
-
   
 
   addRecord() {
@@ -622,7 +673,6 @@ export class PerformanceReviewTableComponent implements OnInit {
       const newRecord = this.addUserForm.value;
       console.log('Form Data being sent:', newRecord);
   
-      // Declare competencies and goals using the existing interfaces
       const competencies: Competency[] = [
         {
           competencyId: newRecord.competencies,
@@ -652,7 +702,6 @@ export class PerformanceReviewTableComponent implements OnInit {
         },
       ];
   
-      // Use the existing PerformanceRecord interface directly
       const performanceData: PerformanceRecord = {
         id: 'new-id', // Placeholder ID, use the actual ID if available
         name: newRecord.name,
@@ -760,30 +809,56 @@ export class PerformanceReviewTableComponent implements OnInit {
     this.record = record;
     this.isEditFormVisible = true;
   
+    console.log('Opening Edit Form with Record:', record);
+  
     // Create FormArray for competencies where each competency is a FormGroup
     const competenciesFormArray = this.fb.array(
-      record.competencies.map(comp => this.fb.group({
-        competency: [comp.competency.competency],  // Competency name
-        level: [comp.competency.level],            // Competency level
-        description: [comp.competency.description], // Competency description
-        weight: [comp.weight],                     // Competency weight
-      }))
+      record.competencies.map((comp, index) => {
+        console.log(`Competency ${index + 1}:`, {
+          id: comp.competency.id, // Use comp.competency.id
+          competency: comp.competency.competency,
+          level: comp.competency.level,
+          description: comp.competency.description,
+          weight: comp.weight,
+        });
+  
+        return this.fb.group({
+          id: [comp.competency.id],           // Use comp.competency.id for the ID
+          competency: [comp.competency.competency], // Competency name
+          level: [comp.competency.level],            // Competency level
+          description: [comp.competency.description], // Competency description
+          weight: [comp.weight],                     // Competency weight
+        });
+      })
     );
   
     this.editUserForm.setControl('competencies', competenciesFormArray);
   
     // Similarly handle goals if necessary
     const goalsFormArray = this.fb.array(
-      record.goals.map(goal => this.fb.group({
-        orderNo: [goal.orderNo],           // Goal order number
-        goals: [goal.goals],               // Goal description
-        weight: [goal.weight],             // Goal weight
-        date: [goal.date],                 // Goal date
-        measure1: [goal.measure1],         // Measure 1
-        measure2: [goal.measure2],         // Measure 2
-        measure3: [goal.measure3],         // Measure 3
-        measure4: [goal.measure4],         // Measure 4
-      }))
+      record.goals.map((goal, index) => {
+        console.log(`Goal ${index + 1}:`, {
+          orderNo: goal.orderNo,
+          goals: goal.goals,
+          weight: goal.weight,
+          date: goal.date,
+          measure1: goal.measure1,
+          measure2: goal.measure2,
+          measure3: goal.measure3,
+          measure4: goal.measure4,
+        });
+  
+        return this.fb.group({
+          orderNo: [goal.orderNo],           // Goal order number
+          goals: [goal.goals],               // Goal description
+          weight: [goal.weight],             // Goal weight
+          date: [goal.date],                 // Goal date
+          measure1: [goal.measure1],         // Measure 1
+          measure2: [goal.measure2],         // Measure 2
+          measure3: [goal.measure3],         // Measure 3
+          measure4: [goal.measure4],         // Measure 4
+        });
+      })
     );
   
     this.editUserForm.setControl('goals', goalsFormArray);
@@ -794,9 +869,13 @@ export class PerformanceReviewTableComponent implements OnInit {
       departmentType: record.departmentType,
       startYear: record.startYear,
       endYear: record.endYear,
-      goals: record.goals.map(goal => goal.goals).join(', ') // Example for goals field
+      goals: record.goals.map(goal => goal.goals).join(', '), // Example for goals field
     });
+  
+    // Log the full form values after patching
+    console.log('Form Values After Patch:', this.editUserForm.value);
   }
+  
   
   
   cancelEdit() {
