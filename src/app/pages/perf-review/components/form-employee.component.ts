@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms'; // Import FormsModule here
 import { CommonModule } from '@angular/common';
 
@@ -16,7 +16,7 @@ import { CommonModule } from '@angular/common';
           <input
             id="name"
             type="text"
-            [(ngModel)]="name"
+            [(ngModel)]="employeeData.name"
             name="name"
             class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
             placeholder="Enter employee's name"
@@ -28,7 +28,7 @@ import { CommonModule } from '@angular/common';
           <label for="department" class="text-gray-600 mb-2">Department</label>
           <select
             id="department"
-            [(ngModel)]="departmentType"
+            [(ngModel)]="employeeData.departmentType"
             name="departmentType"
             class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
           >
@@ -47,7 +47,7 @@ import { CommonModule } from '@angular/common';
           <label for="startYear" class="text-gray-600 mb-2">Start Year</label>
           <select
             id="startYear"
-            [(ngModel)]="startYear"
+            [(ngModel)]="employeeData.startYear"
             name="startYear"
             class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
           >
@@ -64,7 +64,7 @@ import { CommonModule } from '@angular/common';
           <input
             id="startDate"
             type="date"
-            [(ngModel)]="startDate"
+            [(ngModel)]="employeeData.startDate"
             name="startDate"
             (change)="onStartDateChange($event)"
             class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
@@ -76,7 +76,7 @@ import { CommonModule } from '@angular/common';
           <label for="endYear" class="text-gray-600 mb-2">End Year</label>
           <select
             id="endYear"
-            [(ngModel)]="endYear"
+            [(ngModel)]="employeeData.endYear"
             name="endYear"
             class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
           >
@@ -93,7 +93,7 @@ import { CommonModule } from '@angular/common';
           <input
             id="endDate"
             type="date"
-            [(ngModel)]="endDate"
+            [(ngModel)]="employeeData.endDate"
             name="endDate"
             (change)="onEndDateChange($event)"
             class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
@@ -108,7 +108,7 @@ import { CommonModule } from '@angular/common';
           <input
             id="supervisorId"
             type="text"
-            [(ngModel)]="supervisorId"
+            [(ngModel)]="employeeData.supervisorId"
             name="supervisorId"
             class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
             placeholder="Enter supervisor's ID"
@@ -120,28 +120,37 @@ import { CommonModule } from '@angular/common';
           <input
             id="activeSupervisor"
             type="checkbox"
-            [(ngModel)]="activeSupervisor"
+            [(ngModel)]="employeeData.activeSupervisor"
             name="activeSupervisor"
             class="mr-2"
           />
           <label for="activeSupervisor" class="text-gray-600"
             >Active Supervisor</label
           >
-        </div>  
+        </div>
       </div>
     </div>
   `,
   styles: [],
 })
 export class FormEmployeeComponent {
-  name: string = '';
-  departmentType: string = '';
-  startYear: string = '';
-  endYear: string = '';
-  supervisorId: string = '';
-  startDate: string = '';
-  endDate: string = '';
-  activeSupervisor: boolean = false;
+  @Input() employeeData: any;
+  @Output() startDateChange = new EventEmitter<string>();
+  @Output() endDateChange = new EventEmitter<string>();
+
+  onStartDateChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input && input.value) {
+      this.startDateChange.emit(input.value);
+    }
+  }
+
+  onEndDateChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input && input.value) {
+      this.endDateChange.emit(input.value);
+    }
+  }
 
   years = [2020, 2021, 2022, 2023, 2024, 2025];
 
@@ -157,30 +166,4 @@ export class FormEmployeeComponent {
     'Management',
     'TechnicalSupport',
   ];
-
-  onStartDateChange(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input && input.value) {
-      this.startDate = input.value;
-    }
-  }
-
-  onEndDateChange(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input && input.value) {
-      this.endDate = input.value;
-    }
-  }
-  getData() {
-    return {
-      name: this.name,
-      departmentType: this.departmentType,
-      startYear: this.startYear,
-      endYear: this.endYear,
-      supervisorId: this.supervisorId,
-      startDate: this.startDate,
-      endDate: this.endDate,
-      activeSupervisor: this.activeSupervisor,
-    };
-  }
 }

@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AddPerformanceReviewComponent } from './add-performance-review.component';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -22,6 +21,11 @@ import { HttpClient } from '@angular/common/http';
               class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
             >
               Competencies
+            </th>
+            <th
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+            >
+              Weight
             </th>
             <th
               class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
@@ -55,7 +59,11 @@ import { HttpClient } from '@angular/common/http';
                 </option>
               </select>
             </td>
-
+            <input
+              type="number"
+              class="w-full p-1 border rounded text-sm mt-[15px]"
+              [(ngModel)]="row.weight"
+            />
             <!-- Level Dropdown -->
             <td class="px-6 py-4 text-sm text-gray-900">
               <select
@@ -82,6 +90,7 @@ import { HttpClient } from '@angular/common/http';
   styles: [],
 })
 export class TableCompetenciesComponent {
+  @Input() competencyData: any[] = [];
   rows: any[] = [];
   competencies: any[] = []; // Full competency data from API
   competencyOptions: string[] = []; // Unique competencies
@@ -95,17 +104,18 @@ export class TableCompetenciesComponent {
       (competencyData) => {
         if (competencyData && competencyData.data) {
           this.competencies = competencyData.data;
-          // Extract unique competencies
+
           this.competencyOptions = [
             ...new Set(this.competencies.map((item: any) => item.competency)),
           ];
 
-          // Initialize rows with default data and independent level options
-          this.rows = Array.from({ length: 5 }, () => ({
+          this.rows = Array.from({ length: 5 }, (_, index) => ({
             competency: '',
+            competencyId: '',
             level: '',
+            weight: 0, // Ensure weight is initialized here
+            orderNo: index + 1, // Add order number here
             description: '',
-            levelOptions: [],
           }));
         }
       },
@@ -115,19 +125,37 @@ export class TableCompetenciesComponent {
     );
   }
 
+  @Output() competencyChange = new EventEmitter<any[]>();
+
+  emitCompetencyChange() {
+    // Ensure 'weight' is passed along with 'competencyId' and 'orderNo'
+    const filteredRows = this.rows.map((row) => ({
+      competencyId: row.competencyId,
+      weight: row.weight, // Pass weight
+      orderNo: row.orderNo, // Include order number
+    }));
+    this.competencyChange.emit(filteredRows); // Emit the filtered data
+  }
+
   updateDescription(row: any): void {
-    // Find the matching description based on competency and level
     const match = this.competencies.find(
       (item) => item.competency === row.competency && item.level === row.level
     );
 
-    row.description = match ? match.description : 'No description available';
+    if (match) {
+      row.description = match.description;
+      row.competencyId = match.id;
+    } else {
+      row.description = 'No description available';
+      row.competencyId = null;
+    }
+
+    this.emitCompetencyChange(); // Emit updated competency data
   }
 
   updateLevels(row: any): void {
-    // Update available levels for the current row based on selected competency
-    row.level = ''; // Reset level when competency changes
-    row.description = ''; // Reset description
+    row.level = '';
+    row.description = '';
     row.levelOptions = [
       ...new Set(
         this.competencies
@@ -135,5 +163,7 @@ export class TableCompetenciesComponent {
           .map((item: any) => item.level)
       ),
     ];
+
+    this.emitCompetencyChange(); // Emit updated competency data
   }
 }

@@ -1,12 +1,8 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
-import { NgFor } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
-import { LucideAngularModule, Edit, Trash, Table } from 'lucide-angular';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { LucideAngularModule } from 'lucide-angular';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { EventEmitter, Output } from '@angular/core';
 import { TableCompetenciesComponent } from './table-competencies.component';
 import { TableGoalsComponent } from './table-goals.component';
@@ -28,7 +24,7 @@ import { FormEmployeeComponent } from './form-employee.component';
     <div
       class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50"
     >
-      <div class="bg-white rounded-lg shadow-lg max-w-4xl w-full p-6">
+      <div class="bg-white rounded-lg shadow-lg  w-full p-6">
         <!-- Dialog Header -->
         <div class="flex justify-between items-center">
           <h2 class="text-lg font-semibold text-gray-800">Add a Record</h2>
@@ -58,13 +54,24 @@ import { FormEmployeeComponent } from './form-employee.component';
         <!-- Tab Content -->
         <div class="mt-4">
           <ng-container *ngIf="activeTab === 0">
-            <app-form-employee />
+            <app-form-employee
+              [employeeData]="employeeData"
+              (startDateChange)="onStartDateChange($event)"
+              (endDateChange)="onEndDateChange($event)"
+            />
           </ng-container>
           <ng-container *ngIf="activeTab === 1">
-            <app-table-goals />
+            <app-table-goals
+              [goalsData]="goalsData"
+              [startDate]="employee.startDate"
+              [endDate]="employee.endDate"
+            />
           </ng-container>
           <ng-container *ngIf="activeTab === 2">
-            <app-table-competencies />
+            <app-table-competencies
+              [competencyData]="competencyData"
+              (competencyChange)="onRowsChange($event)"
+            />
           </ng-container>
           <ng-container *ngIf="activeTab === 3">
             <p>Content for Tab 4</p>
@@ -91,11 +98,102 @@ import { FormEmployeeComponent } from './form-employee.component';
   `,
 })
 export class AddPerformanceReviewComponent {
-  @ViewChild(FormEmployeeComponent) formEmployee!: FormEmployeeComponent;
-  @ViewChild(TableGoalsComponent) tableGoals!: TableGoalsComponent;
-  @ViewChild(TableCompetenciesComponent)
-  tableCompetencies!: TableCompetenciesComponent;
+  @Output() close = new EventEmitter<void>();
+  employee = {
+    startDate: '',
+    endDate: '',
+  };
+  employeeData = {
+    name: '',
+    departmentType: '',
+    startYear: '',
+    endYear: '',
+    supervisorId: '',
+    startDate: '',
+    endDate: '',
+    activeSupervisor: false,
+  };
+  competencyData = [
+    {
+      competencyId: '',
+      orderNo: 1,
+      weight: 0,
+    },
+    {
+      competencyId: '',
+      orderNo: 2,
+      weight: 0,
+    },
+    {
+      competencyId: '',
+      orderNo: 3,
+      weight: 0,
+    },
+    {
+      competencyId: '',
+      orderNo: 4,
+      weight: 0,
+    },
+    {
+      competencyId: '',
+      orderNo: 5,
+      weight: 0,
+    },
+  ];
+  goalsData = [
+    {
+      orderNo: 1,
+      goals: '',
+      weight: 0,
+      date: '',
+      measure4: '',
+      measure3: '',
+      measure2: '',
+      measure1: '',
+    },
+    {
+      orderNo: 2,
+      goals: '',
+      weight: 0,
+      date: '',
+      measure4: '',
+      measure3: '',
+      measure2: '',
+      measure1: '',
+    },
+    {
+      orderNo: 3,
+      goals: '',
+      weight: 0,
+      date: '',
+      measure4: '',
+      measure3: '',
+      measure2: '',
+      measure1: '',
+    },
+    {
+      orderNo: 4,
+      goals: '',
+      weight: 0,
+      date: '',
+      measure4: '',
+      measure3: '',
+      measure2: '',
+      measure1: '',
+    },
+    {
+      orderNo: 5,
+      goals: '',
+      weight: 0,
+      date: '',
+      measure4: '',
+      measure3: '',
+      measure2: '',
+      measure1: '',
+    },
+  ];
 
+  activeTab = 0;
   tabs = [
     { label: 'Employee Details' },
     { label: 'Goals' },
@@ -103,26 +201,82 @@ export class AddPerformanceReviewComponent {
     { label: 'Confirmation' },
   ];
 
-  activeTab = 0;
+  onRowsChange(updatedRows: any[]) {
+    this.competencyData = updatedRows; // Update competency data here
+  }
 
-  @Output() close = new EventEmitter<void>();
+
+  onStartDateChange(date: string) {
+    this.employee.startDate = date;
+    this.updateGoalsDateRange();
+  }
+
+  onEndDateChange(date: string) {
+    this.employee.endDate = date;
+    this.updateGoalsDateRange();
+  }
+
+  updateGoalsDateRange() {
+    const dateRange = `${this.employee.startDate} - ${this.employee.endDate}`;
+    this.goalsData.forEach((goal) => {
+      goal.date = dateRange;
+    });
+  }
 
   closeDialog() {
     this.close.emit();
   }
 
-  // constructor(
-  //   private formSectionOne: FormEmployeeComponent,
-  //   private formSectionTwo: TableGoalsComponent,
-  //   private formSectionThree: TableCompetenciesComponent
-  // ) {}
+
+  constructor(private http: HttpClient) {}  // Inject HttpClient
+
+
+  formatDate(date: string): string {
+    if (!date) return '';
+    const formattedDate = new Date(date);
+    return formattedDate.toISOString().split('T')[0];  // Format to "YYYY-MM-DD"
+  }
 
   submitForm() {
-    const formData = {
-      employee: this.formEmployee.getData(),
-      // goals: this.tableGoals.getData(),
-      // competencies: this.tableCompetencies.getData(),
+    const startYear = new Date(this.employeeData.startDate).getFullYear() || 0;
+    const endYear = new Date(this.employeeData.endDate).getFullYear() || 0;
+    const Payload = {
+      name: this.employeeData.name || '',
+      departmentType: this.employeeData.departmentType || 'None',
+      startYear: startYear,
+      endYear: endYear,
+      startDate: this.formatDate(this.employeeData.startDate),  // Ensure correct date format
+      endDate: this.formatDate(this.employeeData.endDate),
+      employeeId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',  // Replace with actual employeeId if needed
+      supervisorId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',  // Replace with actual supervisorId if needed
+      goals: this.goalsData.map((goal: any) => ({
+        orderNo: goal.orderNo,
+        goals: goal.goals || '',
+        weight: goal.weight,
+        date: `${startYear}-${endYear}`,
+        measure4: goal.measure4 || '',
+        measure3: goal.measure3 || '',
+        measure2: goal.measure2 || '',
+        measure1: goal.measure1 || ''
+      })),
+      competencies: this.competencyData.map((competency: any) => ({
+        competencyId: competency.competencyId || '',  // Ensure competencyId is set
+        orderNo: competency.orderNo,
+        weight: competency.weight || 0  // Ensure weight is included
+      }))
     };
-    console.log('test', formData);
+    console.log('Payload:', Payload); 
+    // Make the POST request to the server
+    this.http.post<any>('https://localhost:7012/performance-reviews', Payload).subscribe(
+      (response) => {
+        console.log('Response from API:', response);
+        // Handle success (e.g., show a success message or navigate)
+      },
+      (error) => {
+        console.error('Error occurred:', error);
+        // Handle error (e.g., show an error message)
+      }
+    );
   }
+  
 }
