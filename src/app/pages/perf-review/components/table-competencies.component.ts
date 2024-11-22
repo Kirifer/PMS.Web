@@ -59,11 +59,13 @@ import { HttpClient } from '@angular/common/http';
                 </option>
               </select>
             </td>
-            <input
-              type="number"
-              class="w-full p-1 border rounded text-sm mt-[15px]"
-              [(ngModel)]="row.weight"
-            />
+            <td class="px-6 py-4 text-sm text-gray-900">
+              <input
+                type="number"
+                class="w-10 max-w-full border rounded text-sm"
+                [(ngModel)]="row.weight"
+              />
+            </td>
             <!-- Level Dropdown -->
             <td class="px-6 py-4 text-sm text-gray-900">
               <select
@@ -79,7 +81,7 @@ import { HttpClient } from '@angular/common/http';
             </td>
 
             <!-- Description -->
-            <td class="px-6 py-4 text-sm text-gray-900">
+            <td class="px-6 py-4 max-w-lg text-sm text-gray-900">
               {{ row.description || 'No description selected' }}
             </td>
           </tr>
