@@ -10,7 +10,7 @@ import { PerformanceReviewTableComponent } from './components/performance-review
       <div class="max-w-full mx-auto px-4">
         <div class="flex justify-between items-center mb-6">
           <h1 class="text-3xl font-semibold text-gray-900">
-            Performance Review
+            Performance Review 2
           </h1>
         </div>
 
