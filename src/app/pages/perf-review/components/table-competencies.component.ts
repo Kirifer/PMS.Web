@@ -109,7 +109,7 @@ export class TableCompetenciesComponent {
             ...new Set(this.competencies.map((item: any) => item.competency)),
           ];
 
-          this.rows = Array.from({ length: 5 }, (_, index) => ({
+          this.rows = Array.from({ length: 4 }, (_, index) => ({
             competency: '',
             competencyId: '',
             level: '',

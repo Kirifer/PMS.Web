@@ -135,12 +135,7 @@ export class AddPerformanceReviewComponent {
       competencyId: '',
       orderNo: 4,
       weight: 0,
-    },
-    {
-      competencyId: '',
-      orderNo: 5,
-      weight: 0,
-    },
+    }
   ];
   goalsData = [
     {
