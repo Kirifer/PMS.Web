@@ -11,6 +11,7 @@ import { EventEmitter, Output } from '@angular/core';
 import { TableCompetenciesComponent } from './table-competencies.component';
 import { TableGoalsComponent } from './table-goals.component';
 import { FormEmployeeComponent } from './form-employee.component';
+import { ConfirmationComponent } from "./confirmation.component";
 
 @Component({
   selector: 'app-add-performance-review',
@@ -23,7 +24,8 @@ import { FormEmployeeComponent } from './form-employee.component';
     TableCompetenciesComponent,
     TableGoalsComponent,
     FormEmployeeComponent,
-  ],
+    ConfirmationComponent
+],
   template: `
     <div
       class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50"
@@ -56,7 +58,7 @@ import { FormEmployeeComponent } from './form-employee.component';
         </div>
 
         <!-- Tab Content -->
-        <div class="mt-4">
+        <div class="mt-4 max-h-96 overflow-y-auto">
           <ng-container *ngIf="activeTab === 0">
             <app-form-employee />
           </ng-container>
@@ -67,7 +69,7 @@ import { FormEmployeeComponent } from './form-employee.component';
             <app-table-competencies />
           </ng-container>
           <ng-container *ngIf="activeTab === 3">
-            <p>Content for Tab 4</p>
+            <app-confirmation/>
           </ng-container>
         </div>
 

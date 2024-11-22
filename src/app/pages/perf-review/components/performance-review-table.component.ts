@@ -58,7 +58,7 @@ interface competency {
     CommonModule,
     AddPerformanceReviewComponent,
   ],
-  template: `<div class="flex justify-between items-center mb-6">
+  template: `<div  class="flex justify-between items-center mb-6">
       <input
         (keyup)="applyFilter($event)"
         placeholder="Search records"
