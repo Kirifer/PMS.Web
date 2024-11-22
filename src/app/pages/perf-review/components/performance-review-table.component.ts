@@ -81,11 +81,12 @@ export class PerformanceReviewTableComponent implements OnInit {
     this.editUserForm = this.fb.group({
       name: ['', Validators.required],
       departmentType: ['', Validators.required],
-      startYear: ['', Validators.required],
-      endYear: ['', Validators.required],
-      competencies: [[], Validators.required], // Same fields as add form, modify as needed
+      startYear: ['', [Validators.required, Validators.min(1900)]],
+      endYear: ['', [Validators.required, Validators.min(1900)]],
+      competencies: ['', Validators.required],  // Ensure competencies is required
       goals: ['', Validators.required],
     });
+    
   }
   
 
@@ -162,21 +163,24 @@ export class PerformanceReviewTableComponent implements OnInit {
     this.editRecordId = null;
   }
 
-  
   onEditSubmit() {
+    console.log('Form Values:', this.editUserForm.value); // Log the form values
+  
     if (this.editUserForm.valid && this.editRecordId) {
       const updatedRecord = {
         ...this.editUserForm.value,
         id: this.editRecordId,
       };
   
-      // Ensure competencies are populated correctly as an array of competency ids
-      const competencies = updatedRecord.competencies.map((competencyId: string) => ({
+      // Ensure competencies are populated correctly as an array of competency IDs
+      const competencies = updatedRecord.competencies?.map((competencyId: string) => ({
         competencyId,  // Use competencyId as string
         orderNo: 1,    // Example orderNo
         weight: 5,     // Example weight
       }));
-  
+      
+      
+
       const updatedData = { ...updatedRecord, competencies };
   
       console.log('Updated Record:', updatedData); // Log the updated data
@@ -200,6 +204,7 @@ export class PerformanceReviewTableComponent implements OnInit {
       alert('Please fill out all required fields.');
     }
   }
+  
   
   onSubmit() {
     if (this.addUserForm.valid) {
