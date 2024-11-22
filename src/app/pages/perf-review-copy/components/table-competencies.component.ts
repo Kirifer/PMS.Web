@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AddPerformanceReviewComponent } from './add-performance-review.component';
+// import { AddPerformanceReviewComponent } from './add-performance-review.component';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -117,7 +117,6 @@ export class TableCompetenciesComponent {
   }
 
   updateDescription(row: any): void {
-    // Find the matching description based on competency and level
     const match = this.competencies.find(
       (item) => item.competency === row.competency && item.level === row.level
     );
@@ -126,7 +125,6 @@ export class TableCompetenciesComponent {
   }
 
   updateLevels(row: any): void {
-    // Update available levels for the current row based on selected competency
     row.level = ''; // Reset level when competency changes
     row.description = ''; // Reset description
     row.levelOptions = [
