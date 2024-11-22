@@ -50,7 +50,84 @@ interface Competency {
     CommonModule,
     AddPerformanceReviewComponent,
   ],
-  templateUrl: './performance-rev.html',
+  template: `<div class="flex justify-between items-center mb-6">
+      <input
+        matInput
+        (keyup)="applyFilter($event)"
+        placeholder="Search records"
+        #input
+        class="px-4 py-2 border rounded-lg shadow-sm flex-grow mr-4"
+      />
+      <!-- Add Record Button -->
+      <button
+        class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300"
+      >
+        Add Record
+      </button>
+    </div>
+
+    <div class="overflow-x-auto bg-white rounded-lg shadow-lg">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th
+              *ngFor="let header of headers"
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              {{ header }}
+            </th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <tr *ngFor="let record of performanceReviews">
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              {{ record.id }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              {{ record.departmentType }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              {{ record.startYear }} - {{ record.endYear }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              {{ record.startDate }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              {{ record.endDate }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              {{ record.name }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              {{ record.supervisorId }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+              <button class="text-indigo-600 hover:text-indigo-900 mr-3">
+                <i-lucide [img]="Edit" class="w-5 h-5"></i-lucide>
+              </button>
+              <button
+                class="text-red-600 hover:text-red-900"
+                (click)="deleteRecord(record.id)"
+              >
+                <i-lucide [img]="Trash" class="w-5 h-5"></i-lucide>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="p-6">
+        <button
+          (click)="openDialog()"
+          class="px-4 py-2 bg-blue-500 rounded-md text-white hover:bg-blue-600"
+        >
+          Open Dialog
+        </button>
+      </div>
+      <app-add-performance-review
+        *ngIf="isDialogOpen"
+        (close)="closeDialog()"
+      />
+    </div> `,
 })
 export class PerformanceReviewTableComponent implements OnInit {
   performanceReviews: PerformanceRecord[] = [];
