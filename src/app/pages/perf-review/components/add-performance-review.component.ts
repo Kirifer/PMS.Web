@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 import { EventEmitter, Output } from '@angular/core';
 import { TableCompetenciesComponent } from './table-competencies.component';
 import { TableGoalsComponent } from "./table-goals.component";
-import { FormEmployeeComponent } from "./form-employee-component.ts";
+import { FormEmployeeComponent } from "./form-employee.component";
 
 @Component({
   selector: 'app-add-performance-review',
