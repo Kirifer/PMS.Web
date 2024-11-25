@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-table-competencies',
@@ -20,7 +19,7 @@ import { HttpClient } from '@angular/common/http';
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
-          <tr *ngFor="let row of rows; let i = index">
+          <tr *ngFor="let row of competencyData; let i = index">
             <td class="px-6 py-4 text-sm text-gray-900">{{ i + 1 }}</td>
             <td class="px-6 py-4 text-sm text-gray-900">
               <select [(ngModel)]="row.competency" (change)="updateLevels(row)" class="w-full p-1 border rounded text-sm">
@@ -29,7 +28,7 @@ import { HttpClient } from '@angular/common/http';
               </select>
             </td>
             <td class="px-6 py-4 text-sm text-gray-900">
-              <input type="number" class="w-10 max-w-full border rounded text-sm" [(ngModel)]="row.weight" />
+              <input type="number" class="w-10 max-w-full border rounded text-sm" [(ngModel)]="row.weight" (input)="emitCompetencyChange()" />
             </td>
             <td class="px-6 py-4 text-sm text-gray-900">
               <select [(ngModel)]="row.level" (change)="updateDescription(row)" class="w-full p-1 border rounded text-sm">
@@ -46,50 +45,17 @@ import { HttpClient } from '@angular/common/http';
     </div>
   `,
 })
-export class TableCompetenciesComponent {
+export class TableCompetenciesComponent implements OnInit {
   @Input() competencyData: any[] = [];
+  @Input() competencyOptions: string[] = [];
+  @Input() competencies: any[] = [];
   @Output() competencyChange = new EventEmitter<any[]>();
-
-  rows: any[] = [];
-  competencies: any[] = [];
-  competencyOptions: string[] = [];
-
-  constructor(private http: HttpClient) {
-    this.fetchCompetencies();
+  ngOnInit(): void {
+    console.log('Initial competencyData:', this.competencyOptions);
   }
 
-  private fetchCompetencies(): void {
-    this.http.get<any>('https://localhost:7012/lookup/competencies').subscribe(
-      (data) => {
-        if (data?.data) {
-          this.competencies = data.data;
-          this.competencyOptions = [...new Set(this.competencies.map((item) => item.competency))];
-          this.initializeRows();
-        }
-      },
-      (error) => console.error('Error fetching competencies:', error)
-    );
-  }
-
-  private initializeRows(): void {
-    this.rows = Array(4).fill(null).map((_, index) => ({
-      competency: '',
-      competencyId: '',
-      level: '',
-      weight: 0,
-      orderNo: index + 1,
-      description: '',
-    }));
-  }
-
-  private emitCompetencyChange(): void {
-    this.competencyChange.emit(
-      this.rows.map((row) => ({
-        competencyId: row.competencyId,
-        weight: row.weight,
-        orderNo: row.orderNo,
-      }))
-    );
+  emitCompetencyChange(): void {
+    this.competencyChange.emit(this.competencyData);
   }
 
   updateLevels(row: any): void {

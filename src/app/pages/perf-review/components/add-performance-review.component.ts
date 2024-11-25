@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LucideAngularModule } from 'lucide-angular';
@@ -72,11 +72,17 @@ import { ConfirmationComponent } from './confirmation.component';
           <ng-container *ngIf="activeTab === 2">
             <app-table-competencies
               [competencyData]="competencyData"
+              [competencies]="competencies"
+              [competencyOptions]="competencyOptions"
               (competencyChange)="onRowsChange($event)"
             />
           </ng-container>
           <ng-container *ngIf="activeTab === 3">
-            <app-confirmation />
+            <app-confirmation
+              [employeeData]="employeeData"
+              [goalsData]="goalsData"
+              [competencyData]="competencyData"
+            />
           </ng-container>
         </div>
 
@@ -99,7 +105,7 @@ import { ConfirmationComponent } from './confirmation.component';
     </div>
   `,
 })
-export class AddPerformanceReviewComponent {
+export class AddPerformanceReviewComponent implements OnInit{
   @Output() close = new EventEmitter<void>();
   employee = {
     startDate: '',
@@ -137,6 +143,8 @@ export class AddPerformanceReviewComponent {
       weight: 0,
     },
   ];
+  competencies: { competency: string }[] = [];
+  competencyOptions: any[] = [];
   goalsData = [
     {
       orderNo: 1,
@@ -225,10 +233,31 @@ export class AddPerformanceReviewComponent {
 
   constructor(private http: HttpClient) {}
 
+  ngOnInit(): void {
+    // Call fetchCompetencies when the component is initialized
+    this.fetchCompetencies();
+  }
+
   formatDate(date: string): string {
     if (!date) return '';
     const formattedDate = new Date(date);
     return formattedDate.toISOString().split('T')[0];
+  }
+
+  fetchCompetencies(): void {
+    this.http.get<any>('https://localhost:7012/lookup/competencies').subscribe(
+      (data) => {
+        if (data?.data) {
+          this.competencies = data.data;
+          this.competencyOptions = [
+            ...new Set(this.competencies.map((item) => item.competency)),
+          ];
+          console.log('Fetched competencies:', this.competencies); // Log the fetched data
+          console.log('Competency options:', this.competencyOptions); // Log the unique competency options
+        }
+      },
+      (error) => console.error('Error fetching competencies:', error)
+    );
   }
 
   submitForm() {
@@ -239,10 +268,10 @@ export class AddPerformanceReviewComponent {
       departmentType: this.employeeData.departmentType || 'None',
       startYear: startYear,
       endYear: endYear,
-      startDate: this.formatDate(this.employeeData.startDate), 
+      startDate: this.formatDate(this.employeeData.startDate),
       endDate: this.formatDate(this.employeeData.endDate),
-      employeeId: '3fa85f64-5717-4562-b3fc-2c963f66afa6', 
-      supervisorId: '3fa85f64-5717-4562-b3fc-2c963f66afa6', 
+      employeeId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      supervisorId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
       goals: this.goalsData.map((goal: any) => ({
         orderNo: goal.orderNo,
         goals: goal.goals || '',
@@ -254,9 +283,9 @@ export class AddPerformanceReviewComponent {
         measure1: goal.measure1 || '',
       })),
       competencies: this.competencyData.map((competency: any) => ({
-        competencyId: competency.competencyId || '', 
+        competencyId: competency.competencyId || '',
         orderNo: competency.orderNo,
-        weight: competency.weight || 0, 
+        weight: competency.weight || 0,
       })),
     };
     console.log('Payload:', Payload);
