@@ -43,9 +43,11 @@ import { ConfirmationComponent } from './confirmation.component';
           <ul class="flex justify-between space-x-4">
             <li
               *ngFor="let tab of tabs; let i = index"
-              (click)="activeTab = i"
+              (click)="tabC(i)"
               [class.border-blue-500]="activeTab === i"
               [class.text-blue-500]="activeTab === i"
+              [class.cursor-pointer]="isTabC[i]"
+              [class.cursor-not-allowed]="!isTabC[i]"
               class="px-4 py-2 cursor-pointer border-b-2 border-transparent hover:text-blue-500 hover:border-blue-300"
             >
               {{ tab.label }}
@@ -60,15 +62,15 @@ import { ConfirmationComponent } from './confirmation.component';
               [employeeData]="employeeData"
               (startDateChange)="onStartDateChange($event)"
               (endDateChange)="onEndDateChange($event)"
-              (proceedToGoals)="navigateToGoals()"
+              (proceedToGoals)="onEmployeeDetailsProceed()"
             />
-            
           </ng-container>
           <ng-container *ngIf="activeTab === 1">
             <app-table-goals
               [goalsData]="goalsData"
               [startDate]="employee.startDate"
               [endDate]="employee.endDate"
+              (allGoalsCompleted)="navigateToCompetencies()"
             />
           </ng-container>
           <ng-container *ngIf="activeTab === 2">
@@ -209,6 +211,8 @@ export class AddPerformanceReviewComponent implements OnInit {
     { label: 'Confirmation' },
   ];
 
+  isTabC = [true, false, false, false];
+
   onRowsChange(updatedRows: any[]) {
     this.competencyData = updatedRows;
   }
@@ -264,7 +268,25 @@ export class AddPerformanceReviewComponent implements OnInit {
   }
 
   @Output() updateTable = new EventEmitter<any>();
+
+  onEmployeeDetailsProceed() {
+    this.isTabC[1] = true; // Enable the "Goals" tab
+    this.activeTab = 1; // Move to the Goals tab
+  }
   
+
+  // Handle tab click
+  tabC(tabIndex: number) {
+    if (this.isTabC[tabIndex]) {
+      this.activeTab = tabIndex;
+    }
+  }
+
+  // Switch to the Competencies tab
+  navigateToCompetencies() {
+    this.activeTab = 2; // Switch to the Competencies tab
+  }
+
   submitForm() {
     const startYear = new Date(this.employeeData.startDate).getFullYear() || 0;
     const endYear = new Date(this.employeeData.endDate).getFullYear() || 0;
@@ -305,8 +327,5 @@ export class AddPerformanceReviewComponent implements OnInit {
         }
       );
     this.updateTable.emit({ success: true, newData: this.employeeData });
-  }
-  navigateToGoals() {
-    this.activeTab = 1; 
   }
 }

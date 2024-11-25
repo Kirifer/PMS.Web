@@ -1,16 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { NgFor } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
-import { LucideAngularModule, Edit, Trash, Table } from 'lucide-angular';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { EventEmitter, Output } from '@angular/core';
 import { TableCompetenciesComponent } from './table-competencies.component';
-import { TableGoalsComponent } from "./table-goals.component";
-import { FormEmployeeComponent } from "./form-employee-component.ts";
+import { TableGoalsComponent } from './table-goals.component';
+import { FormEmployeeComponent } from './form-employee-component.ts';
+import { LucideAngularModule } from 'lucide-angular';
 
 @Component({
   selector: 'app-add-performance-review',
@@ -18,12 +12,11 @@ import { FormEmployeeComponent } from "./form-employee-component.ts";
   imports: [
     ReactiveFormsModule,
     LucideAngularModule,
-    HttpClientModule,
     CommonModule,
     TableCompetenciesComponent,
     TableGoalsComponent,
     FormEmployeeComponent
-],
+  ],
   template: `
     <div
       class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50"
@@ -45,9 +38,11 @@ import { FormEmployeeComponent } from "./form-employee-component.ts";
           <ul class="flex justify-between space-x-4">
             <li
               *ngFor="let tab of tabs; let i = index"
-              (click)="activeTab = i"
+              (click)="tabC(i)"
               [class.border-blue-500]="activeTab === i"
               [class.text-blue-500]="activeTab === i"
+              [class.cursor-pointer]="isTabC[i]"
+              [class.cursor-not-allowed]="!isTabC[i]"
               class="px-4 py-2 cursor-pointer border-b-2 border-transparent hover:text-blue-500 hover:border-blue-300"
             >
               {{ tab.label }}
@@ -58,10 +53,11 @@ import { FormEmployeeComponent } from "./form-employee-component.ts";
         <!-- Tab Content -->
         <div class="mt-4">
           <ng-container *ngIf="activeTab === 0">
-          <app-form-employee (proceedToGoals)="navigateToGoals()"/>
+            <!-- Bind to the event to proceed to goals when form is completed -->
+            <app-form-employee (proceedToGoals)="onEmployeeDetailsProceed()"/>
           </ng-container>
           <ng-container *ngIf="activeTab === 1">
-          <app-table-goals />
+            <app-table-goals (allGoalsCompleted)="navigateToCompetencies()"></app-table-goals>
           </ng-container>
           <ng-container *ngIf="activeTab === 2">
             <app-table-competencies />
@@ -100,13 +96,29 @@ export class AddPerformanceReviewComponent {
   ];
 
   activeTab = 0;
+  isTabC = [true, false, false, false]; // Initially disable the "Goals" tab
 
-  closeDialog() {
-    this.close.emit();
-  }
-
-  navigateToGoals() {
+  // This method will be called when the Employee Details form is completed
+  onEmployeeDetailsProceed() {
+    // Enable the "Goals" tab and switch to it
+    this.isTabC[1] = true; // Enable the "Goals" tab
     this.activeTab = 1; // Switch to the Goals tab (index 1)
   }
 
+  // Handle tab click
+  tabC(tabIndex: number) {
+    if (this.isTabC[tabIndex]) {
+      this.activeTab = tabIndex;
+    }
+  }
+
+  // Switch to the Competencies tab
+  navigateToCompetencies() {
+    this.activeTab = 2; // Switch to the Competencies tab
+  }
+
+  // Close the dialog
+  closeDialog() {
+    this.close.emit();
+  }
 }

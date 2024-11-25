@@ -120,6 +120,16 @@ import { FormsModule } from '@angular/forms';
           </tr>
         </tbody>
       </table>
+      <!-- Proceed button -->
+      <div class="mt-4 flex justify-end">
+        <button
+          [disabled]="!allFieldsFilled()"
+          (click)="onProceed()"
+          class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:bg-gray-300"
+        >
+          Proceed
+        </button>
+      </div>
     </div>
   `,
 })
@@ -129,8 +139,38 @@ export class TableGoalsComponent {
   @Input() goalsData: any[] = [];
 
   @Output() goalsChange = new EventEmitter<any[]>();
+  @Output() allGoalsCompleted = new EventEmitter<void>();
 
   emitGoalsChange() {
     this.goalsChange.emit(this.goalsData);
+  }
+
+  rows = Array(5)
+    .fill(null)
+    .map(() => ({
+      goals: '',
+      weight: null,
+      measure4: '',
+      measure3: '',
+      measure2: '',
+      measure1: '',
+    }));
+
+  allFieldsFilled(): boolean {
+    return this.rows.every(
+      (row) =>
+        row.goals.trim() !== '' &&
+        row.weight !== null &&
+        row.measure4.trim() !== '' &&
+        row.measure3.trim() !== '' &&
+        row.measure2.trim() !== '' &&
+        row.measure1.trim() !== ''
+    );
+  }
+
+  onProceed() {
+    if (this.allFieldsFilled()) {
+      this.allGoalsCompleted.emit();
+    }
   }
 }
