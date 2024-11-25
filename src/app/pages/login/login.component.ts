@@ -10,14 +10,16 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   template: `
-    <div class="h-screen flex items-center justify-center bg-gray-100 p-0">
+    <div
+      class="h-screen w-screen flex items-center justify-center bg-gray-100 "
+    >
       <div
-        class="h-full w-full max-w-4xl bg-white rounded-lg shadow-lg grid grid-cols-1 lg:grid-cols-2"
+        class="bg-white rounded-lg shadow-lg grid grid-cols-1 lg:grid-cols-2 h-full w-full"
       >
         <!-- Left side - Login Form -->
-        <div class="p-8 flex flex-col justify-center h-full">
+        <div class="flex flex-col justify-center h-full max-w-2xl mx-28">
           <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">
             Welcome Back
           </h2>
@@ -111,22 +113,12 @@ import { CommonModule } from '@angular/common';
               Sign in
             </button>
           </form>
-
-          <p class="mt-6 text-center text-sm text-gray-600">
-            Don't have an account?
-            <a href="#" class="text-blue-600 hover:text-blue-500 font-medium">
-              Sign up
-            </a>
-          </p>
         </div>
 
         <!-- Right side - Image -->
-        <div class="hidden lg:block h-full">
-          <img
-            src="https://unsplash.com/photos/close-up-of-business-people-discussing-a-financial-plan-with-paperwork-and-digital-tablet-6y6DGYcuQNo"
-            alt="Business illustration"
-            class="w-full h-full object-cover rounded-r-lg"
-          />
+        <div class="bg-blue-900 lg:block h-full hidden ">
+          <!-- Add an image here if needed -->
+           <!-- <img src="images/logo.png" class="mx-auto my-auto"> -->
         </div>
       </div>
     </div>
