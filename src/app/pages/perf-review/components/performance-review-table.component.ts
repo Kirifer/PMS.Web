@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AddPerformanceReviewComponent } from './add-performance-review.component';
+import { InfoDialog } from './info-dialog.component';
 
 interface PerformanceRecord {
   id: string;
@@ -57,6 +58,7 @@ interface competency {
     HttpClientModule,
     CommonModule,
     AddPerformanceReviewComponent,
+    InfoDialog,
   ],
   template: `<div class="flex justify-between items-center mb-6">
       <input
@@ -92,7 +94,9 @@ interface competency {
               <!-- {{ record.id }} -->
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-              {{ record.departmentType }}
+              <button (click)="openInfoDialog(record.id)">
+                {{ record.departmentType }}
+              </button>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
               {{ record.startYear }} - {{ record.endYear }}
@@ -128,11 +132,18 @@ interface competency {
         *ngIf="isDialogOpen"
         (close)="closeDialog()"
       />
+      <app-info-dialog
+        *ngIf="isInfoDialogOpen"
+        [id]="selectedId"
+        (close)="closeInfoDialog()"
+        [competencies]="competencies"
+      />
     </div> `,
 })
 export class PerformanceReviewTableComponent implements OnInit {
   performanceReviews: PerformanceRecord[] = [];
   allPerformanceReviews: PerformanceRecord[] = [];
+  selectedId: string | undefined;
   http = inject(HttpClient);
   competencies: any[] = [];
   tableData: any[] = [];
@@ -164,6 +175,21 @@ export class PerformanceReviewTableComponent implements OnInit {
       (error) => {
         console.error('Error fetching performance reviews:', error);
       }
+    );
+    this.fetchCompetencies();
+  }
+
+  fetchCompetencies(): void {
+    this.http.get<any>('https://localhost:7012/lookup/competencies').subscribe(
+      (data) => {
+        if (data?.data) {
+          this.competencies = data.data;
+
+          // console.log('Fetched competencies:', this.competencies); // Log the fetched data
+          // console.log('Competency options:', this.competencyOptions); // Log the unique competency options
+        }
+      },
+      (error) => console.error('Error fetching competencies:', error)
     );
   }
 
@@ -217,6 +243,16 @@ export class PerformanceReviewTableComponent implements OnInit {
   ];
 
   isDialogOpen = false;
+  isInfoDialogOpen = false;
+
+  openInfoDialog(id: string) {
+    this.selectedId = id;
+    this.isInfoDialogOpen = true;
+  }
+
+  closeInfoDialog() {
+    this.isInfoDialogOpen = false;
+  }
 
   openDialog() {
     this.isDialogOpen = true;
