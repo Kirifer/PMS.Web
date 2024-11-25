@@ -50,8 +50,10 @@ export class TableCompetenciesComponent implements OnInit {
   @Input() competencyOptions: string[] = [];
   @Input() competencies: any[] = [];
   @Output() competencyChange = new EventEmitter<any[]>();
+
   ngOnInit(): void {
     console.log('Initial competencyData:', this.competencyOptions);
+    console.log('Initial competencyOptions:', this.competencies);
   }
 
   emitCompetencyChange(): void {
