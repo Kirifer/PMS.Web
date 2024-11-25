@@ -58,7 +58,7 @@ import { FormEmployeeComponent } from "./form-employee-component.ts";
         <!-- Tab Content -->
         <div class="mt-4">
           <ng-container *ngIf="activeTab === 0">
-          <app-form-employee/>
+          <app-form-employee (proceedToGoals)="navigateToGoals()"/>
           </ng-container>
           <ng-container *ngIf="activeTab === 1">
           <app-table-goals />
@@ -104,4 +104,9 @@ export class AddPerformanceReviewComponent {
   closeDialog() {
     this.close.emit();
   }
+
+  navigateToGoals() {
+    this.activeTab = 1; // Switch to the Goals tab (index 1)
+  }
+
 }

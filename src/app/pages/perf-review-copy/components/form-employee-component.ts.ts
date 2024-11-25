@@ -1,25 +1,22 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms'; // Import FormsModule here
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router'; // Import Router for navigation
 
 @Component({
   selector: 'app-form-employee',
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="max-w-5xl mx-auto p-6 bg-white  rounded-lg">
-      <!-- <h1 class="text-3xl font-semibold text-gray-700 mb-6">Employee Form</h1> -->
-      <form
-        (ngSubmit)="onSubmit()"
-        class="grid grid-cols-1 md:grid-cols-2 gap-6"
-      >
+    <div class="max-w-5xl mx-auto p-6 bg-white rounded-lg">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Name -->
         <div class="flex flex-col">
           <label for="name" class="text-gray-600 mb-2">Name</label>
           <input
             id="name"
             type="text"
-            [(ngModel)]="employeeObj.name"
+            [(ngModel)]="employeeData.name"
             name="name"
             class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
             placeholder="Enter employee's name"
@@ -31,13 +28,13 @@ import { CommonModule } from '@angular/common';
           <label for="department" class="text-gray-600 mb-2">Department</label>
           <select
             id="department"
-            [(ngModel)]="employeeObj.departmentType"
+            [(ngModel)]="employeeData.departmentType"
             name="departmentType"
             class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
           >
             <option value="" disabled selected>Select Department</option>
             <option
-              *ngFor="let department of departmentType"
+              *ngFor="let department of departmentTypes"
               [value]="department"
             >
               {{ department }}
@@ -50,7 +47,7 @@ import { CommonModule } from '@angular/common';
           <label for="startYear" class="text-gray-600 mb-2">Start Year</label>
           <select
             id="startYear"
-            [(ngModel)]="employeeObj.startYear"
+            [(ngModel)]="employeeData.startYear"
             name="startYear"
             class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
           >
@@ -67,9 +64,8 @@ import { CommonModule } from '@angular/common';
           <input
             id="startDate"
             type="date"
-            [(ngModel)]="employeeObj.startDate"
+            [(ngModel)]="employeeData.startDate"
             name="startDate"
-            (change)="onStartDateChange($event)"
             class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
           />
         </div>
@@ -79,7 +75,7 @@ import { CommonModule } from '@angular/common';
           <label for="endYear" class="text-gray-600 mb-2">End Year</label>
           <select
             id="endYear"
-            [(ngModel)]="employeeObj.endYear"
+            [(ngModel)]="employeeData.endYear"
             name="endYear"
             class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
           >
@@ -96,12 +92,12 @@ import { CommonModule } from '@angular/common';
           <input
             id="endDate"
             type="date"
-            [(ngModel)]="employeeObj.endDate"
+            [(ngModel)]="employeeData.endDate"
             name="endDate"
-            (change)="onEndDateChange($event)"
             class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
           />
         </div>
+      </div>
 
         <!-- Supervisor ID -->
         <div class="flex flex-col">
@@ -111,46 +107,57 @@ import { CommonModule } from '@angular/common';
           <input
             id="supervisorId"
             type="text"
-            [(ngModel)]="employeeObj.supervisorId"
+            [(ngModel)]="employeeData.supervisorId"
             name="supervisorId"
             class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
             placeholder="Enter supervisor's ID"
           />
         </div>
 
-        <!-- Active Supervisor -->
-        <div class="flex items-center col-span-2 mt-[-15px]">
-          <input
-            id="activeSupervisor"
-            type="checkbox"
-            [(ngModel)]="employeeObj.activeSupervisor"
-            name="activeSupervisor"
-            class="mr-2"
-          />
-          <label for="activeSupervisor" class="text-gray-600"
-            >Active Supervisor</label
-          >
-        </div>
-      </form>
+
+      <!-- Active Supervisor -->
+      <div class="flex items-center col-span-2 mt-[-15px]">
+        <input
+          id="activeSupervisor"
+          type="checkbox"
+          [(ngModel)]="employeeData.activeSupervisor"
+          name="activeSupervisor"
+          class="mr-2"
+        />
+        <label for="activeSupervisor" class="text-gray-600"
+          >Active Supervisor</label
+        >
+      </div>
+
+      <!-- Proceed Button -->
+      <div class="mt-6 text-right">
+        <button
+          class="px-4 py-2 bg-blue-500 text-white rounded-md shadow hover:bg-blue-600 disabled:bg-gray-300"
+          [disabled]="!isFormValid()"
+          (click)="onProceed()"
+        >
+          Proceed
+        </button>
+      </div>
     </div>
   `,
-  styles: [],
 })
 export class FormEmployeeComponent {
-  employeeObj = {
+  @Input() employeeData: any = {
     name: '',
     departmentType: '',
     startYear: '',
     endYear: '',
-    supervisorId: '',
     startDate: '',
     endDate: '',
-    activeSupervisor: false,
+    supervisorId: '',
   };
 
-  years = [2020, 2021, 2022, 2023, 2024, 2025];
+  @Output() startDateChange = new EventEmitter<string>();
+  @Output() endDateChange = new EventEmitter<string>();
+  @Output() proceedToGoals = new EventEmitter<void>();
 
-  departmentType = [
+  departmentTypes = [
     'None',
     'Development',
     'HumanResources',
@@ -163,21 +170,33 @@ export class FormEmployeeComponent {
     'TechnicalSupport',
   ];
 
+  constructor(private router: Router) {}
+
   onStartDateChange(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input && input.value) {
-      this.employeeObj.startDate = input.value;
+      this.startDateChange.emit(input.value);
     }
   }
 
   onEndDateChange(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input && input.value) {
-      this.employeeObj.endDate = input.value;
+      this.endDateChange.emit(input.value);
     }
   }
 
-  onSubmit() {
-    console.log('Form submitted:', this.employeeObj);
+  years = [2020, 2021, 2022, 2023, 2024, 2025];
+
+  isFormValid(): boolean {
+    const { name, departmentType, startYear, endYear, startDate, endDate, supervisorId } =
+      this.employeeData;
+    return name && departmentType && startYear && endYear && startDate && endDate && supervisorId;
+  }
+
+  onProceed(): void {
+    if (this.isFormValid()) {
+      this.proceedToGoals.emit(); // Emit an event to the parent component
+    }
   }
 }

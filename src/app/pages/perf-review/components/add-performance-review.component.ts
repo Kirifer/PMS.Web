@@ -60,7 +60,9 @@ import { ConfirmationComponent } from './confirmation.component';
               [employeeData]="employeeData"
               (startDateChange)="onStartDateChange($event)"
               (endDateChange)="onEndDateChange($event)"
+              (proceedToGoals)="navigateToGoals()"
             />
+            
           </ng-container>
           <ng-container *ngIf="activeTab === 1">
             <app-table-goals
@@ -303,5 +305,8 @@ export class AddPerformanceReviewComponent implements OnInit {
         }
       );
     this.updateTable.emit({ success: true, newData: this.employeeData });
+  }
+  navigateToGoals() {
+    this.activeTab = 1; 
   }
 }
