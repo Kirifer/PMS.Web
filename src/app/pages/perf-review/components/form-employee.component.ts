@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms'; // Import FormsModule here
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-form-employee',
@@ -115,6 +116,17 @@ import { CommonModule } from '@angular/common';
           />
         </div>
 
+         <!-- Proceed Button -->
+      <div class="mt-6 text-right">
+        <button
+          class="px-4 py-2 bg-blue-500 text-white rounded-md shadow hover:bg-blue-600 disabled:bg-gray-300"
+          [disabled]="!isFormValid()"
+          (click)="onProceed()"
+        >
+          Proceed
+        </button>
+      </div>
+
         <!-- Active Supervisor -->
         <div class="flex items-center col-span-2 mt-[-15px]">
           <input
@@ -128,15 +140,27 @@ import { CommonModule } from '@angular/common';
             >Active Supervisor</label
           >
         </div>
-      </div>
+
+       
     </div>
   `,
   styles: [],
 })
 export class FormEmployeeComponent {
-  @Input() employeeData: any;
+  @Input() employeeData: any = {
+    name: '',
+    departmentType: '',
+    startYear: '',
+    endYear: '',
+    startDate: '',
+    endDate: '',
+    supervisorId: '',
+  };
   @Output() startDateChange = new EventEmitter<string>();
   @Output() endDateChange = new EventEmitter<string>();
+  @Output() proceedToGoals = new EventEmitter<void>();
+
+  constructor(private router: Router) {}
 
   onStartDateChange(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -166,4 +190,16 @@ export class FormEmployeeComponent {
     'Management',
     'TechnicalSupport',
   ];
+
+  isFormValid(): boolean {
+    const { name, departmentType, startYear, endYear, startDate, endDate, supervisorId } =
+      this.employeeData;
+    return name && departmentType && startYear && endYear && startDate && endDate && supervisorId;
+  }
+
+  onProceed(): void {
+    if (this.isFormValid()) {
+      this.proceedToGoals.emit(); // Emit an event to the parent component
+    }
+  }
 }
