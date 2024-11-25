@@ -58,7 +58,7 @@ interface competency {
     CommonModule,
     AddPerformanceReviewComponent,
   ],
-  template: `<div  class="flex justify-between items-center mb-6">
+  template: `<div class="flex justify-between items-center mb-6">
       <input
         (keyup)="applyFilter($event)"
         placeholder="Search records"
@@ -124,6 +124,7 @@ interface competency {
         </tbody>
       </table>
       <app-add-performance-review
+        (updateTable)="onUpdateTable($event)"
         *ngIf="isDialogOpen"
         (close)="closeDialog()"
       />
@@ -134,6 +135,16 @@ export class PerformanceReviewTableComponent implements OnInit {
   allPerformanceReviews: PerformanceRecord[] = [];
   http = inject(HttpClient);
   competencies: any[] = [];
+  tableData: any[] = [];
+
+  onUpdateTable(event: { success: boolean; newData: any }) {
+    if (event.success) {
+      // Add the new data to the existing table data
+      this.performanceReviews = [...this.performanceReviews, event.newData];
+      this.allPerformanceReviews = [...this.performanceReviews]; // Keep a backup of all records
+      console.log('Updated table data:', this.performanceReviews);
+    }
+  }
 
   performanceReviews$ = this.getPerformanceReviews();
 
@@ -147,7 +158,7 @@ export class PerformanceReviewTableComponent implements OnInit {
         if (data && data.data) {
           this.performanceReviews = data.data;
           this.allPerformanceReviews = [...this.performanceReviews];
-          console.log('Performance Review Data:', this.performanceReviews[0].competencies[0].competency.description);
+          console.log('Performance Review Data:', this.performanceReviews);
         }
       },
       (error) => {
