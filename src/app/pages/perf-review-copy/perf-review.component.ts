@@ -13,7 +13,6 @@ import { PerformanceReviewTableComponent } from './components/performance-review
             Performance Review 2
           </h1>
         </div>
-
         <p class="text-sm text-gray-600 mt-[-20px] mb-4">
           Comprehensive Employee Performance Review
         </p>

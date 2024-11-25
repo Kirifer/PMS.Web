@@ -84,6 +84,7 @@ import { ConfirmationComponent } from './confirmation.component';
               [employeeData]="employeeData"
               [goalsData]="goalsData"
               [competencyData]="competencyData"
+              [competencies]="competencies"
             />
           </ng-container>
         </div>
@@ -98,6 +99,7 @@ import { ConfirmationComponent } from './confirmation.component';
           </button>
           <button
             (click)="submitForm()"
+            (click)="closeDialog()"
             class="px-4 py-2 bg-blue-500 rounded-md text-white hover:bg-blue-600"
           >
             Confirm
@@ -107,7 +109,7 @@ import { ConfirmationComponent } from './confirmation.component';
     </div>
   `,
 })
-export class AddPerformanceReviewComponent implements OnInit{
+export class AddPerformanceReviewComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
   employee = {
     startDate: '',
@@ -199,7 +201,6 @@ export class AddPerformanceReviewComponent implements OnInit{
       measure1: '',
     },
   ];
-
   activeTab = 0;
   tabs = [
     { label: 'Employee Details' },
@@ -254,14 +255,16 @@ export class AddPerformanceReviewComponent implements OnInit{
           this.competencyOptions = [
             ...new Set(this.competencies.map((item) => item.competency)),
           ];
-          console.log('Fetched competencies:', this.competencies); // Log the fetched data
-          console.log('Competency options:', this.competencyOptions); // Log the unique competency options
+          // console.log('Fetched competencies:', this.competencies); // Log the fetched data
+          // console.log('Competency options:', this.competencyOptions); // Log the unique competency options
         }
       },
       (error) => console.error('Error fetching competencies:', error)
     );
   }
 
+  @Output() updateTable = new EventEmitter<any>();
+  
   submitForm() {
     const startYear = new Date(this.employeeData.startDate).getFullYear() || 0;
     const endYear = new Date(this.employeeData.endDate).getFullYear() || 0;
@@ -301,6 +304,7 @@ export class AddPerformanceReviewComponent implements OnInit{
           console.error('Error occurred:', error);
         }
       );
+    this.updateTable.emit({ success: true, newData: this.employeeData });
   }
   navigateToGoals() {
     this.activeTab = 1; 
