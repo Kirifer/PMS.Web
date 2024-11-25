@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -41,24 +41,64 @@ import { CommonModule } from '@angular/common';
       </div>
 
       <!-- Goals Section -->
-      <div class="bg-white p-6  rounded-lg">
+      <!-- Goals Section -->
+      <div class="bg-white p-6 rounded-lg">
         <h3 class="text-2xl font-bold mb-6 text-gray-800">Goals</h3>
         <div class="overflow-y-auto max-h-96">
-          <table class="min-w-full table-auto border-collapse border border-gray-200 bg-white rounded-lg">
+          <table
+            class="min-w-full table-auto border-collapse border border-gray-200 bg-white rounded-lg"
+          >
             <thead>
               <tr class="bg-gray-100">
-                <th class="border border-gray-200 p-3 text-left text-sm font-medium text-gray-600">No</th>
-                <th class="border border-gray-200 p-3 text-left text-sm font-medium text-gray-600">Individual Goals</th>
-                <th class="border border-gray-200 p-3 text-left text-sm font-medium text-gray-600">Weight</th>
-                <th class="border border-gray-200 p-3 text-left text-sm font-medium text-gray-600">Date</th>
+                <th
+                  class="border border-gray-200 p-3 text-left text-sm font-medium text-gray-600"
+                >
+                  No
+                </th>
+                <th
+                  class="border border-gray-200 p-3 text-left text-sm font-medium text-gray-600"
+                >
+                  Individual Goals
+                </th>
+                <th
+                  class="border border-gray-200 p-3 text-left text-sm font-medium text-gray-600"
+                >
+                  Weight
+                </th>
+                <th
+                  class="border border-gray-200 p-3 text-left text-sm font-medium text-gray-600"
+                >
+                  Date
+                </th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let goal of goalsData" class="hover:bg-gray-50 transition duration-200">
-                <td class="border border-gray-200 p-3 text-sm text-gray-700">{{ goal.orderNo }}</td>
-                <td class="border border-gray-200 p-3 text-sm text-gray-700">{{ goal.goals }}</td>
-                <td class="border border-gray-200 p-3 text-sm text-gray-700">{{ goal.weight }}</td>
-                <td class="border border-gray-200 p-3 text-sm text-gray-700">{{ goal.date }}</td>
+              <tr
+                *ngFor="let goal of goalsData"
+                class="hover:bg-gray-50 transition duration-200"
+              >
+                <td class="border border-gray-200 p-3 text-sm text-gray-700">
+                  {{ goal.orderNo || 'N/A' }}
+                </td>
+                <td class="border border-gray-200 p-3 text-sm text-gray-700">
+                  {{ goal.goals || 'N/A' }}
+                </td>
+                <td class="border border-gray-200 p-3 text-sm text-gray-700">
+                  {{ goal.weight || 'N/A' }}
+                </td>
+                <td class="border border-gray-200 p-3 text-sm text-gray-700">
+                  {{ goal.date || 'N/A' }}
+                </td>
+              </tr>
+
+              <!-- If no goalsData exists, show N/A for all rows -->
+              <tr *ngIf="goalsData.length === 0">
+                <td
+                  colspan="4"
+                  class="border border-gray-200 p-3 text-sm text-center text-gray-700"
+                >
+                  N/A
+                </td>
               </tr>
             </tbody>
           </table>
@@ -68,28 +108,91 @@ import { CommonModule } from '@angular/common';
       <!-- Competency Section -->
       <div class="bg-white p-6 rounded-lg">
         <h3 class="text-2xl font-bold mb-6 text-gray-800">Competencies</h3>
-        <table class="w-full border-collapse border border-gray-200 bg-white rounded-lg">
-          <thead>
-            <tr class="bg-gray-100">
-              <th class="border border-gray-200 p-4 text-left">No</th>
-              <th class="border border-gray-200 p-4 text-left">Competency ID</th>
-              <th class="border border-gray-200 p-4 text-left">Weight</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let competency of competencyData" class="hover:bg-gray-50 transition duration-200">
-              <td class="border border-gray-200 p-4">{{ competency.orderNo }}</td>
-              <td class="border border-gray-200 p-4">{{ competency.competencyId }}</td>
-              <td class="border border-gray-200 p-4">{{ competency.weight }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="overflow-y-auto max-h-96">
+          <table
+            class="min-w-full table-auto border-collapse border border-gray-200 bg-white rounded-lg"
+          >
+            <thead>
+              <tr class="bg-gray-100">
+                <th
+                  class="border border-gray-200 p-3 text-left text-sm font-medium text-gray-600"
+                >
+                  No
+                </th>
+                <th
+                  class="border border-gray-200 p-3 text-left text-sm font-medium text-gray-600"
+                >
+                  Competency
+                </th>
+                <th
+                  class="border border-gray-200 p-3 text-left text-sm font-medium text-gray-600"
+                >
+                  Level
+                </th>
+                <th
+                  class="border border-gray-200 p-3 text-left text-sm font-medium text-gray-600"
+                >
+                  Weight
+                </th>
+                <th
+                  class="border border-gray-200 p-3 text-left text-sm font-medium text-gray-600"
+                >
+                  Description
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let competency of competencyData"
+                class="hover:bg-gray-50 transition duration-200"
+              >
+                <td class="border border-gray-200 p-3 text-sm text-gray-700">
+                  {{ competency.orderNo }}
+                </td>
+                <td class="border border-gray-200 p-3 text-sm text-gray-700">
+                  {{ getCompetencyName(competency.competencyId) || 'N/A' }}
+                </td>
+                <td class="border border-gray-200 p-3 text-sm text-gray-700">
+                  {{ getCompetencyLevel(competency.competencyId) || 'N/A' }}
+                </td>
+                <td class="border border-gray-200 p-3 text-sm text-gray-700">
+                  {{ competency.weight }}
+                </td>
+                <td class="border border-gray-200 p-3 text-sm text-gray-700">
+                  {{
+                    getCompetencyDescription(competency.competencyId) || 'N/A'
+                  }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   `,
 })
-export class ConfirmationComponent {
+export class ConfirmationComponent implements OnInit {
   @Input() employeeData!: any;
   @Input() goalsData!: any[];
   @Input() competencyData!: any[];
+  @Input() competencies!: any[];
+
+  ngOnInit(): void {
+    // console.log('Employee Data:', this.employeeData);
+    // console.log('Goals Data:', this.goalsData);
+    console.log('Competency Data:', this.competencyData);
+    console.log('Competencies:', this.competencies);
+    // this.getCompetencyLevel();
+  }
+  // Methods to retrieve competency details by ID
+  getCompetencyName(competencyId: string): string | undefined {
+    return this.competencies.find((c) => c.id === competencyId)?.competency;
+  }
+
+  getCompetencyLevel(competencyId: string): string | undefined {
+    return this.competencies.find((c) => c.id === competencyId)?.level;
+  }
+  getCompetencyDescription(competencyId: string): string | undefined {
+    return this.competencies.find((c) => c.id === competencyId)?.description;
+  }
 }

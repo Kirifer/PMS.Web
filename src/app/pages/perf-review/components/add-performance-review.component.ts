@@ -82,6 +82,7 @@ import { ConfirmationComponent } from './confirmation.component';
               [employeeData]="employeeData"
               [goalsData]="goalsData"
               [competencyData]="competencyData"
+              [competencies]="competencies"
             />
           </ng-container>
         </div>
@@ -105,6 +106,7 @@ import { ConfirmationComponent } from './confirmation.component';
     </div>
   `,
 })
+
 export class AddPerformanceReviewComponent implements OnInit{
   @Output() close = new EventEmitter<void>();
   employee = {
@@ -252,8 +254,8 @@ export class AddPerformanceReviewComponent implements OnInit{
           this.competencyOptions = [
             ...new Set(this.competencies.map((item) => item.competency)),
           ];
-          console.log('Fetched competencies:', this.competencies); // Log the fetched data
-          console.log('Competency options:', this.competencyOptions); // Log the unique competency options
+          // console.log('Fetched competencies:', this.competencies); // Log the fetched data
+          // console.log('Competency options:', this.competencyOptions); // Log the unique competency options
         }
       },
       (error) => console.error('Error fetching competencies:', error)
