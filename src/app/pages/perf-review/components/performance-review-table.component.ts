@@ -6,9 +6,10 @@ import { Observable } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AddPerformanceReviewComponent } from './add-performance-review.component';
+import { EditPerformanceReviewComponent } from './edit-performance-review.component';
 import { InfoDialog } from './info-dialog.component';
 
-interface PerformanceRecord {
+export interface PerformanceRecord {
   id: string;
   name: string;
   departmentType: string;
@@ -58,6 +59,7 @@ interface competency {
     HttpClientModule,
     CommonModule,
     AddPerformanceReviewComponent,
+    EditPerformanceReviewComponent,
     InfoDialog,
   ],
   template: `<div class="flex justify-between items-center mb-6">
@@ -114,7 +116,7 @@ interface competency {
               {{ record.supervisorId }}
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-              <button class="text-indigo-600 hover:text-indigo-900 mr-3">
+              <button (click)="openEditDialog(record)" class="text-indigo-600 hover:text-indigo-900 mr-3">
                 <i-lucide [img]="Edit" class="w-5 h-5"></i-lucide>
               </button>
               <button
@@ -127,21 +129,34 @@ interface competency {
           </tr>
         </tbody>
       </table>
-      <app-add-performance-review
-        (updateTable)="onUpdateTable($event)"
-        *ngIf="isDialogOpen"
-        (close)="closeDialog()"
-      />
+       <!-- Dialogs -->
+       <div *ngIf="isDialogOpen" class="dialog-overlay">
+        <ng-container *ngIf="selectedRecord; else addRecord">
+          <app-edit-performance-review
+            [performanceRecord]="selectedRecord"
+            (close)="closeDialog()"
+          ></app-edit-performance-review>
+        </ng-container>
+        <ng-template #addRecord>
+          <app-add-performance-review
+            (updateTable)="onUpdateTable($event)"
+            (close)="closeDialog()"
+          ></app-add-performance-review>
+        </ng-template>
+      </div>
+
+      <!-- Info Dialog -->
       <app-info-dialog
         *ngIf="isInfoDialogOpen"
         [id]="selectedId"
         (close)="closeInfoDialog()"
         [competencies]="competencies"
-      />
+      ></app-info-dialog>
     </div> `,
 })
 export class PerformanceReviewTableComponent implements OnInit {
   performanceReviews: PerformanceRecord[] = [];
+  selectedRecord: PerformanceRecord | null = null;
   allPerformanceReviews: PerformanceRecord[] = [];
   selectedId: string | undefined;
   http = inject(HttpClient);
@@ -248,6 +263,11 @@ export class PerformanceReviewTableComponent implements OnInit {
   openInfoDialog(id: string) {
     this.selectedId = id;
     this.isInfoDialogOpen = true;
+  }
+
+  openEditDialog(record: PerformanceRecord) {
+    this.selectedRecord = record;
+    this.isDialogOpen = true;
   }
 
   closeInfoDialog() {

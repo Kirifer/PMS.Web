@@ -26,18 +26,20 @@ import { FormsModule } from '@angular/forms';
                 <option value="" disabled selected>Select Competency</option>
                 <option *ngFor="let competency of competencyOptions" [value]="competency">{{ competency }}</option>
               </select>
+              {{row.competency.competency}}
             </td>
             <td class="px-6 py-4 text-sm text-gray-900">
               <input type="number" class="w-10 max-w-full border rounded text-sm" [(ngModel)]="row.weight" (input)="emitCompetencyChange()" />
             </td>
             <td class="px-6 py-4 text-sm text-gray-900">
               <select [(ngModel)]="row.level" (change)="updateDescription(row)" class="w-full p-1 border rounded text-sm">
-                <option value="" disabled selected>Select Level</option>
+                <option value="row." disabled selected>Select Level</option>
                 <option *ngFor="let level of row.levelOptions" [value]="level">{{ level }}</option>
               </select>
+              {{row.competency.level}}
             </td>
             <td class="px-6 py-4 max-w-lg text-sm text-gray-900">
-              {{ row.description || 'No description available' }}
+              {{ row.description || row.competency.description ||'No description available' }}
             </td>
           </tr>
         </tbody>
