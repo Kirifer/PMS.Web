@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LucideAngularModule } from 'lucide-angular';
@@ -8,6 +8,7 @@ import { TableCompetenciesComponent } from './table-competencies.component';
 import { TableGoalsComponent } from './table-goals.component';
 import { FormEmployeeComponent } from './form-employee.component';
 import { ConfirmationComponent } from './confirmation.component';
+import { ToastComponent } from '../../../components/toast/toast.component';
 
 @Component({
   selector: 'app-add-performance-review',
@@ -21,6 +22,7 @@ import { ConfirmationComponent } from './confirmation.component';
     TableGoalsComponent,
     FormEmployeeComponent,
     ConfirmationComponent,
+    ToastComponent,
   ],
   template: `
     <div
@@ -60,9 +62,7 @@ import { ConfirmationComponent } from './confirmation.component';
               [employeeData]="employeeData"
               (startDateChange)="onStartDateChange($event)"
               (endDateChange)="onEndDateChange($event)"
-              (proceedToGoals)="navigateToGoals()"
             />
-            
           </ng-container>
           <ng-container *ngIf="activeTab === 1">
             <app-table-goals
@@ -99,18 +99,24 @@ import { ConfirmationComponent } from './confirmation.component';
           </button>
           <button
             (click)="submitForm()"
-            (click)="closeDialog()"
             class="px-4 py-2 bg-blue-500 rounded-md text-white hover:bg-blue-600"
           >
             Confirm
           </button>
         </div>
       </div>
+      <app-toast></app-toast>
     </div>
   `,
 })
 export class AddPerformanceReviewComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
+  @ViewChild(ToastComponent) toastComponent!: ToastComponent; // Add ViewChild to access the Toast component
+
+  // Other existing code
+
+  // Show toast function as discussed above
+
   employee = {
     startDate: '',
     endDate: '',
@@ -264,10 +270,39 @@ export class AddPerformanceReviewComponent implements OnInit {
   }
 
   @Output() updateTable = new EventEmitter<any>();
-  
+
   submitForm() {
     const startYear = new Date(this.employeeData.startDate).getFullYear() || 0;
     const endYear = new Date(this.employeeData.endDate).getFullYear() || 0;
+
+    // Check for empty fields in employeeData
+    if (
+      !this.employeeData.name ||
+      !this.employeeData.departmentType ||
+      !this.employeeData.startDate ||
+      !this.employeeData.endDate
+    ) {
+      this.showToast('Please fill in all required employee fields!');
+      return; // Prevent further processing if validation fails
+    }
+
+    // Check for empty fields in goalsData
+    for (const goal of this.goalsData) {
+      if (!goal.goals || goal.weight === 0 || !goal.date) {
+        this.showToast('Please fill in all required goal fields!');
+        return;
+      }
+    }
+
+    // Check for empty fields in competencyData
+    for (const competency of this.competencyData) {
+      if (!competency.competencyId || competency.weight === 0) {
+        this.showToast('Please fill in all required competency fields!');
+        return;
+      }
+    }
+
+    // Prepare Payload if all fields are valid
     const Payload = {
       name: this.employeeData.name || '',
       departmentType: this.employeeData.departmentType || 'None',
@@ -293,20 +328,29 @@ export class AddPerformanceReviewComponent implements OnInit {
         weight: competency.weight || 0,
       })),
     };
+
     console.log('Payload:', Payload);
+
+    // Perform API request
     this.http
       .post<any>('https://localhost:7012/performance-reviews', Payload)
       .subscribe(
         (response) => {
           console.log('Response from API:', response);
+          this.showToast('Record added successfully!'); // Show success toast
+          this.closeDialog(); // Close dialog on success
         },
         (error) => {
           console.error('Error occurred:', error);
+          this.showToast('Error adding record. Please try again.'); // Show error toast
         }
       );
+
     this.updateTable.emit({ success: true, newData: this.employeeData });
   }
-  navigateToGoals() {
-    this.activeTab = 1; 
+
+  showToast(message: string) {
+    const toast = this.toastComponent; // Reference to the ToastComponent
+    toast.show(message); // Show the toast with the message
   }
 }

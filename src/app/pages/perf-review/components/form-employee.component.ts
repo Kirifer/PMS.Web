@@ -116,17 +116,6 @@ import { Router } from '@angular/router';
           />
         </div>
 
-         <!-- Proceed Button -->
-      <div class="mt-6 text-right">
-        <button
-          class="px-4 py-2 bg-blue-500 text-white rounded-md shadow hover:bg-blue-600 disabled:bg-gray-300"
-          [disabled]="!isFormValid()"
-          (click)="onProceed()"
-        >
-          Proceed
-        </button>
-      </div>
-
         <!-- Active Supervisor -->
         <div class="flex items-center col-span-2 mt-[-15px]">
           <input
@@ -140,8 +129,7 @@ import { Router } from '@angular/router';
             >Active Supervisor</label
           >
         </div>
-
-       
+      </div>
     </div>
   `,
   styles: [],
@@ -192,14 +180,23 @@ export class FormEmployeeComponent {
   ];
 
   isFormValid(): boolean {
-    const { name, departmentType, startYear, endYear, startDate, endDate, supervisorId } =
-      this.employeeData;
-    return name && departmentType && startYear && endYear && startDate && endDate && supervisorId;
-  }
-
-  onProceed(): void {
-    if (this.isFormValid()) {
-      this.proceedToGoals.emit(); // Emit an event to the parent component
-    }
+    const {
+      name,
+      departmentType,
+      startYear,
+      endYear,
+      startDate,
+      endDate,
+      supervisorId,
+    } = this.employeeData;
+    return (
+      name &&
+      departmentType &&
+      startYear &&
+      endYear &&
+      startDate &&
+      endDate &&
+      supervisorId
+    );
   }
 }
