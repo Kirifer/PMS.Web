@@ -89,7 +89,7 @@ interface competency {
         <tbody class="bg-white divide-y divide-gray-200">
           <tr *ngFor="let record of performanceReviews">
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-              {{ record.id }}
+              <!-- {{ record.id }} -->
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
               {{ record.departmentType }}

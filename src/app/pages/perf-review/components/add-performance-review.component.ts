@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LucideAngularModule } from 'lucide-angular';
@@ -7,7 +7,7 @@ import { EventEmitter, Output } from '@angular/core';
 import { TableCompetenciesComponent } from './table-competencies.component';
 import { TableGoalsComponent } from './table-goals.component';
 import { FormEmployeeComponent } from './form-employee.component';
-import { ConfirmationComponent } from "./confirmation.component";
+import { ConfirmationComponent } from './confirmation.component';
 
 @Component({
   selector: 'app-add-performance-review',
@@ -20,8 +20,8 @@ import { ConfirmationComponent } from "./confirmation.component";
     TableCompetenciesComponent,
     TableGoalsComponent,
     FormEmployeeComponent,
-    ConfirmationComponent
-],
+    ConfirmationComponent,
+  ],
   template: `
     <div
       class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50"
@@ -76,7 +76,7 @@ import { ConfirmationComponent } from "./confirmation.component";
             />
           </ng-container>
           <ng-container *ngIf="activeTab === 3">
-            <app-confirmation/>
+            <app-confirmation />
           </ng-container>
         </div>
 
@@ -135,7 +135,7 @@ export class AddPerformanceReviewComponent {
       competencyId: '',
       orderNo: 4,
       weight: 0,
-    }
+    },
   ];
   goalsData = [
     {
@@ -199,9 +199,8 @@ export class AddPerformanceReviewComponent {
   ];
 
   onRowsChange(updatedRows: any[]) {
-    this.competencyData = updatedRows; // Update competency data here
+    this.competencyData = updatedRows;
   }
-
 
   onStartDateChange(date: string) {
     this.employee.startDate = date;
@@ -224,14 +223,12 @@ export class AddPerformanceReviewComponent {
     this.close.emit();
   }
 
-
-  constructor(private http: HttpClient) {}  // Inject HttpClient
-
+  constructor(private http: HttpClient) {}
 
   formatDate(date: string): string {
     if (!date) return '';
     const formattedDate = new Date(date);
-    return formattedDate.toISOString().split('T')[0];  // Format to "YYYY-MM-DD"
+    return formattedDate.toISOString().split('T')[0];
   }
 
   submitForm() {
@@ -242,10 +239,10 @@ export class AddPerformanceReviewComponent {
       departmentType: this.employeeData.departmentType || 'None',
       startYear: startYear,
       endYear: endYear,
-      startDate: this.formatDate(this.employeeData.startDate),  // Ensure correct date format
+      startDate: this.formatDate(this.employeeData.startDate), 
       endDate: this.formatDate(this.employeeData.endDate),
-      employeeId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',  // Replace with actual employeeId if needed
-      supervisorId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',  // Replace with actual supervisorId if needed
+      employeeId: '3fa85f64-5717-4562-b3fc-2c963f66afa6', 
+      supervisorId: '3fa85f64-5717-4562-b3fc-2c963f66afa6', 
       goals: this.goalsData.map((goal: any) => ({
         orderNo: goal.orderNo,
         goals: goal.goals || '',
@@ -254,26 +251,24 @@ export class AddPerformanceReviewComponent {
         measure4: goal.measure4 || '',
         measure3: goal.measure3 || '',
         measure2: goal.measure2 || '',
-        measure1: goal.measure1 || ''
+        measure1: goal.measure1 || '',
       })),
       competencies: this.competencyData.map((competency: any) => ({
-        competencyId: competency.competencyId || '',  // Ensure competencyId is set
+        competencyId: competency.competencyId || '', 
         orderNo: competency.orderNo,
-        weight: competency.weight || 0  // Ensure weight is included
-      }))
+        weight: competency.weight || 0, 
+      })),
     };
-    console.log('Payload:', Payload); 
-    // Make the POST request to the server
-    this.http.post<any>('https://localhost:7012/performance-reviews', Payload).subscribe(
-      (response) => {
-        console.log('Response from API:', response);
-        // Handle success (e.g., show a success message or navigate)
-      },
-      (error) => {
-        console.error('Error occurred:', error);
-        // Handle error (e.g., show an error message)
-      }
-    );
+    console.log('Payload:', Payload);
+    this.http
+      .post<any>('https://localhost:7012/performance-reviews', Payload)
+      .subscribe(
+        (response) => {
+          console.log('Response from API:', response);
+        },
+        (error) => {
+          console.error('Error occurred:', error);
+        }
+      );
   }
-  
 }

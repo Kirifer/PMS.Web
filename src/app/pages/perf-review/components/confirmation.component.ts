@@ -17,7 +17,7 @@ import { CommonModule } from '@angular/common';
   template: `
   <div class="max-h-screen flex flex-col space-y-8 p-6">
   <!-- Employee Details Section -->
-  <div class="bg-white p-6 shadow-md rounded-lg">
+  <div class="bg-white p-6 rounded-lg">
     <h2 class="text-2xl font-bold mb-6 text-gray-800">Employee Details</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <!-- Department -->
@@ -54,7 +54,7 @@ import { CommonModule } from '@angular/common';
   </div>
 
   <!-- Goals Section -->
-<div class="bg-white p-6 shadow-md rounded-lg">
+<div class="bg-white p-6  rounded-lg">
   <h3 class="text-2xl font-bold mb-6 text-gray-800">Goals</h3>
   <div class="overflow-y-auto max-h-96">
     <table class="min-w-full table-auto border-collapse border border-gray-200 bg-white  rounded-lg">
@@ -88,9 +88,9 @@ import { CommonModule } from '@angular/common';
 </div>
 
   <!-- Competency Section -->
-  <div class="bg-white p-6 shadow-md rounded-lg">
+  <div class="bg-white p-6 rounded-lg">
     <h3 class="text-2xl font-bold mb-6 text-gray-800">Competency</h3>
-    <table class="w-full border-collapse border border-gray-200 bg-white shadow-sm rounded-lg">
+    <table class="w-full border-collapse border border-gray-200 bg-white rounded-lg">
       <thead>
         <tr class="bg-gray-100">
           <th class="border border-gray-200 p-4 text-left">No</th>
