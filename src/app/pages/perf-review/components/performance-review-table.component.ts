@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 import { AddPerformanceReviewComponent } from './add-performance-review.component';
 import { InfoDialog } from './info-dialog.component';
 
-interface PerformanceRecord {
+export interface PerformanceRecord {
   id: string;
   name: string;
   departmentType: string;
