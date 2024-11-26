@@ -3,7 +3,6 @@ import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { HttpClientModule } from '@angular/common/http'; // Add this import
 import { HttpClient } from '@angular/common/http';
 
-
 // Define UserCreateDto interface with all necessary fields
 export interface UserCreateDto {
   firstName: string;
@@ -12,7 +11,6 @@ export interface UserCreateDto {
   password: string;
   position: string;
   isSupervisor: boolean;
-  
 }
 
 @Component({
@@ -53,40 +51,41 @@ export interface UserCreateDto {
 
         <!-- Add User Form -->
         <form (ngSubmit)="submitUserForm()" class="space-y-4">
-          <!-- First Name -->
-          <div>
-            <label
-              for="firstName"
-              class="block text-sm font-medium text-gray-700"
-              >First Name</label
-            >
-            <input
-              id="firstName"
-              type="text"
-              [(ngModel)]="firstName"
-              name="firstName"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Enter first name"
-              required
-            />
-          </div>
+          <!-- First Name and Last Name in the same line -->
+          <div class="flex space-x-4">
+            <div class="flex-1">
+              <label
+                for="firstName"
+                class="block text-sm font-medium text-gray-700"
+                >First Name</label
+              >
+              <input
+                id="firstName"
+                type="text"
+                [(ngModel)]="firstName"
+                name="firstName"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Enter first name"
+                required
+              />
+            </div>
 
-          <!-- Last Name -->
-          <div>
-            <label
-              for="lastName"
-              class="block text-sm font-medium text-gray-700"
-              >Last Name</label
-            >
-            <input
-              id="lastName"
-              type="text"
-              [(ngModel)]="lastName"
-              name="lastName"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Enter last name"
-              required
-            />
+            <div class="flex-1">
+              <label
+                for="lastName"
+                class="block text-sm font-medium text-gray-700"
+                >Last Name</label
+              >
+              <input
+                id="lastName"
+                type="text"
+                [(ngModel)]="lastName"
+                name="lastName"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Enter last name"
+                required
+              />
+            </div>
           </div>
 
           <!-- Email -->
@@ -119,6 +118,24 @@ export interface UserCreateDto {
               name="password"
               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               placeholder="Enter password"
+              required
+            />
+          </div>
+
+          <!-- Confirm Password -->
+          <div>
+            <label
+              for="confirmPassword"
+              class="block text-sm font-medium text-gray-700"
+              >Confirm Password</label
+            >
+            <input
+              id="confirmPassword"
+              type="password"
+              [(ngModel)]="confirmPassword"
+              name="confirmPassword"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Confirm password"
               required
             />
           </div>
@@ -186,6 +203,7 @@ export class AddUserComponent {
   lastName: string = '';
   email: string = '';
   password: string = '';
+  confirmPassword: string = ''; // Added for confirmation
   position: string = '';
   isSupervisor: boolean = false; // Default to false for the checkbox
   isModalVisible: boolean = true;
@@ -196,10 +214,14 @@ export class AddUserComponent {
     console.log('Close button clicked');
     this.closeModal.emit();
   }
-  
-  
 
   submitUserForm() {
+    // Check if password and confirm password match
+    if (this.password !== this.confirmPassword) {
+      alert('Passwords do not match.');
+      return;
+    }
+
     if (
       !this.firstName ||
       !this.lastName ||
@@ -211,7 +233,7 @@ export class AddUserComponent {
       alert('Please fill in all required fields.');
       return;
     }
-  
+
     // Create a new user object matching the updated UserCreateDto
     const newUser: UserCreateDto = {
       firstName: this.firstName,
@@ -221,9 +243,9 @@ export class AddUserComponent {
       position: this.position,
       isSupervisor: this.isSupervisor,
     };
-  
+
     console.log('Sending user data:', newUser); // Debugging line
-  
+
     // Sending the POST request to the API
     this.http
       .post<UserCreateDto>('https://localhost:7012/users', newUser)
@@ -238,11 +260,11 @@ export class AddUserComponent {
           if (error.error && error.error.errors) {
             const validationErrors = error.error.errors;
             let errorMessage = 'Validation errors:\n';
-  
+
             validationErrors.forEach((err: any) => {
               errorMessage += `- ${err.message || 'Unknown error'}\n`;
             });
-  
+
             alert(errorMessage);
           } else {
             alert('An unexpected error occurred. Please try again.');
@@ -250,5 +272,4 @@ export class AddUserComponent {
         }
       );
   }
-  
 }
