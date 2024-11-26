@@ -171,6 +171,7 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
     if (changes['performanceRecord'] && this.performanceRecord) {
       console.log('Performance Record Competencies:', this.performanceRecord.competencies);
       this.populateFormData(this.performanceRecord);
+      this.populateCompetencyOptions(); // Populate competency options only after the record is set.
     } else {
       this.performanceRecord = {
         id: '',
@@ -187,6 +188,10 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
       };
       this.populateFormData(this.performanceRecord);
     }
+  }
+  
+  populateCompetencyOptions(): void {
+    this.fetchCompetencies();
   }
   
   populateFormData(record: PerformanceRecord) {

@@ -1,5 +1,5 @@
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -33,7 +33,7 @@ import { FormsModule } from '@angular/forms';
             <td class="px-6 py-4 text-sm text-gray-900">
               <select [(ngModel)]="row.level" (change)="updateDescription(row)" class="w-full p-1 border rounded text-sm">
                 <option value="" disabled selected>Select Level</option>
-                <option *ngFor="let level of row.levelOptions" [value]="level">{{ level }}</option>
+                <option *ngFor="let level of getLevelOptions(row.competency)" [value]="level">{{ level }}</option>
               </select>
             </td>
             <td class="px-6 py-4 max-w-lg text-sm text-gray-900">
@@ -48,24 +48,33 @@ import { FormsModule } from '@angular/forms';
 export class TableCompetenciesComponent implements OnInit {
   @Input() competencyData: any[] = [];
   @Input() competencyOptions: string[] = [];
-  @Input() competencies: any[] = [];
+  @Input() competencies: any[] = []; // Full competencies list from the parent
   @Output() competencyChange = new EventEmitter<any[]>();
 
   ngOnInit(): void {
-    console.log('Initial competencyData:', this.competencyOptions);
-    console.log('Initial competencyOptions:', this.competencies);
+    console.log('Initial competencyData:', this.competencyData);
+    console.log('Initial competencyOptions:', this.competencyOptions);
+    console.log('Full Competencies:', this.competencies);
   }
 
   emitCompetencyChange(): void {
     this.competencyChange.emit(this.competencyData);
   }
 
-  updateLevels(row: any): void {
-    row.level = '';
-    row.description = '';
-    row.levelOptions = [
-      ...new Set(this.competencies.filter((item) => item.competency === row.competency).map((item) => item.level)),
+  getLevelOptions(selectedCompetency: string): string[] {
+    if (!selectedCompetency) return [];
+    return [
+      ...new Set(
+        this.competencies
+          .filter((item) => item.competency === selectedCompetency)
+          .map((item) => item.level)
+      ),
     ];
+  }
+
+  updateLevels(row: any): void {
+    row.level = ''; // Reset level
+    row.description = ''; // Reset description
     this.emitCompetencyChange();
   }
 
