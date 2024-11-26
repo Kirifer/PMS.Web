@@ -119,8 +119,8 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
     competencies: [],
   };
   
-  competencyOptions: any[] = [];
-  competencies: any[] = [];
+  // competencyOptions: any[] = [];
+  // competencies: any[] = [];
 
   ngOnInit(): void {
     console.log('competencyData:', this.competencyData);
@@ -145,12 +145,30 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
     activeSupervisor: false,
   };
   competencyData = [
-    { competencyId: '', orderNo: 1, weight: 0, competency: { id: '', description: '', competency: '', level: '', isActive: false } },
-    { competencyId: '', orderNo: 2, weight: 0, competency: { id: '', description: '', competency: '', level: '', isActive: false } },
-    { competencyId: '', orderNo: 3, weight: 0, competency: { id: '', description: '', competency: '', level: '', isActive: false } },
-    { competencyId: '', orderNo: 4, weight: 0, competency: { id: '', description: '', competency: '', level: '', isActive: false } },
+    {
+      competencyId: '',
+      orderNo: 1,
+      weight: 0,
+    },
+    {
+      competencyId: '',
+      orderNo: 2,
+      weight: 0,
+    },
+    {
+      competencyId: '',
+      orderNo: 3,
+      weight: 0,
+    },
+    {
+      competencyId: '',
+      orderNo: 4,
+      weight: 0,
+    },
   ];
-  
+  competencies: { competency: string }[] = [];
+  competencyOptions: any[] = [];
+
   goalsData = [
     { orderNo: 1, goals: '', weight: 0, date: '', measure4: '', measure3: '', measure2: '', measure1: '' },
     { orderNo: 2, goals: '', weight: 0, date: '', measure4: '', measure3: '', measure2: '', measure1: '' },
@@ -316,10 +334,7 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
         competencyId: competency.competencyId || '',
         orderNo: competency.orderNo,
         weight: competency.weight || 0,
-        competency: competency.competency.competency || '', // Add the competency name
-        level: competency.competency.level || '', // Add the competency level
-        description: competency.competency.description || '', // Add the description
-      }))
+      }))      
     };
   
     // PUT request to save the updated performance review
@@ -327,13 +342,14 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
       (response) => {
         console.log('Response from API:', response);
         // Now, we are confident performanceRecord is never null
-        this.updateTable.emit({
-          success: true,
-          updatedData: {
-            ...this.performanceRecord!, // Use the non-null assertion
-            ...Payload, // Update with the new data
-          }
-        });
+        // this.updateTable.emit({
+        //   success: true,
+        //   updatedData: {
+        //     ...this.performanceRecord!,
+        //     ...Payload, 
+        // });
+        this.closeDialog();
+        console.log(Payload)
       },
       (error) => {
         console.error('Error occurred:', error);
@@ -344,6 +360,7 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
       }
     );
   }
+  
   
   constructor(private http: HttpClient) {} // Inject HttpClient
 
