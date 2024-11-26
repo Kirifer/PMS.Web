@@ -137,6 +137,9 @@ export class UsersComponent implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value
       .trim()
       .toLowerCase();
+    const filterValue = (event.target as HTMLInputElement).value
+      .trim()
+      .toLowerCase();
     if (filterValue) {
       this.filteredUsers = this.users.filter((user) =>
         Object.values(user).join(' ').toLowerCase().includes(filterValue)

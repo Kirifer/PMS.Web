@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="max-h-[80vh] flex flex-col -mt-2">
+    <div class="max-h-screen flex flex-col space-y-8 p-6">
       <!-- Employee Details Section -->
       <div class="bg-white p-6 rounded-lg">
         <h2 class="text-2xl font-bold mb-6 text-gray-800">Employee Details</h2>
@@ -41,9 +41,10 @@ import { CommonModule } from '@angular/common';
       </div>
 
       <!-- Goals Section -->
+      <!-- Goals Section -->
       <div class="bg-white p-6 rounded-lg">
         <h3 class="text-2xl font-bold mb-6 text-gray-800">Goals</h3>
-        <div class="max-h-full">
+        <div class="overflow-y-auto max-h-96">
           <table
             class="min-w-full table-auto border-collapse border border-gray-200 bg-white rounded-lg"
           >
@@ -89,6 +90,8 @@ import { CommonModule } from '@angular/common';
                   {{ goal.date || 'N/A' }}
                 </td>
               </tr>
+
+              <!-- If no goalsData exists, show N/A for all rows -->
               <tr *ngIf="goalsData.length === 0">
                 <td
                   colspan="4"
@@ -103,9 +106,9 @@ import { CommonModule } from '@angular/common';
       </div>
 
       <!-- Competency Section -->
-      <div class="bg-white p-6 rounded-lg mb-72">
+      <div class="bg-white p-6 rounded-lg">
         <h3 class="text-2xl font-bold mb-6 text-gray-800">Competencies</h3>
-        <div class="max-h-full">
+        <div class="overflow-y-auto max-h-96">
           <table
             class="min-w-full table-auto border-collapse border border-gray-200 bg-white rounded-lg"
           >
@@ -144,7 +147,7 @@ import { CommonModule } from '@angular/common';
                 class="hover:bg-gray-50 transition duration-200"
               >
                 <td class="border border-gray-200 p-3 text-sm text-gray-700">
-                  {{ competency.orderNo || 'N/A' }}
+                  {{ competency.orderNo }}
                 </td>
                 <td class="border border-gray-200 p-3 text-sm text-gray-700">
                   {{ getCompetencyName(competency.competencyId) || 'N/A' }}
@@ -153,7 +156,7 @@ import { CommonModule } from '@angular/common';
                   {{ getCompetencyLevel(competency.competencyId) || 'N/A' }}
                 </td>
                 <td class="border border-gray-200 p-3 text-sm text-gray-700">
-                  {{ competency.weight || 'N/A' }}
+                  {{ competency.weight }}
                 </td>
                 <td class="border border-gray-200 p-3 text-sm text-gray-700">
                   {{
