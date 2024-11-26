@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [FormsModule, CommonModule],
   template: `
-    <div class="mt-5 overflow-x-auto bg-white rounded-lg shadow-sm">
+   <div class="mt-5 overflow-x-auto bg-white rounded-lg shadow-sm">
       <table class="min-w-full divide-y divide-gray-200">
         <!-- Table head -->
         <thead class="bg-gray-50">
@@ -28,7 +28,7 @@ import { FormsModule } from '@angular/forms';
               scope="col"
               class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-              Weight
+              Weight (%)
             </th>
             <th
               scope="col"
@@ -84,6 +84,7 @@ import { FormsModule } from '@angular/forms';
                 type="number"
                 class="w-full p-1 border rounded text-center text-sm"
                 [(ngModel)]="row.weight"
+                (ngModelChange)="updateWeights()"
               />
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
@@ -127,8 +128,17 @@ export class TableGoalsComponent {
   @Input() startDate: string = '';
   @Input() endDate: string = '';
   @Input() goalsData: any[] = [];
-
   @Output() goalsChange = new EventEmitter<any[]>();
+
+  updateWeights() {
+    const totalWeight = this.goalsData.reduce((sum, goal) => sum + goal.weight, 0);
+    if (totalWeight !== 100) {
+      this.goalsData.forEach((goal) => {
+        goal.weight = (goal.weight / totalWeight) * 100;
+      });
+    }
+    this.emitGoalsChange();
+  }
 
   emitGoalsChange() {
     this.goalsChange.emit(this.goalsData);
