@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AddPerformanceReviewComponent } from './add-record/add-performance-review.component';
 import { InfoDialog } from './info-dialog.component';
+import { EditPerformanceReviewComponent } from './edit-record/edit-performance-review.component';
 
 export interface PerformanceRecord {
   id: string;
@@ -58,6 +59,7 @@ interface competency {
     HttpClientModule,
     CommonModule,
     AddPerformanceReviewComponent,
+    EditPerformanceReviewComponent,
     InfoDialog,
   ],
   template: `<div class="flex justify-between items-center mb-6">
@@ -69,7 +71,7 @@ interface competency {
       />
       <!-- Add Record Button -->
       <button
-        (click)="openDialog()"
+        (click)="openAddDialog()"
         class="px-4 py-2 bg-blue-500 rounded-md text-white hover:bg-blue-600"
       >
         Add Record
@@ -114,7 +116,7 @@ interface competency {
               {{ record.supervisorId }}
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-              <button class="text-indigo-600 hover:text-indigo-900 mr-3">
+              <button (click)="openEditDialog(record)"class="text-indigo-600 hover:text-indigo-900 mr-3">
                 <i-lucide [img]="Edit" class="w-5 h-5"></i-lucide>
               </button>
               <button
@@ -128,15 +130,23 @@ interface competency {
         </tbody>
       </table>
       <app-add-performance-review
-        (updateTable)="onUpdateTable($event)"
-        *ngIf="isDialogOpen"
-        (close)="closeDialog()"
+        *ngIf="isAddDialogOpen"
+        (updateTable)="onAddRecord($event)"
+        (close)="closeAddDialog()"
       />
       <app-info-dialog
         *ngIf="isInfoDialogOpen"
         [id]="selectedId"
         (close)="closeInfoDialog()"
         [competencies]="competencies"
+      />
+
+      <!-- Edit Record Dialog -->
+      <app-edit-performance-review
+        *ngIf="isEditDialogOpen"
+        [performanceRecord]="selectedRecord"
+        (updateTable)="onEditRecord($event)"
+        (close)="closeEditDialog()"
       />
     </div> `,
 })
@@ -148,11 +158,14 @@ export class PerformanceReviewTableComponent implements OnInit {
   competencies: any[] = [];
   tableData: any[] = [];
 
+  // EditRecord
+  selectedRecord: PerformanceRecord | null = null;
+
+  
   onUpdateTable(event: { success: boolean; newData: any }) {
     if (event.success) {
-      // Add the new data to the existing table data
       this.performanceReviews = [...this.performanceReviews, event.newData];
-      this.allPerformanceReviews = [...this.performanceReviews]; // Keep a backup of all records
+      this.allPerformanceReviews = [...this.performanceReviews]; 
       console.log('Updated table data:', this.performanceReviews);
     }
   }
@@ -177,6 +190,19 @@ export class PerformanceReviewTableComponent implements OnInit {
       }
     );
     this.fetchCompetencies();
+    this.loadPerformanceReviews();
+  }
+
+  loadPerformanceReviews() {
+    this.http.get<any>('https://localhost:7012/performance-reviews').subscribe(
+      (data) => {
+        if (data?.data) {
+          this.performanceReviews = data.data;
+          this.allPerformanceReviews = [...this.performanceReviews];
+        }
+      },
+      (error) => console.error('Error fetching performance reviews:', error)
+    );
   }
 
   fetchCompetencies(): void {
@@ -242,8 +268,39 @@ export class PerformanceReviewTableComponent implements OnInit {
     'Actions',
   ];
 
-  isDialogOpen = false;
+  isAddDialogOpen = false;
+  isEditDialogOpen = false;
   isInfoDialogOpen = false;
+
+   // Methods for dialogs
+  openAddDialog() {
+    this.isAddDialogOpen = true;
+  }
+
+  closeAddDialog() {
+    this.isAddDialogOpen = false;
+  }
+
+  openEditDialog(record: PerformanceRecord) {
+    this.selectedRecord = record || {
+      id: '',
+      name: '',
+      departmentType: '',
+      startYear: 0,
+      endYear: 0,
+      startDate: '',
+      endDate: '',
+      employeeId: '',
+      supervisorId: '',
+      goals: [],
+      competencies: [],
+    };
+    this.isEditDialogOpen = true;
+  }
+
+  closeEditDialog() {
+    this.isEditDialogOpen = false;
+  }
 
   openInfoDialog(id: string) {
     this.selectedId = id;
@@ -254,11 +311,23 @@ export class PerformanceReviewTableComponent implements OnInit {
     this.isInfoDialogOpen = false;
   }
 
-  openDialog() {
-    this.isDialogOpen = true;
+  // Add Record Update
+  onAddRecord(event: { success: boolean; newData: PerformanceRecord }) {
+    if (event.success) {
+      this.performanceReviews = [...this.performanceReviews, event.newData];
+      this.allPerformanceReviews = [...this.performanceReviews];
+      console.log('New record added:', event.newData);
+    }
   }
 
-  closeDialog() {
-    this.isDialogOpen = false;
+  // Edit Record Update
+  onEditRecord(event: { success: boolean; updatedData: PerformanceRecord }) {
+    if (event.success) {
+      console.log('Record successfully updated:', event.updatedData);
+  
+      // Reload the performance reviews to get the latest data from the server
+      this.loadPerformanceReviews();
+    }
   }
+  
 }

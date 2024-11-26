@@ -104,7 +104,21 @@ import { PerformanceRecord } from '../performance-review-table.component';
 export class EditPerformanceReviewComponent implements OnChanges, OnInit {
   @Output() close = new EventEmitter<void>();
   @Input() performanceRecord: PerformanceRecord | null = null;
-
+  @Output() updateTable = new EventEmitter<{ success: boolean; updatedData: PerformanceRecord }>();
+  @Input() performanceRecordNotNull: PerformanceRecord = {
+    id: '',
+    name: '',
+    departmentType: '',
+    startYear: 0,
+    endYear: 0,
+    startDate: '',
+    endDate: '',
+    employeeId: '',
+    supervisorId: '',
+    goals: [],
+    competencies: [],
+  };
+  
   competencyOptions: any[] = [];
   competencies: any[] = [];
 
@@ -157,10 +171,24 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
     if (changes['performanceRecord'] && this.performanceRecord) {
       console.log('Performance Record Competencies:', this.performanceRecord.competencies);
       this.populateFormData(this.performanceRecord);
+    } else {
+      this.performanceRecord = {
+        id: '',
+        name: '',
+        departmentType: '',
+        startYear: 0,
+        endYear: 0,
+        startDate: '',
+        endDate: '',
+        employeeId: '',
+        supervisorId: '',
+        goals: [],
+        competencies: [],
+      };
+      this.populateFormData(this.performanceRecord);
     }
   }
   
-
   populateFormData(record: PerformanceRecord) {
     this.employeeData = {
       id: record.id,
@@ -240,15 +268,31 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
   }
 
   submitForm() {
-    const startYear = new Date(this.employeeData.startDate).getFullYear() || 0;
-    const endYear = new Date(this.employeeData.endDate).getFullYear() || 0;
+    if (!this.performanceRecord) {
+      this.performanceRecord = {
+        id: '',
+        name: '',
+        departmentType: '',
+        startYear: 0,
+        endYear: 0,
+        startDate: '',
+        endDate: '',
+        employeeId: '',
+        supervisorId: '',
+        goals: [],
+        competencies: [],
+      };
+    }
+  
+    const startYear = new Date(this.employeeData.startDate).getFullYear();
+    const endYear = new Date(this.employeeData.endDate).getFullYear();
   
     const Payload = {
-      id: this.employeeData.id, 
+      id: this.employeeData.id,
       name: this.employeeData.name || '',
       departmentType: this.employeeData.departmentType || 'None',
-      startYear: startYear || 'None',
-      endYear: endYear || 'None',
+      startYear: isNaN(startYear) ? 0 : startYear, // Ensure it's a number
+      endYear: isNaN(endYear) ? 0 : endYear, // Ensure it's a number
       startDate: this.formatDate(this.employeeData.startDate),
       endDate: this.formatDate(this.employeeData.endDate),
       employeeId: this.employeeData.id || '3fa85f64-5717-4562-b3fc-2c963f66afa6',
@@ -277,16 +321,25 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
     this.http.put<any>(`https://localhost:7012/performance-reviews/${this.employeeData.id}`, Payload).subscribe(
       (response) => {
         console.log('Response from API:', response);
-        // Handle success
+        // Now, we are confident performanceRecord is never null
+        this.updateTable.emit({
+          success: true,
+          updatedData: {
+            ...this.performanceRecord!, // Use the non-null assertion
+            ...Payload, // Update with the new data
+          }
+        });
       },
       (error) => {
         console.error('Error occurred:', error);
-        // Handle error
+        this.updateTable.emit({
+          success: false,
+          updatedData: this.performanceRecord!, // Use the non-null assertion
+        });
       }
     );
   }
   
-
   constructor(private http: HttpClient) {} // Inject HttpClient
 
   formatDate(date: string): string {
