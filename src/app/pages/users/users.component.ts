@@ -1,31 +1,42 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule, NgFor } from '@angular/common';
-import { LucideAngularModule, Edit, Trash } from 'lucide-angular'; // Import Lucide icons
-import { AddUserComponent } from '../../components/add-user/add-user.component';  // Import AddUserComponent
+import { LucideAngularModule, Edit, Trash } from 'lucide-angular';
+import { AddUserComponent } from '../../components/add-user/add-user.component';
+import { HttpClient } from '@angular/common/http';
+
+export interface UserCreateDto {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  position: string;
+  isSupervisor: boolean;
+}
 
 interface UserRecord {
   id: number;
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   position: string;
+  // Add a computed 'name' property for convenience
+  name?: string;
 }
-
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [NgFor, LucideAngularModule, AddUserComponent, CommonModule], // Add LucideAngularModule
+  imports: [NgFor, LucideAngularModule, AddUserComponent, CommonModule],
   template: `
     <div class="min-h-screen bg-gray-50 py-6 px-4 sm:px-6 lg:px-8">
       <div class="max-w-full mx-auto px-4">
         <div class="flex justify-between items-center mb-6">
-          <h1 class="text-3xl font-semibold text-gray-900">
-            Users List
-          </h1>
+          <h1 class="text-3xl font-semibold text-gray-900">Users List</h1>
         </div>
         <p class="text-sm text-gray-600 mt-[-20px] mb-4">
-          A comprehensive list of users showcasing their names, email addresses, and positions within the organization.
+          A comprehensive list of users showcasing their names, email addresses,
+          and positions within the organization.
         </p>
-        
+
         <!-- Search and Add User -->
         <div class="flex justify-between items-center mb-6">
           <input
@@ -56,10 +67,10 @@ interface UserRecord {
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-              <!-- Change users to filteredUsers -->
               <tr *ngFor="let user of filteredUsers">
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                   {{ user.name }}
+                  <!-- Display the combined name -->
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                   {{ user.email }}
@@ -70,11 +81,9 @@ interface UserRecord {
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <button class="text-indigo-600 hover:text-indigo-900 mr-3">
                     <i-lucide [img]="Edit" class="w-5 h-5"></i-lucide>
-                    <!-- Edit Icon -->
                   </button>
                   <button class="text-red-600 hover:text-red-900">
                     <i-lucide [img]="Trash" class="w-5 h-5"></i-lucide>
-                    <!-- Delete Icon -->
                   </button>
                 </td>
               </tr>
@@ -83,44 +92,51 @@ interface UserRecord {
         </div>
 
         <!-- Add User Modal -->
-        <app-add-user *ngIf="isModalOpen" (close)="closeAddUserModal()"></app-add-user>
+        <div *ngIf="isModalVisible">
+          <app-add-user (userAdded)="onUserAdded($event)" (closeModal)="closeModalHandler()"></app-add-user>
+        </div>
       </div>
     </div>
   `,
 })
-export class UsersComponent {
+export class UsersComponent implements OnInit {
+  isModalVisible: boolean = false;
+
   readonly Edit = Edit;
   readonly Trash = Trash;
 
+
+  users: UserRecord[] = []; // Ensure users is initialized as an empty array
+  filteredUsers: UserRecord[] = [];
   headers = ['Name', 'Email Address', 'Position', 'Actions'];
-
-  users: UserRecord[] = [
-    {
-      id: 1,
-      name: 'John Doe',
-      email: 'john.doe@example.com',
-      position: 'Software Engineer',
-    },
-    {
-      id: 2,
-      name: 'Alice Johnson',
-      email: 'alice.johnson@example.com',
-      position: 'Marketing Manager',
-    },
-    {
-      id: 3,
-      name: 'Michael Smith',
-      email: 'michael.smith@example.com',
-      position: 'Project Manager',
-    },
-  ];
-
-  filteredUsers: UserRecord[] = [...this.users];
   isModalOpen = false;
 
-  // Apply filter when typing in the search input
+  constructor(private http: HttpClient) {}
+
+  ngOnInit() {
+    this.fetchUsers();
+    // console.log(response)
+  }
+
+  // Fetch users directly using HttpClient
+  fetchUsers() {
+    this.http
+      .get<{ data: UserRecord[] }>('https://localhost:7012/users')
+      .subscribe((response) => {
+        if (response && Array.isArray(response.data)) {
+          this.users = response.data.map((user) => ({
+            ...user,
+            name: `${user.firstName} ${user.lastName}`,
+          }));
+          this.filteredUsers = [...this.users];
+        }
+      });
+  }
+
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    const filterValue = (event.target as HTMLInputElement).value
+      .trim()
+      .toLowerCase();
     if (filterValue) {
       this.filteredUsers = this.users.filter((user) =>
         Object.values(user).join(' ').toLowerCase().includes(filterValue)
@@ -130,19 +146,27 @@ export class UsersComponent {
     }
   }
 
-  // Open the modal
   openAddUserModal() {
-    this.isModalOpen = true;
+    this.isModalVisible = true; // Show the modal when the Add User button is clicked
   }
 
-  // Close the modal
-  closeAddUserModal() {
-    this.isModalOpen = false;
+  closeModalHandler() {
+    this.isModalVisible = false;
   }
 
-  // Placeholder for Add User logic
-  addUser() {
-    console.log('Add User button clicked');
-    // Logic for adding a new user can go here
+  onUserAdded(newUser: UserCreateDto) {
+    // Add the new user to the list and update filtered users
+    const createdUser: UserRecord = {
+      id: this.users.length + 1, // You might want to adjust the ID generation logic
+      firstName: newUser.firstName,
+      lastName: newUser.lastName,
+      email: newUser.email,
+      position: newUser.position,
+      name: `${newUser.firstName} ${newUser.lastName}`,
+    };
+
+    this.users.push(createdUser); // Add the new user to the list
+    this.filteredUsers = [...this.users]; // Update the filtered list to include the new user
+    this.isModalVisible = false;
   }
 }
