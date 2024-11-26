@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { FormsModule } from '@angular/forms'; // Import FormsModule
-import { HttpClientModule } from '@angular/common/http'; // Add this import
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 
 // Define UserCreateDto interface with all necessary fields
@@ -11,16 +11,15 @@ export interface UserCreateDto {
   password: string;
   position: string;
   isSupervisor: boolean;
+  is_deleted?: boolean;
 }
 
 @Component({
   selector: 'app-add-user',
   standalone: true,
-  imports: [FormsModule, HttpClientModule], // Include FormsModule here
+  imports: [FormsModule, HttpClientModule],
   template: `
-    <div
-      class="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50"
-    >
+    <div class="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50">
       <div class="max-w-md w-full p-8 bg-white rounded-lg shadow-xl relative">
         <!-- Close Button -->
         <button
@@ -28,19 +27,8 @@ export interface UserCreateDto {
           aria-label="Close"
           (click)="closeAddUserModal()"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M6 18L18 6M6 6l12 12"
-            />
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
 
@@ -54,11 +42,7 @@ export interface UserCreateDto {
           <!-- First Name and Last Name in the same line -->
           <div class="flex space-x-4">
             <div class="flex-1">
-              <label
-                for="firstName"
-                class="block text-sm font-medium text-gray-700"
-                >First Name</label
-              >
+              <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
               <input
                 id="firstName"
                 type="text"
@@ -71,11 +55,7 @@ export interface UserCreateDto {
             </div>
 
             <div class="flex-1">
-              <label
-                for="lastName"
-                class="block text-sm font-medium text-gray-700"
-                >Last Name</label
-              >
+              <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
               <input
                 id="lastName"
                 type="text"
@@ -90,9 +70,7 @@ export interface UserCreateDto {
 
           <!-- Email -->
           <div>
-            <label for="email" class="block text-sm font-medium text-gray-700"
-              >Email</label
-            >
+            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
             <input
               id="email"
               type="email"
@@ -106,11 +84,7 @@ export interface UserCreateDto {
 
           <!-- Password -->
           <div>
-            <label
-              for="password"
-              class="block text-sm font-medium text-gray-700"
-              >Password</label
-            >
+            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
             <input
               id="password"
               type="password"
@@ -124,11 +98,7 @@ export interface UserCreateDto {
 
           <!-- Confirm Password -->
           <div>
-            <label
-              for="confirmPassword"
-              class="block text-sm font-medium text-gray-700"
-              >Confirm Password</label
-            >
+            <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password</label>
             <input
               id="confirmPassword"
               type="password"
@@ -142,11 +112,7 @@ export interface UserCreateDto {
 
           <!-- Position -->
           <div>
-            <label
-              for="position"
-              class="block text-sm font-medium text-gray-700"
-              >Position</label
-            >
+            <label for="position" class="block text-sm font-medium text-gray-700">Position</label>
             <input
               id="position"
               type="text"
@@ -160,11 +126,7 @@ export interface UserCreateDto {
 
           <!-- Is Supervisor -->
           <div>
-            <label
-              for="isSupervisor"
-              class="block text-sm font-medium text-gray-700"
-              >Is Supervisor?</label
-            >
+            <label for="isSupervisor" class="block text-sm font-medium text-gray-700">Is Supervisor?</label>
             <input
               id="isSupervisor"
               type="checkbox"
@@ -176,17 +138,10 @@ export interface UserCreateDto {
 
           <!-- Submit Button -->
           <div class="flex justify-end space-x-4">
-            <button
-              type="button"
-              (click)="closeAddUserModal()"
-              class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
-            >
+            <button type="button" (click)="closeAddUserModal()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">
               Cancel
             </button>
-            <button
-              type="submit"
-              class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-            >
+            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
               Add User
             </button>
           </div>
@@ -199,19 +154,18 @@ export class AddUserComponent {
   @Output() closeModal = new EventEmitter<void>();
   @Output() userAdded = new EventEmitter<UserCreateDto>();
 
-  firstName: string = '';
-  lastName: string = '';
-  email: string = '';
-  password: string = '';
-  confirmPassword: string = ''; // Added for confirmation
-  position: string = '';
-  isSupervisor: boolean = false; // Default to false for the checkbox
-  isModalVisible: boolean = true;
+  firstName = '';
+  lastName = '';
+  email = '';
+  password = '';
+  confirmPassword = '';
+  position = '';
+  isSupervisor = false;
+  isModalVisible = true;
 
   constructor(private http: HttpClient) {}
 
   closeAddUserModal() {
-    console.log('Close button clicked');
     this.closeModal.emit();
   }
 
@@ -222,19 +176,13 @@ export class AddUserComponent {
       return;
     }
 
-    if (
-      !this.firstName ||
-      !this.lastName ||
-      !this.email ||
-      !this.password ||
-      !this.position ||
-      this.isSupervisor === undefined
-    ) {
+    // Ensure all required fields are filled
+    if (!this.firstName || !this.lastName || !this.email || !this.password || !this.position || this.isSupervisor === undefined) {
       alert('Please fill in all required fields.');
       return;
     }
 
-    // Create a new user object matching the updated UserCreateDto
+    // Create new user object
     const newUser: UserCreateDto = {
       firstName: this.firstName,
       lastName: this.lastName,
@@ -242,34 +190,28 @@ export class AddUserComponent {
       password: this.password,
       position: this.position,
       isSupervisor: this.isSupervisor,
+      is_deleted: false,
     };
 
-    console.log('Sending user data:', newUser); // Debugging line
-
-    // Sending the POST request to the API
-    this.http
-      .post<UserCreateDto>('https://localhost:7012/users', newUser)
-      .subscribe(
-        (response) => {
-          console.log('User added successfully:', response);
-          this.userAdded.emit(newUser);
-          this.closeAddUserModal();
-        },
-        (error) => {
-          console.error('Error adding user:', error);
-          if (error.error && error.error.errors) {
-            const validationErrors = error.error.errors;
-            let errorMessage = 'Validation errors:\n';
-
-            validationErrors.forEach((err: any) => {
-              errorMessage += `- ${err.message || 'Unknown error'}\n`;
-            });
-
-            alert(errorMessage);
-          } else {
-            alert('An unexpected error occurred. Please try again.');
-          }
+    // Send the POST request to the API
+    this.http.post<UserCreateDto>('https://localhost:7012/users', newUser).subscribe(
+      (response) => {
+        this.userAdded.emit(newUser);
+        this.closeAddUserModal();
+      },
+      (error) => {
+        console.error('Error adding user:', error);
+        if (error.error && error.error.errors) {
+          const validationErrors = error.error.errors;
+          let errorMessage = 'Validation errors:\n';
+          validationErrors.forEach((err: any) => {
+            errorMessage += `- ${err.message || 'Unknown error'}\n`;
+          });
+          alert(errorMessage);
+        } else {
+          alert('An unexpected error occurred. Please try again.');
         }
-      );
+      }
+    );
   }
 }
