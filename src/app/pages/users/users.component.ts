@@ -93,7 +93,10 @@ interface UserRecord {
 
         <!-- Add User Modal -->
         <div *ngIf="isModalVisible">
-          <app-add-user (userAdded)="onUserAdded($event)" (closeModal)="closeModalHandler()"></app-add-user>
+          <app-add-user
+            (userAdded)="onUserAdded($event)"
+            (closeModal)="closeModalHandler()"
+          ></app-add-user>
         </div>
       </div>
     </div>
@@ -104,7 +107,6 @@ export class UsersComponent implements OnInit {
 
   readonly Edit = Edit;
   readonly Trash = Trash;
-
 
   users: UserRecord[] = []; // Ensure users is initialized as an empty array
   filteredUsers: UserRecord[] = [];
@@ -134,9 +136,6 @@ export class UsersComponent implements OnInit {
   }
 
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value
-      .trim()
-      .toLowerCase();
     const filterValue = (event.target as HTMLInputElement).value
       .trim()
       .toLowerCase();
