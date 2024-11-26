@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [FormsModule, CommonModule],
   template: `
-    <div class="mt-5 overflow-x-auto bg-white rounded-lg shadow-sm">
+   <div class="mt-5 overflow-x-auto bg-white rounded-lg shadow-sm">
       <table class="min-w-full divide-y divide-gray-200">
         <!-- Table head -->
         <thead class="bg-gray-50">
@@ -28,7 +28,7 @@ import { FormsModule } from '@angular/forms';
               scope="col"
               class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-              Weight
+              Weight (%)
             </th>
             <th
               scope="col"
@@ -127,7 +127,6 @@ export class TableGoalsComponent {
   @Input() startDate: string = '';
   @Input() endDate: string = '';
   @Input() goalsData: any[] = [];
-
   @Output() goalsChange = new EventEmitter<any[]>();
 
   emitGoalsChange() {

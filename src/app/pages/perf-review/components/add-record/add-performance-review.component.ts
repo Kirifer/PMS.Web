@@ -294,12 +294,32 @@ export class AddPerformanceReviewComponent implements OnInit {
       }
     }
 
+    // Check if total weight in goalsData equals 100%
+    const totalGoalWeight = this.goalsData.reduce(
+      (sum, goal) => sum + goal.weight,
+      0
+    );
+    if (totalGoalWeight !== 100) {
+      this.showToast('The total weight for goals must equal 100%.');
+      return;
+    }
+
     // Check for empty fields in competencyData
     for (const competency of this.competencyData) {
       if (!competency.competencyId || competency.weight === 0) {
         this.showToast('Please fill in all required competency fields!');
         return;
       }
+    }
+
+    // Check if total weight in competencyData equals 100%
+    const totalCompetencyWeight = this.competencyData.reduce(
+      (sum, competency) => sum + competency.weight,
+      0
+    );
+    if (totalCompetencyWeight !== 100) {
+      this.showToast('The total weight for competencies must equal 100%.');
+      return;
     }
 
     // Prepare Payload if all fields are valid
