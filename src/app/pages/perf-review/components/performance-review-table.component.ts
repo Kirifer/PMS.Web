@@ -5,7 +5,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AddPerformanceReviewComponent } from './add-performance-review.component';
+import { AddPerformanceReviewComponent } from './add-record/add-performance-review.component';
 import { InfoDialog } from './info-dialog.component';
 
 export interface PerformanceRecord {

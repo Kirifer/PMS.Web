@@ -84,7 +84,6 @@ import { FormsModule } from '@angular/forms';
                 type="number"
                 class="w-full p-1 border rounded text-center text-sm"
                 [(ngModel)]="row.weight"
-                (ngModelChange)="updateWeights()"
               />
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
@@ -129,16 +128,6 @@ export class TableGoalsComponent {
   @Input() endDate: string = '';
   @Input() goalsData: any[] = [];
   @Output() goalsChange = new EventEmitter<any[]>();
-
-  updateWeights() {
-    const totalWeight = this.goalsData.reduce((sum, goal) => sum + goal.weight, 0);
-    if (totalWeight !== 100) {
-      this.goalsData.forEach((goal) => {
-        goal.weight = (goal.weight / totalWeight) * 100;
-      });
-    }
-    this.emitGoalsChange();
-  }
 
   emitGoalsChange() {
     this.goalsChange.emit(this.goalsData);
