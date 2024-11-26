@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { LucideAngularModule, Edit, Trash } from 'lucide-angular';
 import { AddUserComponent } from './components/add-user/add-user.component';
 import { HttpClient } from '@angular/common/http';
+import { EditUserComponent } from './components/edit-user/edit-user.component';
 
 export interface UserCreateDto {
   firstName: string;
@@ -13,7 +14,7 @@ export interface UserCreateDto {
   isSupervisor: boolean;
 }
 
-interface UserRecord {
+export interface UserRecord {
   id: number;
   firstName: string;
   lastName: string;
@@ -26,7 +27,7 @@ interface UserRecord {
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule, AddUserComponent],
+  imports: [CommonModule, LucideAngularModule, AddUserComponent, EditUserComponent],
   template: `
     <div class="min-h-screen bg-gray-50 py-6 px-4 sm:px-6 lg:px-8">
       <div class="max-w-full mx-auto px-4">
@@ -68,7 +69,10 @@ interface UserRecord {
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ user.email }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ user.position }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button class="text-indigo-600 hover:text-indigo-900 mr-3">
+                  <button 
+                  class="text-indigo-600 hover:text-indigo-900 mr-3"
+                  (click)="openEditUserModal(user)"
+                  class="text-indigo-600 hover:text-indigo-900 mr-3">
                     <i-lucide [img]="Edit" class="w-5 h-5"></i-lucide>
                   </button>
                   <button
@@ -81,6 +85,15 @@ interface UserRecord {
               </tr>
             </tbody>
           </table>
+        </div>
+
+        <div *ngIf="isEditModalVisible">
+          <app-edit-user
+            [user]="userToEdit"
+            (userUpdated)="onUserUpdated($event)"
+            (reloadUsers)="fetchUsers()"
+            (cancel)="closeEditModal()"
+          ></app-edit-user>
         </div>
 
         <div *ngIf="isModalVisible">
@@ -97,17 +110,29 @@ export class UsersComponent implements OnInit {
   isModalVisible: boolean = false;
   readonly Edit = Edit;
   readonly Trash = Trash;
+  isEditModalVisible: boolean = false;
+  userToEdit: UserRecord | null = null;
 
   users: UserRecord[] = [];
   filteredUsers: UserRecord[] = [];
   headers = ['Name', 'Email Address', 'Position', 'Actions'];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    this.filteredUsers = filterValue
+      ? this.users.filter((user) =>
+        Object.values(user).join(' ').toLowerCase().includes(filterValue)
+      )
+      : [...this.users];
+  }
 
   ngOnInit() {
     this.fetchUsers();
   }
 
+  // GET USERS
   fetchUsers() {
     this.http
       .get<{ data: UserRecord[] }>('https://localhost:7012/users')
@@ -129,15 +154,7 @@ export class UsersComponent implements OnInit {
       });
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
-    this.filteredUsers = filterValue
-      ? this.users.filter((user) =>
-          Object.values(user).join(' ').toLowerCase().includes(filterValue)
-        )
-      : [...this.users];
-  }
-
+  // ADD USERS
   openAddUserModal() {
     this.isModalVisible = true;
   }
@@ -161,6 +178,7 @@ export class UsersComponent implements OnInit {
     this.isModalVisible = false;
   }
 
+  // DELETE USERS
   deleteUser(id: number) {
     if (confirm('Are you sure you want to delete this user?')) {
       this.http.delete<any>(`https://localhost:7012/users/${id}`).subscribe({
@@ -175,4 +193,25 @@ export class UsersComponent implements OnInit {
       });
     }
   }
+
+  // EDIT USERS
+  onUserUpdated(updatedUser: UserRecord) {
+    const index = this.users.findIndex((user) => user.id === updatedUser.id);
+    if (index !== -1) {
+      this.users[index] = { ...updatedUser, name: `${updatedUser.firstName} ${updatedUser.lastName}` };
+      this.filteredUsers = [...this.users];
+    }
+    this.closeEditModal();
+  }  
+
+  openEditUserModal(user: UserRecord) {
+    this.userToEdit = user;
+    this.isEditModalVisible = true;
+  }
+
+  closeEditModal() {
+    this.isEditModalVisible = false;
+    this.userToEdit = null;
+  }
+
 }
