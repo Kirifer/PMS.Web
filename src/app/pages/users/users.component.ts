@@ -146,6 +146,7 @@ export class UsersComponent implements OnInit {
                 name: `${user.firstName} ${user.lastName}`,
               }));
             this.filteredUsers = [...this.users];
+            console.log(this.users)
           }
         },
         error: (err) => {
