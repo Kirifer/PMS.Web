@@ -228,7 +228,7 @@ export class PerformanceReviewTableComponent implements OnInit {
         Object.values(record).join(' ').toLowerCase().includes(filterValue)
       );
     } else {
-      this.performanceReviews = [...this.allPerformanceReviews];
+      this.performanceReviews = [...this.allPerformanceReviews];  
     }
   }
 
