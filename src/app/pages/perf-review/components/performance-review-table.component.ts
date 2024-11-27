@@ -23,7 +23,8 @@ export interface PerformanceRecord {
   competencies: Competency[];
 }
 
-interface Goal {
+export interface Goal {
+  id: string;
   orderNo: number;
   goals: string;
   weight: number;
@@ -34,14 +35,15 @@ interface Goal {
   measure1: string;
 }
 
-interface Competency {
+export interface Competency {
+  id: string;
   competencyId: string;
   orderNo: number;
   weight: number;
   competency: competency;
 }
 
-interface competency {
+export interface competency {
   id: string;
   description: string;
   competency: string;

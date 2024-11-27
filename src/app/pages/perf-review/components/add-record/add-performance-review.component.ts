@@ -274,7 +274,7 @@ export class AddPerformanceReviewComponent implements OnInit {
   submitForm() {
     const startYear = new Date(this.employeeData.startDate).getFullYear() || 0;
     const endYear = new Date(this.employeeData.endDate).getFullYear() || 0;
-
+  
     // Check for empty fields in employeeData
     if (
       !this.employeeData.name ||
@@ -285,7 +285,7 @@ export class AddPerformanceReviewComponent implements OnInit {
       this.showToast('Please fill in all required employee fields!');
       return; // Prevent further processing if validation fails
     }
-
+  
     // Check for empty fields in goalsData
     for (const goal of this.goalsData) {
       if (!goal.goals || goal.weight === 0 || !goal.date) {
@@ -293,7 +293,7 @@ export class AddPerformanceReviewComponent implements OnInit {
         return;
       }
     }
-
+  
     // Check if total weight in goalsData equals 100%
     const totalGoalWeight = this.goalsData.reduce(
       (sum, goal) => sum + goal.weight,
@@ -303,7 +303,7 @@ export class AddPerformanceReviewComponent implements OnInit {
       this.showToast('The total weight for goals must equal 100%.');
       return;
     }
-
+  
     // Check for empty fields in competencyData
     for (const competency of this.competencyData) {
       if (!competency.competencyId || competency.weight === 0) {
@@ -311,7 +311,7 @@ export class AddPerformanceReviewComponent implements OnInit {
         return;
       }
     }
-
+  
     // Check if total weight in competencyData equals 100%
     const totalCompetencyWeight = this.competencyData.reduce(
       (sum, competency) => sum + competency.weight,
@@ -321,7 +321,7 @@ export class AddPerformanceReviewComponent implements OnInit {
       this.showToast('The total weight for competencies must equal 100%.');
       return;
     }
-
+  
     // Prepare Payload if all fields are valid
     const Payload = {
       name: this.employeeData.name || '',
@@ -343,14 +343,22 @@ export class AddPerformanceReviewComponent implements OnInit {
         measure1: goal.measure1 || '',
       })),
       competencies: this.competencyData.map((competency: any) => ({
+        id: competency.id || '',
         competencyId: competency.competencyId || '',
-        orderNo: competency.orderNo,
+        orderNo: competency.orderNo || 0,
         weight: competency.weight || 0,
+        competency: {
+          id: competency.competencyId && competency.competencyId !== '00000000-0000-0000-0000-000000000000' ? competency.competencyId : null,
+          competency: competency.competency || '', // Competency Name
+          level: competency.level || '', // Level
+          description: competency.description || '', // Description
+          isActive: competency.isActive || false, // Active status (if available)
+        },
       })),
     };
-
+  
     console.log('Payload:', Payload);
-
+  
     // Perform API request
     this.http
       .post<any>('https://localhost:7012/performance-reviews', Payload)
@@ -365,9 +373,10 @@ export class AddPerformanceReviewComponent implements OnInit {
           this.showToast('Error adding record. Please try again.'); // Show error toast
         }
       );
-
+  
     this.updateTable.emit({ success: true, newData: this.employeeData });
   }
+  
 
   showToast(message: string) {
     const toast = this.toastComponent; // Reference to the ToastComponent

@@ -28,7 +28,6 @@ import { PerformanceRecord } from '../performance-review-table.component';
       class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50"
     >
       <div class="bg-white rounded-lg shadow-lg  w-3/4 p-6">
-        <!-- Dialog Header -->
         <div class="flex justify-between items-center">
           <h2 class="text-lg font-semibold text-gray-800">Edit Performance Review</h2>
           <button
@@ -39,7 +38,6 @@ import { PerformanceRecord } from '../performance-review-table.component';
           </button>
         </div>
 
-        <!-- Tabs -->
         <div class="mt-4 border-b">
           <ul class="flex justify-between space-x-4">
             <li
@@ -54,7 +52,6 @@ import { PerformanceRecord } from '../performance-review-table.component';
           </ul>
         </div>
 
-        <!-- Tab Content -->
         <div class="mt-4 max-h-96 overflow-y-auto">
           <ng-container *ngIf="activeTab === 0">
             <app-form-employee
@@ -71,7 +68,7 @@ import { PerformanceRecord } from '../performance-review-table.component';
             />
           </ng-container>
           <ng-container *ngIf="activeTab === 2">
-            <app-table-competencies
+            <app-edit-table-competencies
               [competencyData]="competencyData"
               [competencyOptions]="competencyOptions"
               [competencies]="competencies"
@@ -83,7 +80,6 @@ import { PerformanceRecord } from '../performance-review-table.component';
           </ng-container>
         </div>
 
-        <!-- Dialog Footer -->
         <div class="mt-6 flex justify-end space-x-4">
           <button
             (click)="closeDialog()"
@@ -105,6 +101,9 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
   @Output() close = new EventEmitter<void>();
   @Input() performanceRecord: PerformanceRecord | null = null;
   @Output() updateTable = new EventEmitter<{ success: boolean; updatedData: PerformanceRecord }>();
+  @Input() performanceReviews$: any; 
+  performanceReviews: any[] = [];
+  allPerformanceReviews: any[] = [];
   @Input() performanceRecordNotNull: PerformanceRecord = {
     id: '',
     name: '',
@@ -123,9 +122,20 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
   // competencies: any[] = [];
 
   ngOnInit(): void {
-    console.log('competencyData:', this.competencyData);
-    console.log('competencyOptions:', this.competencyOptions);
-    console.log('competencies:', this.competencies);
+    if (this.performanceReviews$) {
+      this.performanceReviews$.subscribe(
+        (data: any) => {
+          if (data && data.data) {
+            this.performanceReviews = data.data;
+            this.allPerformanceReviews = [...this.performanceReviews];
+            console.log('Performance Review Data in edit perf:', this.performanceReviews);
+          }
+        },
+        (error: any) => {
+          console.error('Error fetching performance reviews:', error);
+        }
+      );
+    }
     this.fetchCompetencies();
   }
 
@@ -146,35 +156,68 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
   };
   competencyData = [
     {
+      id: '',
       competencyId: '',
+      competency: {
+        id: '',
+        description: '',
+        competency: '',
+        level: '',
+        isActive: false,
+      },
       orderNo: 1,
       weight: 0,
     },
     {
+      id: '',
       competencyId: '',
+      competency: {
+        id: '',
+        description: '',
+        competency: '',
+        level: '',
+        isActive: false,
+      },
       orderNo: 2,
       weight: 0,
     },
     {
+      id: '',
       competencyId: '',
+      competency: {
+        id: '',
+        description: '',
+        competency: '',
+        level: '',
+        isActive: false,
+      },
       orderNo: 3,
       weight: 0,
     },
     {
+      id: '',
       competencyId: '',
+      competency: {
+        id: '',
+        description: '',
+        competency: '',
+        level: '',
+        isActive: false,
+      },
       orderNo: 4,
       weight: 0,
     },
   ];
+  
   competencies: { competency: string }[] = [];
   competencyOptions: any[] = [];
 
   goalsData = [
-    { orderNo: 1, goals: '', weight: 0, date: '', measure4: '', measure3: '', measure2: '', measure1: '' },
-    { orderNo: 2, goals: '', weight: 0, date: '', measure4: '', measure3: '', measure2: '', measure1: '' },
-    { orderNo: 3, goals: '', weight: 0, date: '', measure4: '', measure3: '', measure2: '', measure1: '' },
-    { orderNo: 4, goals: '', weight: 0, date: '', measure4: '', measure3: '', measure2: '', measure1: '' },
-    { orderNo: 5, goals: '', weight: 0, date: '', measure4: '', measure3: '', measure2: '', measure1: '' },
+    { id:'', orderNo: 1, goals: '', weight: 0, date: '', measure4: '', measure3: '', measure2: '', measure1: '' },
+    { id:'', orderNo: 2, goals: '', weight: 0, date: '', measure4: '', measure3: '', measure2: '', measure1: '' },
+    { id:'', orderNo: 3, goals: '', weight: 0, date: '', measure4: '', measure3: '', measure2: '', measure1: '' },
+    { id:'', orderNo: 4, goals: '', weight: 0, date: '', measure4: '', measure3: '', measure2: '', measure1: '' },
+    { id:'', orderNo: 5, goals: '', weight: 0, date: '', measure4: '', measure3: '', measure2: '', measure1: '' },
   ];
 
   activeTab = 0;
@@ -187,9 +230,9 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['performanceRecord'] && this.performanceRecord) {
-      console.log('Performance Record Competencies:', this.performanceRecord.competencies);
+      console.log('Performance Record Goals:', this.performanceRecord.goals);
       this.populateFormData(this.performanceRecord);
-      this.populateCompetencyOptions(); // Populate competency options only after the record is set.
+      this.populateCompetencyOptions();
     } else {
       this.performanceRecord = {
         id: '',
@@ -224,8 +267,9 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
       endDate: record.endDate,
       activeSupervisor: record.supervisorId !== '',
     };
-
+  
     this.goalsData = record.goals.map((goal) => ({
+      id: goal.id || '',
       orderNo: goal.orderNo,
       goals: goal.goals,
       weight: goal.weight,
@@ -235,24 +279,28 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
       measure2: goal.measure2,
       measure1: goal.measure1,
     }));
-
+  
     this.competencyData = record.competencies.map((competency) => ({
-      competencyId: competency.competency.id, 
+      id: competency.id || '',
+      competencyId: competency.competency.id || '',
       orderNo: competency.orderNo,
-      weight: competency.weight,
+      weight: competency.weight || 0,
       competency: {
         id: competency.competency.id,
         description: competency.competency.description,
         competency: competency.competency.competency,
         level: competency.competency.level,
         isActive: competency.competency.isActive,
-      }
+      },
     }));
-
+  
     this.employee.startDate = record.startDate;
     this.employee.endDate = record.endDate;
+  
+    console.log('Populated Goals:', this.goalsData);
+    console.log('Populated Competencies:', this.competencyData);
   }
-
+  
   fetchCompetencies(): void {
     this.http.get<any>('https://localhost:7012/lookup/competencies').subscribe(
       (data) => {
@@ -265,10 +313,11 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
     );
   }
 
-  onRowsChange(updatedRows: any[]) {
+  onRowsChange(updatedRows: any[]): void {
     this.competencyData = updatedRows;
+    console.log('Updated Competency Data:', this.competencyData);
   }
-
+  
   onStartDateChange(date: string) {
     this.employee.startDate = date;
     this.updateGoalsDateRange();
@@ -290,80 +339,87 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
     this.close.emit();
   }
 
-  submitForm() {
-    if (!this.performanceRecord) {
-      this.performanceRecord = {
-        id: '',
-        name: '',
-        departmentType: '',
-        startYear: 0,
-        endYear: 0,
-        startDate: '',
-        endDate: '',
-        employeeId: '',
-        supervisorId: '',
-        goals: [],
-        competencies: [],
-      };
-    }
-  
-    const startYear = new Date(this.employeeData.startDate).getFullYear();
-    const endYear = new Date(this.employeeData.endDate).getFullYear();
-  
-    const Payload = {
-      id: this.employeeData.id,
-      name: this.employeeData.name || '',
-      departmentType: this.employeeData.departmentType || 'None',
-      startYear: isNaN(startYear) ? 0 : startYear, // Ensure it's a number
-      endYear: isNaN(endYear) ? 0 : endYear, // Ensure it's a number
-      startDate: this.formatDate(this.employeeData.startDate),
-      endDate: this.formatDate(this.employeeData.endDate),
-      employeeId: this.employeeData.id || '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      supervisorId: this.employeeData.supervisorId || '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      goals: this.goalsData.map((goal: any) => ({
-        orderNo: goal.orderNo,
-        goals: goal.goals || '',
-        weight: goal.weight,
-        date: `${startYear}-${endYear}`,
-        measure4: goal.measure4 || '',
-        measure3: goal.measure3 || '',
-        measure2: goal.measure2 || '',
-        measure1: goal.measure1 || ''
-      })),
-      competencies: this.competencyData.map((competency: any) => ({
-        competencyId: competency.competencyId || '',
-        orderNo: competency.orderNo,
-        weight: competency.weight || 0,
-      }))      
-    };
-  
-    // PUT request to save the updated performance review
-    this.http.put<any>(`https://localhost:7012/performance-reviews/${this.employeeData.id}`, Payload).subscribe(
-      (response) => {
-        console.log('Response from API:', response);
-        // Now, we are confident performanceRecord is never null
-        // this.updateTable.emit({
-        //   success: true,
-        //   updatedData: {
-        //     ...this.performanceRecord!,
-        //     ...Payload, 
-        // });
-        this.closeDialog();
-        console.log(Payload)
+  mapCompetency(competency: any) {
+    return {
+      id: competency.id || '',
+      competencyId: competency.competencyId || '',
+      competency: {
+        id: competency.competencyId && competency.competencyId !== '00000000-0000-0000-0000-000000000000' ? competency.competencyId : null,
+        competency: competency.competency || '', 
+        level: competency.level || '',
+        description: competency.description || '',
+        isActive: competency.isActive || false,
       },
-      (error) => {
-        console.error('Error occurred:', error);
-        this.updateTable.emit({
-          success: false,
-          updatedData: this.performanceRecord!, // Use the non-null assertion
-        });
-      }
-    );
+      weight: competency.weight || 0,
+      orderNo: competency.orderNo || 0,
+    };
   }
   
   
-  constructor(private http: HttpClient) {} // Inject HttpClient
 
+submitForm() {
+  if (!this.performanceRecord) {
+    this.performanceRecord = {
+      id: '',
+      name: '',
+      departmentType: '',
+      startYear: 0,
+      endYear: 0,
+      startDate: '',
+      endDate: '',
+      employeeId: '',
+      supervisorId: '',
+      goals: [],
+      competencies: [],
+    };
+  }
+
+  this.performanceRecord.goals = this.goalsData.map((goal: any) => ({
+    id: goal.id || '',
+    orderNo: goal.orderNo,
+    goals: goal.goals || '',
+    weight: goal.weight,
+    date: `${this.employeeData.startYear}-${this.employeeData.endYear}`,
+    measure4: goal.measure4 || '',
+    measure3: goal.measure3 || '',
+    measure2: goal.measure2 || '',
+    measure1: goal.measure1 || '',
+  }));
+
+  const startYear = new Date(this.employeeData.startDate).getFullYear();
+  const endYear = new Date(this.employeeData.endDate).getFullYear();
+
+  const Payload = {
+    id: this.employeeData.id,
+    name: this.employeeData.name || '',
+    departmentType: this.employeeData.departmentType || 'None',
+    startYear: isNaN(startYear) ? 0 : startYear,
+    endYear: isNaN(endYear) ? 0 : endYear,
+    startDate: this.formatDate(this.employeeData.startDate),
+    endDate: this.formatDate(this.employeeData.endDate),
+    employeeId: this.employeeData.id || '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    supervisorId: this.employeeData.supervisorId || '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    goals: this.performanceRecord.goals,
+    competencies: this.competencyData.map(this.mapCompetency),
+  };
+
+  this.http.put<any>(`https://localhost:7012/performance-reviews/${this.employeeData.id}`, Payload).subscribe(
+    (response) => {
+      console.log('Response from API:', response);
+      this.closeDialog();
+    },
+    (error) => {
+      console.error('Error occurred:', error);
+      this.updateTable.emit({
+        success: false,
+        updatedData: this.performanceRecord!,
+      });
+    }
+  );
+}
+
+  
+  constructor(private http: HttpClient) {}
   formatDate(date: string): string {
     if (!date) return '';
     const formattedDate = new Date(date);
