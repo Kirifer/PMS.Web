@@ -25,7 +25,7 @@ import { FormsModule } from '@angular/forms';
         <td class="px-6 py-4 text-sm text-gray-900">
           <select [(ngModel)]="row.competency" (change)="updateLevels(row)" class="w-full p-1 border rounded text-sm" id="competency-{{i}}">
             <option *ngIf="!row.competency" value="" disabled>Select Competency</option>
-            <option *ngIf="row.competency" [ngValue]="row.competency" disabled>
+            <option *ngIf="row.competency" [ngValue]="row.competency">
               <label for="competency-{{i}}" class="block text-xs font-medium text-gray-500">{{ row.competency.competency || row.competency }}</label>
             </option>
             <option *ngFor="let competency of competencyOptions" [value]="competency">{{ competency }}</option>
@@ -39,7 +39,7 @@ import { FormsModule } from '@angular/forms';
         <td class="px-6 py-4 text-sm text-gray-900">
           <select [(ngModel)]="row.level" (change)="updateDescription(row)" class="w-full p-1 border rounded text-sm">
             <option *ngIf="!row.level" value="" disabled>Select Level</option>
-            <option *ngIf="row.competency" [ngValue]="row.level" disabled>
+            <option *ngIf="row.competency" [ngValue]="row.level">
               <label for="level-{{i}}" class="block text-xs font-medium text-gray-500">{{ row.competency.level || row.level }}</label>
             </option>
             <option *ngFor="let level of getLevelOptions(row.competency)" [value]="level">{{ level }}</option>
@@ -56,31 +56,28 @@ import { FormsModule } from '@angular/forms';
 
   `,
 })
-export class TableCompetenciesComponent implements OnInit {
-  @Input() competencyData!: any[]; // Existing competency data
-  @Input() competencyOptions: string[] = []; // List of available competencies
-  @Input() competencies: any[] = []; // Full competencies list from the parent
+export class EditTableCompetenciesComponent implements OnInit {
+  @Input() competencyData: any[] = [];
+  @Input() competencyOptions: string[] = [];
+  @Input() competencies: any[] = [];
   @Output() competencyChange = new EventEmitter<any[]>();
 
   ngOnInit(): void {
-    console.log('Initial competencyData:', this.competencyData);
-    console.log('Initial competencyOptions:', this.competencyOptions);
-    console.log('Full Competencies:', this.competencies);
+    // console.log('Initial competencyData:', this.competencyData);
   }
 
   constructor(private cd: ChangeDetectorRef) {}
 
   emitCompetencyChange(): void {
-    this.competencyChange.emit([...this.competencyData]); // Ensure a new reference is passed
+    this.competencyChange.emit([...this.competencyData]);
   }
   
   onCompetencyChange(row: any): void {
-    row.level = ''; // Reset dependent fields
+    row.level = '';
     row.description = '';
     this.emitCompetencyChange();
   }
 
-  // Get the levels for the selected competency
   getLevelOptions(selectedCompetency: string): string[] {
     if (!selectedCompetency) return [];
     return [
@@ -92,14 +89,12 @@ export class TableCompetenciesComponent implements OnInit {
     ];
   }
 
-  // Update available levels when the competency changes
   updateLevels(row: any): void {
-    row.level = ''; // Reset level
-    row.description = ''; // Reset description
+    row.level = '';
+    row.description = '';
     this.emitCompetencyChange();
   }
 
-  // Update the description based on selected competency and level
   updateDescription(row: any): void {
     const match = this.competencies.find(
       (item) => item.competency === row.competency && item.level === row.level

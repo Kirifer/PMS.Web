@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-confirmation',
+  selector: 'app-edit-confirmation',
   standalone: true,
   imports: [CommonModule],
   template: `
@@ -171,20 +171,20 @@ import { CommonModule } from '@angular/common';
     </div>
   `,
 })
-export class ConfirmationComponent implements OnInit {
+export class EditConfirmationComponent implements OnInit {
   @Input() employeeData!: any;
   @Input() goalsData!: any[];
   @Input() competencyData!: any[];
   @Input() competencies!: any[];
 
   ngOnInit(): void {
-    console.log('Employee Data:', this.employeeData);
-    console.log('Goals Data:', this.goalsData);
-    console.log('Competency Data:', this.competencyData);
-    console.log('Competencies:', this.competencies);
+    // console.log('Employee Data:', this.employeeData);
+    // console.log('Goals Data:', this.goalsData);
+    // console.log('Competency Data:', this.competencyData);
+    // console.log('Competencies:', this.competencies);
     // this.getCompetencyLevel();
   }
-  // Methods to retrieve competency details by ID
+
   getCompetencyName(competencyId: string): string | undefined {
     return this.competencies.find((c) => c.id === competencyId)?.competency;
   }

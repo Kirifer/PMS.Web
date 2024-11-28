@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-table-goals',
+  selector: 'app-edit-table-goals',
   standalone: true,
   imports: [FormsModule, CommonModule],
   template: `
@@ -123,7 +123,7 @@ import { FormsModule } from '@angular/forms';
     </div>
   `,
 })
-export class TableGoalsComponent {
+export class EditTableGoalsComponent {
   @Input() startDate: string = '';
   @Input() endDate: string = '';
   @Input() goalsData: any[] = [];

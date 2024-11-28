@@ -211,7 +211,6 @@ export class PerformanceReviewTableComponent implements OnInit {
           this.performanceReviews = data.data;
           this.allPerformanceReviews = [...this.performanceReviews];
 
-          // Extract unique departments and supervisors
           this.departments = Array.from(
             new Set(this.performanceReviews.map((pr) => pr.departmentType))
           ).sort();
@@ -324,7 +323,6 @@ export class PerformanceReviewTableComponent implements OnInit {
   isEditDialogOpen = false;
   isInfoDialogOpen = false;
 
-  // Methods for dialogs
   openAddDialog() {
     this.isAddDialogOpen = true;
   }
@@ -363,7 +361,6 @@ export class PerformanceReviewTableComponent implements OnInit {
     this.isInfoDialogOpen = false;
   }
 
-  // Add Record Update
   onAddRecord(event: { success: boolean; newData: PerformanceRecord }) {
     if (event.success) {
       this.performanceReviews = [...this.performanceReviews, event.newData];
@@ -372,12 +369,9 @@ export class PerformanceReviewTableComponent implements OnInit {
     }
   }
 
-  // Edit Record Update
   onEditRecord(event: { success: boolean; updatedData: PerformanceRecord }) {
     if (event.success) {
       console.log('Record successfully updated:', event.updatedData);
-
-      // Reload the performance reviews to get the latest data from the server
       this.loadPerformanceReviews();
     }
   }

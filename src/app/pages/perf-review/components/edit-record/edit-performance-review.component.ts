@@ -4,10 +4,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { LucideAngularModule } from 'lucide-angular';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { EventEmitter, Output } from '@angular/core';
-import { TableCompetenciesComponent } from './table-competencies.component';
-import { TableGoalsComponent } from './table-goals.component';
-import { FormEmployeeComponent } from './form-employee.component';
-import { ConfirmationComponent } from "./confirmation.component";
+import { EditTableCompetenciesComponent } from './table-competencies.component';
+import { EditTableGoalsComponent } from './table-goals.component';
+import { EditFormEmployeeComponent } from './form-employee.component';
+import { EditConfirmationComponent } from "./confirmation.component";
 import { PerformanceRecord } from '../performance-review-table.component';
 
 @Component({
@@ -18,10 +18,10 @@ import { PerformanceRecord } from '../performance-review-table.component';
     LucideAngularModule,
     HttpClientModule,
     CommonModule,
-    TableCompetenciesComponent,
-    TableGoalsComponent,
-    FormEmployeeComponent,
-    ConfirmationComponent
+    EditTableCompetenciesComponent,
+    EditTableGoalsComponent,
+    EditFormEmployeeComponent,
+    EditConfirmationComponent
   ],
   template: `
   <div
@@ -54,14 +54,14 @@ import { PerformanceRecord } from '../performance-review-table.component';
 
         <div class="mt-4 max-h-96 overflow-y-auto">
           <ng-container *ngIf="activeTab === 0">
-            <app-form-employee
+            <app-edit-form-employee
               [employeeData]="employeeData"
               (startDateChange)="onStartDateChange($event)"
               (endDateChange)="onEndDateChange($event)"
             />
           </ng-container>
           <ng-container *ngIf="activeTab === 1">
-            <app-table-goals
+            <app-edit-table-goals
               [goalsData]="goalsData"
               [startDate]="employee.startDate"
               [endDate]="employee.endDate"
@@ -77,12 +77,12 @@ import { PerformanceRecord } from '../performance-review-table.component';
             />
           </ng-container>
           <ng-container *ngIf="activeTab === 3">
-          <app-confirmation
+          <app-edit-confirmation
           [employeeData]="employeeData"
           [goalsData]="goalsData"
           [competencyData]="competencyData"
           [competencies]="competencies"
-        ></app-confirmation>
+        ></app-edit-confirmation>
 
           </ng-container>
         </div>
@@ -136,7 +136,7 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
           if (data && data.data) {
             this.performanceReviews = data.data;
             this.allPerformanceReviews = [...this.performanceReviews];
-            console.log('Performance Review Data in edit perf:', this.performanceReviews);
+            console.log('Performance Reviews:', this.performanceReviews);
           }
         },
         (error: any) => {
@@ -238,7 +238,7 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['performanceRecord'] && this.performanceRecord) {
-      console.log('Performance Record Goals:', this.performanceRecord.goals);
+
       this.populateFormData(this.performanceRecord);
       this.populateCompetencyOptions();
     } else {
@@ -260,10 +260,9 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
   }
   
   onCompetencyChange(updatedData: any[]): void {
-    this.competencyData = updatedData; // Reflect updated data
+    this.competencyData = updatedData;
   }
 
-  
   populateCompetencyOptions(): void {
     this.fetchCompetencies();
   }
@@ -328,10 +327,8 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
 
   onRowsChange(updatedRows: any[]): void {
     this.competencyData = updatedRows;
-    console.log('Updated Competency Data:', this.competencyData);
     this.cd.detectChanges();
   }
-  
   
   onStartDateChange(date: string) {
     this.employee.startDate = date;
@@ -370,69 +367,71 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
     };
   }
   
-  
+  submitForm() {
+    if (!this.performanceRecord) {
+      this.performanceRecord = {
+        id: '',
+        name: '',
+        departmentType: '',
+        startYear: 0,
+        endYear: 0,
+        startDate: '',
+        endDate: '',
+        employeeId: '',
+        supervisorId: '',
+        goals: [],
+        competencies: [],
+      };
+    }
 
-submitForm() {
-  if (!this.performanceRecord) {
-    this.performanceRecord = {
-      id: '',
-      name: '',
-      departmentType: '',
-      startYear: 0,
-      endYear: 0,
-      startDate: '',
-      endDate: '',
-      employeeId: '',
-      supervisorId: '',
-      goals: [],
-      competencies: [],
+    this.performanceRecord.goals = this.goalsData.map((goal: any) => ({
+      id: goal.id || '',
+      orderNo: goal.orderNo,
+      goals: goal.goals || '',
+      weight: goal.weight,
+      date: `${this.employeeData.startYear}-${this.employeeData.endYear}`,
+      measure4: goal.measure4 || '',
+      measure3: goal.measure3 || '',
+      measure2: goal.measure2 || '',
+      measure1: goal.measure1 || '',
+    }));
+
+    const Payload = {
+      id: this.employeeData.id,
+      name: this.employeeData.name || '',
+      departmentType: this.employeeData.departmentType || 'None',
+      startYear: isNaN(this.employeeData.startYear) ? 0 : this.employeeData.startYear,
+      endYear: isNaN(this.employeeData.endYear) ? 0 : this.employeeData.endYear,
+      startDate: this.formatDate(this.employeeData.startDate),
+      endDate: this.formatDate(this.employeeData.endDate),
+      employeeId: this.employeeData.id || '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      supervisorId: this.employeeData.supervisorId || '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      goals: this.performanceRecord.goals,
+      competencies: this.competencyData.map(this.mapCompetency),
     };
+
+    this.http.put<any>(`https://localhost:7012/performance-reviews/${this.employeeData.id}`, Payload).subscribe(
+      (response) => {
+        console.log('Response from API:', response);
+        this.closeDialog();
+
+        this.updateTable.emit({
+          success:true,
+          updatedData: this.performanceRecord!,
+        })
+      },
+      (error) => {
+        console.error('Error occurred:', error);
+        this.updateTable.emit({
+          success: false,
+          updatedData: this.performanceRecord!,
+        });
+      }
+    );
   }
 
-  this.performanceRecord.goals = this.goalsData.map((goal: any) => ({
-    id: goal.id || '',
-    orderNo: goal.orderNo,
-    goals: goal.goals || '',
-    weight: goal.weight,
-    date: `${this.employeeData.startYear}-${this.employeeData.endYear}`,
-    measure4: goal.measure4 || '',
-    measure3: goal.measure3 || '',
-    measure2: goal.measure2 || '',
-    measure1: goal.measure1 || '',
-  }));
-
-  const Payload = {
-    id: this.employeeData.id,
-    name: this.employeeData.name || '',
-    departmentType: this.employeeData.departmentType || 'None',
-    startYear: isNaN(this.employeeData.startYear) ? 0 : this.employeeData.startYear,
-    endYear: isNaN(this.employeeData.endYear) ? 0 : this.employeeData.endYear,
-    startDate: this.formatDate(this.employeeData.startDate),
-    endDate: this.formatDate(this.employeeData.endDate),
-    employeeId: this.employeeData.id || '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-    supervisorId: this.employeeData.supervisorId || '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-    goals: this.performanceRecord.goals,
-    competencies: this.competencyData.map(this.mapCompetency),
-  };
-
-  this.http.put<any>(`https://localhost:7012/performance-reviews/${this.employeeData.id}`, Payload).subscribe(
-    (response) => {
-      console.log('Response from API:', response);
-      this.closeDialog();
-    },
-    (error) => {
-      console.error('Error occurred:', error);
-      this.updateTable.emit({
-        success: false,
-        updatedData: this.performanceRecord!,
-      });
-    }
-  );
-}
-// constructor(private cd: ChangeDetectorRef) {}
-
-  
   constructor(private http: HttpClient, private cd: ChangeDetectorRef) {}
+
   formatDate(date: string): string {
     if (!date) return '';
     const formattedDate = new Date(date);
