@@ -1,4 +1,4 @@
-import { Component, ViewChild, Input, OnChanges, SimpleChanges, OnInit } from '@angular/core';
+import { Component, ViewChild, Input, OnChanges, SimpleChanges, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LucideAngularModule } from 'lucide-angular';
@@ -73,6 +73,7 @@ import { PerformanceRecord } from '../performance-review-table.component';
               [competencyOptions]="competencyOptions"
               [competencies]="competencies"
               (competencyChange)="onRowsChange($event)"
+              
             />
           </ng-container>
           <ng-container *ngIf="activeTab === 3">
@@ -105,11 +106,10 @@ import { PerformanceRecord } from '../performance-review-table.component';
 })
 export class EditPerformanceReviewComponent implements OnChanges, OnInit {
   @Output() close = new EventEmitter<void>();
-  @Input() performanceRecord: PerformanceRecord | null = null;
   @Output() updateTable = new EventEmitter<{ success: boolean; updatedData: PerformanceRecord }>();
+
+  @Input() performanceRecord: PerformanceRecord | null = null;
   @Input() performanceReviews$: any; 
-  performanceReviews: any[] = [];
-  allPerformanceReviews: any[] = [];
   @Input() performanceRecordNotNull: PerformanceRecord = {
     id: '',
     name: '',
@@ -124,6 +124,8 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
     competencies: [],
   };
   
+  performanceReviews: any[] = [];
+  allPerformanceReviews: any[] = [];
   // competencyOptions: any[] = [];
   // competencies: any[] = [];
 
@@ -257,6 +259,11 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
     }
   }
   
+  onCompetencyChange(updatedData: any[]): void {
+    this.competencyData = updatedData; // Reflect updated data
+  }
+
+  
   populateCompetencyOptions(): void {
     this.fetchCompetencies();
   }
@@ -322,7 +329,9 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
   onRowsChange(updatedRows: any[]): void {
     this.competencyData = updatedRows;
     console.log('Updated Competency Data:', this.competencyData);
+    this.cd.detectChanges(); // Force Angular to update the view
   }
+  
   
   onStartDateChange(date: string) {
     this.employee.startDate = date;
@@ -392,9 +401,6 @@ submitForm() {
     measure1: goal.measure1 || '',
   }));
 
-  const startYear = new Date(this.employeeData.startDate).getFullYear();
-  const endYear = new Date(this.employeeData.endDate).getFullYear();
-
   const Payload = {
     id: this.employeeData.id,
     name: this.employeeData.name || '',
@@ -423,9 +429,10 @@ submitForm() {
     }
   );
 }
+// constructor(private cd: ChangeDetectorRef) {}
 
   
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private cd: ChangeDetectorRef) {}
   formatDate(date: string): string {
     if (!date) return '';
     const formattedDate = new Date(date);

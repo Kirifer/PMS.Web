@@ -147,7 +147,11 @@ export class FormEmployeeComponent {
   @Output() startDateChange = new EventEmitter<string>();
   @Output() endDateChange = new EventEmitter<string>();
   @Output() proceedToGoals = new EventEmitter<void>();
+  @Output() employeeDataChange = new EventEmitter<any[]>();
 
+  emitemployeeDataChange() {
+    this.employeeDataChange.emit(this.employeeData);
+  }
   constructor(private router: Router) {}
 
   onStartDateChange(event: Event) {

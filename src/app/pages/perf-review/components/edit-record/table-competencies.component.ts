@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -68,8 +68,16 @@ export class TableCompetenciesComponent implements OnInit {
     console.log('Full Competencies:', this.competencies);
   }
 
+  constructor(private cd: ChangeDetectorRef) {}
+
   emitCompetencyChange(): void {
-    this.competencyChange.emit(this.competencyData);
+    this.competencyChange.emit([...this.competencyData]); // Ensure a new reference is passed
+  }
+  
+  onCompetencyChange(row: any): void {
+    row.level = ''; // Reset dependent fields
+    row.description = '';
+    this.emitCompetencyChange();
   }
 
   // Get the levels for the selected competency

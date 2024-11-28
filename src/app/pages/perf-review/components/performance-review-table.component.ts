@@ -146,7 +146,6 @@ export interface competency {
     (updateTable)="onEditRecord($event)"
     (close)="closeEditDialog()"
   />
-  
 </div>
 
 
