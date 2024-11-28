@@ -25,8 +25,8 @@ import { FormsModule } from '@angular/forms';
         <td class="px-6 py-4 text-sm text-gray-900">
           <select [(ngModel)]="row.competency" (change)="updateLevels(row)" class="w-full p-1 border rounded text-sm" id="competency-{{i}}">
             <option *ngIf="!row.competency" value="" disabled>Select Competency</option>
-            <option *ngIf="row.competency" [ngValue]="row.competency">
-              <label for="competency-{{i}}" class="block text-xs font-medium text-gray-500">{{ row.competency.competency }}</label>
+            <option *ngIf="row.competency" [ngValue]="row.competency" disabled>
+              <label for="competency-{{i}}" class="block text-xs font-medium text-gray-500">{{ row.competency.competency || row.competency }}</label>
             </option>
             <option *ngFor="let competency of competencyOptions" [value]="competency">{{ competency }}</option>
           </select>
@@ -39,8 +39,8 @@ import { FormsModule } from '@angular/forms';
         <td class="px-6 py-4 text-sm text-gray-900">
           <select [(ngModel)]="row.level" (change)="updateDescription(row)" class="w-full p-1 border rounded text-sm">
             <option *ngIf="!row.level" value="" disabled>Select Level</option>
-            <option *ngIf="row.competency" [ngValue]="row.level">
-              <label for="level-{{i}}" class="block text-xs font-medium text-gray-500">{{ row.competency.level }}</label>
+            <option *ngIf="row.competency" [ngValue]="row.level" disabled>
+              <label for="level-{{i}}" class="block text-xs font-medium text-gray-500">{{ row.competency.level || row.level }}</label>
             </option>
             <option *ngFor="let level of getLevelOptions(row.competency)" [value]="level">{{ level }}</option>
           </select>
@@ -57,7 +57,7 @@ import { FormsModule } from '@angular/forms';
   `,
 })
 export class TableCompetenciesComponent implements OnInit {
-  @Input() competencyData: any[] = []; // Existing competency data
+  @Input() competencyData!: any[]; // Existing competency data
   @Input() competencyOptions: string[] = []; // List of available competencies
   @Input() competencies: any[] = []; // Full competencies list from the parent
   @Output() competencyChange = new EventEmitter<any[]>();

@@ -329,7 +329,7 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
   onRowsChange(updatedRows: any[]): void {
     this.competencyData = updatedRows;
     console.log('Updated Competency Data:', this.competencyData);
-    this.cd.detectChanges(); // Force Angular to update the view
+    this.cd.detectChanges();
   }
   
   
