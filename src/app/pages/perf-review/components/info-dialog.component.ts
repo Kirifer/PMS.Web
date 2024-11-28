@@ -209,6 +209,7 @@ export class InfoDialog implements OnInit {
   employeeData: any = {};
   goalsData: any[] = [];
   competencyData: any[] = [];
+  @Output() dataFetched = new EventEmitter<any>();
 
   http = inject(HttpClient);
 

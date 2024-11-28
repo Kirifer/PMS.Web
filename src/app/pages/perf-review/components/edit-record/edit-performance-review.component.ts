@@ -76,7 +76,13 @@ import { PerformanceRecord } from '../performance-review-table.component';
             />
           </ng-container>
           <ng-container *ngIf="activeTab === 3">
-            <app-confirmation/>
+          <app-confirmation
+          [employeeData]="employeeData"
+          [goalsData]="goalsData"
+          [competencyData]="competencyData"
+          [competencies]="competencies"
+        ></app-confirmation>
+
           </ng-container>
         </div>
 
