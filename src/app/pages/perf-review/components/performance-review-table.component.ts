@@ -92,7 +92,7 @@ export interface competency {
       >
         <option value="">All Supervisors</option>
         <option *ngFor="let supervisor of supervisors" [value]="supervisor.id">
-          {{ supervisor.name }}
+          {{ supervisor.id }}
         </option>
       </select>
       <!-- Add Record Button -->

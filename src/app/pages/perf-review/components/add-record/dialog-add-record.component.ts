@@ -15,6 +15,7 @@ import {
   COMPETENCY_DATA_INITIAL_STATE,
   GOALS_DATA_INITIAL_STATE,
   TABS,
+  LOOKUP_USERS,
 } from './constants/data.constants';
 
 @Component({
@@ -62,6 +63,7 @@ import {
           <ng-container *ngIf="activeTab === 0">
             <app-dialog-employee
               [employeeData]="employeeData"
+              [lookUpUsers]="lookUpUsers" 
               (startDateChange)="onStartDateChange($event)"
               (endDateChange)="onEndDateChange($event)"
             />
@@ -118,6 +120,7 @@ export class AddPerformanceReviewComponent implements OnInit {
   employeeData = { ...EMPLOYEE_DATA_INITIAL_STATE };
   competencyData = [...COMPETENCY_DATA_INITIAL_STATE];
   goalsData = [...GOALS_DATA_INITIAL_STATE];
+  lookUpUsers = [...LOOKUP_USERS];
   activeTab = 0;
   tabs = [...TABS];
   competencies: { competency: string }[] = [];
@@ -127,6 +130,7 @@ export class AddPerformanceReviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchCompetencies();
+    this.fetchLookupUsers();
   }
 
   onRowsChange(updatedRows: any[]) {
@@ -176,6 +180,17 @@ export class AddPerformanceReviewComponent implements OnInit {
         }
       },
       (error) => console.error('Error fetching competencies:', error)
+    );
+  }
+
+  fetchLookupUsers(): void {
+    this.http.get<any>('https://localhost:7012/lookup/users').subscribe(
+      (data) => {
+        if (data?.data) {
+          this.lookUpUsers = data.data;
+        }
+      },
+      (error) => console.error('Error fetching lookup users:', error)
     );
   }
 
