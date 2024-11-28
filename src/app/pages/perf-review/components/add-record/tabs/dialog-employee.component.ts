@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-form-employee',
+  selector: 'app-dialog-employee',
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
@@ -134,7 +134,7 @@ import { Router } from '@angular/router';
   `,
   styles: [],
 })
-export class FormEmployeeComponent {
+export class DialogEmployeeComponent {
   @Input() employeeData: any = {
     name: '',
     departmentType: '',

@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-confirmation',
+  selector: 'app-dialog-confirmation',
   standalone: true,
   imports: [CommonModule],
   template: `
@@ -168,7 +168,7 @@ import { CommonModule } from '@angular/common';
     </div>
   `,
 })
-export class ConfirmationComponent implements OnInit {
+export class DialogConfirmationComponent implements OnInit {
   @Input() employeeData!: any;
   @Input() goalsData!: any[];
   @Input() competencyData!: any[];

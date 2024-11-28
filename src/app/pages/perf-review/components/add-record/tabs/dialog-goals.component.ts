@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-table-goals',
+  selector: 'app-dialog-goals',
   standalone: true,
   imports: [FormsModule, CommonModule],
   template: `
@@ -123,7 +123,7 @@ import { FormsModule } from '@angular/forms';
     </div>
   `,
 })
-export class TableGoalsComponent {
+export class DialogGoalsComponent {
   @Input() startDate: string = '';
   @Input() endDate: string = '';
   @Input() goalsData: any[] = [];
