@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common'; // Import CommonModule
-import { LucideAngularModule, House, Users, Ticket, LogOut } from 'lucide-angular';
+import { LucideAngularModule, House, Users, Ticket, LogOut, User } from 'lucide-angular';
 
 interface NavItem {
   icon: any; // Type for dynamic component
@@ -67,29 +67,27 @@ interface NavItem {
     </a>
   </div>
 
-  <!-- User Profile and Logout Section -->
-  <div class="flex flex-col items-center gap-4 p-4 border-t border-blue-800">
-    <!-- User Profile Icon -->
-    <div
-      class="flex items-center gap-2 cursor-pointer hover:bg-blue-950 p-2 rounded-lg transition-all"
+  <!-- User Profile and Logout Section as Navigation Items -->
+  <div class="flex flex-col gap-2 mt-auto border-t border-gray-400">
+    <a
+      class="nav-item flex items-center gap-2 p-2 cursor-pointer hover:bg-blue-950 rounded-lg transition-all duration-300"
       [ngClass]="{
         'justify-center': !isExpanded,
-        'w-full': isExpanded
+        'w-full pl-4': isExpanded
       }"
     >
-      <i-lucide [img]="UsersIcon" class="w-6 h-6"></i-lucide>
+      <i-lucide [img]="UserIcon" class="w-6 h-6"></i-lucide>
       <div *ngIf="isExpanded" class="text-left">
         <p class="text-sm font-bold">John Doe</p>
         <p class="text-xs text-gray-300">Administrator</p>
       </div>
-    </div>
+    </a>
 
-    <!-- Logout Icon -->
-    <div
-      class="flex items-center gap-2 cursor-pointer hover:bg-blue-950 p-2 rounded-lg transition-all"
+    <a
+      class="nav-item flex items-center gap-2 p-2 cursor-pointer hover:bg-blue-950 rounded-lg transition-all duration-300"
       [ngClass]="{
         'justify-center': !isExpanded,
-        'w-full': isExpanded
+        'w-full pl-4 ': isExpanded
       }"
       (click)="logout()"
     >
@@ -100,9 +98,10 @@ interface NavItem {
       >
         Logout
       </span>
-    </div>
+    </a>
   </div>
 </nav>
+
 
   `,
   styles: [],
@@ -110,6 +109,7 @@ interface NavItem {
 export class SideNavComponent implements OnInit {
   readonly HouseIcon = House;
   readonly UsersIcon = Users;
+  readonly UserIcon = User;
   readonly TicketIcon = Ticket;
   readonly LogOutIcon = LogOut;
 
