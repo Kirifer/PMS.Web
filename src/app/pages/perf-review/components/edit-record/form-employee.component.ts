@@ -138,8 +138,8 @@ export class FormEmployeeComponent {
   @Input() employeeData: any = {
     name: '',
     departmentType: '',
-    startYear: '',
-    endYear: '',
+    startYear: 0,
+    endYear: 0,
     startDate: '',
     endDate: '',
     supervisorId: '',

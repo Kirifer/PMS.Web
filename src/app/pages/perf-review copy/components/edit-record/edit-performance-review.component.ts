@@ -307,8 +307,8 @@ export class EditHahaPerformanceReviewComponent implements OnInit {
   @Output() updateTable = new EventEmitter<any>();
 
   submitForm() {
-    const startYear = new Date(this.employeeData.startDate).getFullYear() || 0;
-    const endYear = new Date(this.employeeData.endDate).getFullYear() || 0;
+    const startYear = new Date(this.employeeData.startYear).getFullYear() || 0;
+    const endYear = new Date(this.employeeData.endYear).getFullYear() || 0;
 
     // Check for empty fields in employeeData
     // if (
