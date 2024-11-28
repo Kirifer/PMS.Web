@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common'; // Import CommonModule
-import { LucideAngularModule, House, Users, Ticket } from 'lucide-angular';
+import { LucideAngularModule, House, Users, Ticket, CircleUserRound } from 'lucide-angular'; // Import CircleUserRound
 
 interface NavItem {
   icon: any; // Type for dynamic component
@@ -52,9 +52,7 @@ interface NavItem {
 
       <!-- Subtitle for Expanded State -->
       <div *ngIf="isExpanded">
-        <p
-          class="text-xs text-gray-300 items-center justify-center ml-8 mt-[-15px]"
-        >
+        <p class="text-xs text-gray-300 items-center justify-center ml-8 mt-[-15px]">
           Performance Management System
         </p>
       </div>
