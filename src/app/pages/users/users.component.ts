@@ -60,8 +60,7 @@ export interface UserRecord {
             (change)="applyFilter()"
             class="px-4 py-2 border rounded-lg shadow-sm mr-4"
           >
-          <option value="" disabled>Filter Positions</option>
-          <option value="">All</option>
+          <option value="">All Positions</option>
             <option *ngFor="let position of positions" [value]="position">
               {{ position }}
             </option>
@@ -71,8 +70,7 @@ export interface UserRecord {
             (change)="applyFilter()"
             class="px-4 py-2 border rounded-lg shadow-sm mr-4"
           >
-            <option value="" disabled>Filter Supervisors</option>
-            <option value="">All</option>
+            <option value="">All Supervisors</option>
             <option value="true">Supervisors</option>
             <option value="false">Non-Supervisors</option>
           </select>
