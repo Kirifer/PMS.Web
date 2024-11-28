@@ -105,77 +105,76 @@ export interface competency {
     </div>
 
     <div class="overflow-x-auto bg-white rounded-lg shadow-lg">
-      <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
-          <tr>
-            <th
-              *ngFor="let header of headers"
-              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              {{ header }}
-            </th>
-          </tr>
-        </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
-          <tr *ngFor="let record of performanceReviews; let i = index">
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-              {{ i + 1 }}
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-              <button (click)="openInfoDialog(record.id)">
-                {{ record.departmentType }}
-              </button>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-              {{ record.startYear }} - {{ record.endYear }}
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-              {{ record.startDate }}
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-              {{ record.endDate }}
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-              {{ record.name }}
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-              {{ record.supervisorId }}
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-              <button
-                (click)="openEditDialog(record)"
-                class="text-indigo-600 hover:text-indigo-900 mr-3"
-              >
-                <i-lucide [img]="Edit" class="w-5 h-5"></i-lucide>
-              </button>
-              <button
-                class="text-red-600 hover:text-red-900"
-                (click)="deleteRecord(record.id)"
-              >
-                <i-lucide [img]="Trash" class="w-5 h-5"></i-lucide>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <app-add-performance-review
-        *ngIf="isAddDialogOpen"
-        (updateTable)="onAddRecord($event)"
-        (close)="closeAddDialog()"
-      />
-      <app-info-dialog
-        *ngIf="isInfoDialogOpen"
-        [id]="selectedId"
-        (close)="closeInfoDialog()"
-        [competencies]="competencies"
-      />
-      <app-edit-performance-review
-        *ngIf="isEditDialogOpen"
-        [performanceRecord]="selectedRecord"
-        (updateTable)="onEditRecord($event)"
-        (close)="closeEditDialog()"
-      />
-    </div> `,
+  <table class="min-w-full divide-y divide-gray-200">
+    <thead class="bg-gray-50">
+      <tr>
+      
+        <th *ngFor="let header of headers" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          {{ header }}
+        </th>
+      </tr>
+    </thead>
+    <tbody class="bg-white divide-y divide-gray-200">
+      <tr *ngFor="let record of performanceReviews; let i = index">
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+          {{ i + 1 }}
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+          <button (click)="openInfoDialog(record.id)">
+            {{ record.departmentType }}
+          </button>
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+          {{ record.startYear }} - {{ record.endYear }}
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+          {{ record.startDate }}
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+          {{ record.endDate }}
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+          {{ record.name }}
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+          {{ record.supervisorId }}
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+          <button (click)="openEditDialog(record)" class="text-indigo-600 hover:text-indigo-900 mr-3">
+            <i-lucide [img]="Edit" class="w-5 h-5"></i-lucide>
+          </button>
+          <button
+            class="text-red-600 hover:text-red-900"
+            (click)="deleteRecord(record.id)"
+          >
+            <i-lucide [img]="Trash" class="w-5 h-5"></i-lucide>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <app-add-performance-review
+    *ngIf="isAddDialogOpen"
+    (updateTable)="onAddRecord($event)"
+    (close)="closeAddDialog()"
+  />
+  <app-info-dialog
+    *ngIf="isInfoDialogOpen"
+    [id]="selectedId"
+    (close)="closeInfoDialog()"
+    [competencies]="competencies"
+  />
+  <app-edit-performance-review
+    *ngIf="isEditDialogOpen"
+    [performanceRecord]="selectedRecord"
+    (updateTable)="onEditRecord($event)"
+    (close)="closeEditDialog()"
+  />
+  
+</div>
+
+
+    `,
 })
 export class PerformanceReviewTableComponent implements OnInit {
   performanceReviews: PerformanceRecord[] = [];
