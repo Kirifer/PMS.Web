@@ -68,7 +68,7 @@ interface NavItem {
   </div>
 
   <!-- User Profile and Logout Section -->
-  <div class="flex flex-col items-center gap-4 p-4 border-t border-blue-800">
+  <div class="flex flex-col items-center gap-4 p-4 border-t border-gray-400">
     <!-- User Profile Icon -->
     <div
       class="flex items-center gap-2 cursor-pointer hover:bg-blue-950 p-2 rounded-lg transition-all"

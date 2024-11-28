@@ -4,11 +4,18 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { LucideAngularModule } from 'lucide-angular';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { EventEmitter, Output } from '@angular/core';
-import { TableCompetenciesComponent } from './table-competencies.component';
-import { TableGoalsComponent } from './table-goals.component';
-import { FormEmployeeComponent } from './form-employee.component';
-import { ConfirmationComponent } from './confirmation.component';
+import { DialogCompetenciesComponent } from './tabs/dialog-competencies.component';
+import { DialogGoalsComponent } from './tabs/dialog-goals.component';
+import { DialogEmployeeComponent } from './tabs/dialog-employee.component';
+import { DialogConfirmationComponent } from './tabs/dialog-confirmation.component';
 import { ToastComponent } from '../../../../components/toast/toast.component';
+import {
+  EMPLOYEE_INITIAL_STATE,
+  EMPLOYEE_DATA_INITIAL_STATE,
+  COMPETENCY_DATA_INITIAL_STATE,
+  GOALS_DATA_INITIAL_STATE,
+  TABS,
+} from './constants/data.constants';
 
 @Component({
   selector: 'app-add-performance-review',
@@ -18,10 +25,10 @@ import { ToastComponent } from '../../../../components/toast/toast.component';
     LucideAngularModule,
     HttpClientModule,
     CommonModule,
-    TableCompetenciesComponent,
-    TableGoalsComponent,
-    FormEmployeeComponent,
-    ConfirmationComponent,
+    DialogCompetenciesComponent,
+    DialogGoalsComponent,
+    DialogEmployeeComponent,
+    DialogConfirmationComponent,
     ToastComponent,
   ],
   template: `
@@ -29,7 +36,6 @@ import { ToastComponent } from '../../../../components/toast/toast.component';
       class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50"
     >
       <div class="bg-white rounded-lg shadow-lg max-h-[80vh] w-3/4 p-6">
-        <!-- Dialog Header -->
         <div class="flex justify-between items-center">
           <h2 class="text-lg font-semibold text-gray-800">Add a Record</h2>
           <button
@@ -39,8 +45,6 @@ import { ToastComponent } from '../../../../components/toast/toast.component';
             ✖
           </button>
         </div>
-
-        <!-- Tabs -->
         <div class="mt-4 border-b">
           <ul class="flex justify-between space-x-4">
             <li
@@ -54,25 +58,23 @@ import { ToastComponent } from '../../../../components/toast/toast.component';
             </li>
           </ul>
         </div>
-
-        <!-- Tab Content -->
         <div class="mt-4 max-h-96 overflow-y-auto">
           <ng-container *ngIf="activeTab === 0">
-            <app-form-employee
+            <app-dialog-employee
               [employeeData]="employeeData"
               (startDateChange)="onStartDateChange($event)"
               (endDateChange)="onEndDateChange($event)"
             />
           </ng-container>
           <ng-container *ngIf="activeTab === 1">
-            <app-table-goals
+            <app-dialog-goals
               [goalsData]="goalsData"
               [startDate]="employee.startDate"
               [endDate]="employee.endDate"
             />
           </ng-container>
           <ng-container *ngIf="activeTab === 2">
-            <app-table-competencies
+            <app-dialog-competencies
               [competencyData]="competencyData"
               [competencies]="competencies"
               [competencyOptions]="competencyOptions"
@@ -80,7 +82,7 @@ import { ToastComponent } from '../../../../components/toast/toast.component';
             />
           </ng-container>
           <ng-container *ngIf="activeTab === 3">
-            <app-confirmation
+            <app-dialog-confirmation
               [employeeData]="employeeData"
               [goalsData]="goalsData"
               [competencyData]="competencyData"
@@ -88,8 +90,6 @@ import { ToastComponent } from '../../../../components/toast/toast.component';
             />
           </ng-container>
         </div>
-
-        <!-- Dialog Footer -->
         <div class="mt-6 flex justify-end space-x-4">
           <button
             (click)="closeDialog()"
@@ -110,110 +110,24 @@ import { ToastComponent } from '../../../../components/toast/toast.component';
   `,
 })
 export class AddPerformanceReviewComponent implements OnInit {
+  @Output() updateTable = new EventEmitter<any>();
   @Output() close = new EventEmitter<void>();
-  @ViewChild(ToastComponent) toastComponent!: ToastComponent; // Add ViewChild to access the Toast component
+  @ViewChild(ToastComponent) toastComponent!: ToastComponent;
 
-  // Other existing code
-
-  // Show toast function as discussed above
-
-  employee = {
-    startDate: '',
-    endDate: '',
-  };
-  employeeData = {
-    name: '',
-    departmentType: '',
-    startYear: '',
-    endYear: '',
-    supervisorId: '',
-    startDate: '',
-    endDate: '',
-    activeSupervisor: false,
-  };
-  competencyData = [
-    {
-      competencyId: '',
-      orderNo: 1,
-      weight: 0,
-    },
-    {
-      competencyId: '',
-      orderNo: 2,
-      weight: 0,
-    },
-    {
-      competencyId: '',
-      orderNo: 3,
-      weight: 0,
-    },
-    {
-      competencyId: '',
-      orderNo: 4,
-      weight: 0,
-    },
-  ];
+  employee = { ...EMPLOYEE_INITIAL_STATE };
+  employeeData = { ...EMPLOYEE_DATA_INITIAL_STATE };
+  competencyData = [...COMPETENCY_DATA_INITIAL_STATE];
+  goalsData = [...GOALS_DATA_INITIAL_STATE];
+  activeTab = 0;
+  tabs = [...TABS];
   competencies: { competency: string }[] = [];
   competencyOptions: any[] = [];
-  goalsData = [
-    {
-      orderNo: 1,
-      goals: '',
-      weight: 0,
-      date: '',
-      measure4: '',
-      measure3: '',
-      measure2: '',
-      measure1: '',
-    },
-    {
-      orderNo: 2,
-      goals: '',
-      weight: 0,
-      date: '',
-      measure4: '',
-      measure3: '',
-      measure2: '',
-      measure1: '',
-    },
-    {
-      orderNo: 3,
-      goals: '',
-      weight: 0,
-      date: '',
-      measure4: '',
-      measure3: '',
-      measure2: '',
-      measure1: '',
-    },
-    {
-      orderNo: 4,
-      goals: '',
-      weight: 0,
-      date: '',
-      measure4: '',
-      measure3: '',
-      measure2: '',
-      measure1: '',
-    },
-    {
-      orderNo: 5,
-      goals: '',
-      weight: 0,
-      date: '',
-      measure4: '',
-      measure3: '',
-      measure2: '',
-      measure1: '',
-    },
-  ];
-  activeTab = 0;
-  tabs = [
-    { label: 'Employee Details' },
-    { label: 'Goals' },
-    { label: 'Competencies' },
-    { label: 'Confirmation' },
-  ];
+
+  constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.fetchCompetencies();
+  }
 
   onRowsChange(updatedRows: any[]) {
     this.competencyData = updatedRows;
@@ -236,21 +150,19 @@ export class AddPerformanceReviewComponent implements OnInit {
     });
   }
 
-  closeDialog() {
-    this.close.emit();
-  }
-
-  constructor(private http: HttpClient) {}
-
-  ngOnInit(): void {
-    // Call fetchCompetencies when the component is initialized
-    this.fetchCompetencies();
-  }
-
   formatDate(date: string): string {
     if (!date) return '';
     const formattedDate = new Date(date);
     return formattedDate.toISOString().split('T')[0];
+  }
+
+  showToast(message: string) {
+    const toast = this.toastComponent;
+    toast.show(message);
+  }
+
+  closeDialog() {
+    this.close.emit();
   }
 
   fetchCompetencies(): void {
@@ -261,21 +173,16 @@ export class AddPerformanceReviewComponent implements OnInit {
           this.competencyOptions = [
             ...new Set(this.competencies.map((item) => item.competency)),
           ];
-          // console.log('Fetched competencies:', this.competencies); // Log the fetched data
-          // console.log('Competency options:', this.competencyOptions); // Log the unique competency options
         }
       },
       (error) => console.error('Error fetching competencies:', error)
     );
   }
 
-  @Output() updateTable = new EventEmitter<any>();
-
   submitForm() {
     const startYear = new Date(this.employeeData.startDate).getFullYear() || 0;
     const endYear = new Date(this.employeeData.endDate).getFullYear() || 0;
-  
-    // Check for empty fields in employeeData
+
     if (
       !this.employeeData.name ||
       !this.employeeData.departmentType ||
@@ -283,18 +190,16 @@ export class AddPerformanceReviewComponent implements OnInit {
       !this.employeeData.endDate
     ) {
       this.showToast('Please fill in all required employee fields!');
-      return; // Prevent further processing if validation fails
+      return;
     }
-  
-    // Check for empty fields in goalsData
+
     for (const goal of this.goalsData) {
       if (!goal.goals || goal.weight === 0 || !goal.date) {
         this.showToast('Please fill in all required goal fields!');
         return;
       }
     }
-  
-    // Check if total weight in goalsData equals 100%
+
     const totalGoalWeight = this.goalsData.reduce(
       (sum, goal) => sum + goal.weight,
       0
@@ -303,26 +208,24 @@ export class AddPerformanceReviewComponent implements OnInit {
       this.showToast('The total weight for goals must equal 100%.');
       return;
     }
-  
-    // Check for empty fields in competencyData
+
     for (const competency of this.competencyData) {
       if (!competency.competencyId || competency.weight === 0) {
         this.showToast('Please fill in all required competency fields!');
         return;
       }
     }
-  
-    // Check if total weight in competencyData equals 100%
+
     const totalCompetencyWeight = this.competencyData.reduce(
       (sum, competency) => sum + competency.weight,
       0
     );
+
     if (totalCompetencyWeight !== 100) {
       this.showToast('The total weight for competencies must equal 100%.');
       return;
     }
-  
-    // Prepare Payload if all fields are valid
+
     const Payload = {
       name: this.employeeData.name || '',
       departmentType: this.employeeData.departmentType || 'None',
@@ -348,38 +251,33 @@ export class AddPerformanceReviewComponent implements OnInit {
         orderNo: competency.orderNo || 0,
         weight: competency.weight || 0,
         competency: {
-          id: competency.competencyId && competency.competencyId !== '00000000-0000-0000-0000-000000000000' ? competency.competencyId : null,
-          competency: competency.competency || '', // Competency Name
-          level: competency.level || '', // Level
-          description: competency.description || '', // Description
-          isActive: competency.isActive || false, // Active status (if available)
+          id:
+            competency.competencyId &&
+            competency.competencyId !== '00000000-0000-0000-0000-000000000000'
+              ? competency.competencyId
+              : null,
+          competency: competency.competency || '',
+          level: competency.level || '',
+          description: competency.description || '',
+          isActive: competency.isActive || false,
         },
       })),
     };
-  
-    console.log('Payload:', Payload);
-  
-    // Perform API request
+
     this.http
       .post<any>('https://localhost:7012/performance-reviews', Payload)
       .subscribe(
         (response) => {
           console.log('Response from API:', response);
-          this.showToast('Record added successfully!'); // Show success toast
-          this.closeDialog(); // Close dialog on success
+          this.showToast('Record added successfully!');
+          this.closeDialog();
         },
         (error) => {
           console.error('Error occurred:', error);
-          this.showToast('Error adding record. Please try again.'); // Show error toast
+          this.showToast('Error adding record. Please try again.');
         }
       );
-  
-    this.updateTable.emit({ success: true, newData: this.employeeData });
-  }
-  
 
-  showToast(message: string) {
-    const toast = this.toastComponent; // Reference to the ToastComponent
-    toast.show(message); // Show the toast with the message
+    this.updateTable.emit({ success: true, newData: this.employeeData });
   }
 }

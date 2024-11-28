@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-table-competencies',
+  selector: 'app-dialog-competencies',
   standalone: true,
   imports: [FormsModule, CommonModule],
   template: `
@@ -45,7 +45,7 @@ import { FormsModule } from '@angular/forms';
     </div>
   `,
 })
-export class TableCompetenciesComponent implements OnInit {
+export class DialogCompetenciesComponent implements OnInit {
   @Input() competencyData: any[] = [];
   @Input() competencyOptions: string[] = [];
   @Input() competencies: any[] = [];
