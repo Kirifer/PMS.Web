@@ -178,8 +178,8 @@ export class ConfirmationComponent implements OnInit {
   @Input() competencies!: any[];
 
   ngOnInit(): void {
-    // console.log('Employee Data:', this.employeeData);
-    // console.log('Goals Data:', this.goalsData);
+    console.log('Employee Data:', this.employeeData);
+    console.log('Goals Data:', this.goalsData);
     console.log('Competency Data:', this.competencyData);
     console.log('Competencies:', this.competencies);
     // this.getCompetencyLevel();
