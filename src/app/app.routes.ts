@@ -4,7 +4,7 @@ import { PerfReviewComponent } from './pages/perf-review/perf-review.component';
 import { UsersComponent } from './pages/users/users.component';
 import { LoginComponent } from './pages/login/login.component';
 import { PerfReviewComponent2 } from './pages/perf-review copy/perf-review.component';
-
+import { UserProfileComponent } from './pages/users/components/user-profile/user-profile';
 export const routes: Routes = [
   {
     path: 'dashboard',
@@ -20,6 +20,10 @@ export const routes: Routes = [
   {
     path: 'users',
     component: UsersComponent,
+  },
+  {
+    path: 'user-profile',
+    component: UserProfileComponent,
   },
   {
     path: 'login',
