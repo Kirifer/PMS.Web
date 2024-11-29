@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-edit-confirmation',
+  selector: 'app-edit-dialog-confirmation',
   standalone: true,
   imports: [CommonModule],
   template: `

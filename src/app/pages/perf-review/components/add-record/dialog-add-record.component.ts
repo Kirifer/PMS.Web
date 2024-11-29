@@ -123,6 +123,7 @@ export class AddPerformanceReviewComponent implements OnInit {
   lookUpUsers = [...LOOKUP_USERS];
   activeTab = 0;
   tabs = [...TABS];
+  
   competencies: { competency: string }[] = [];
   competencyOptions: any[] = [];
 

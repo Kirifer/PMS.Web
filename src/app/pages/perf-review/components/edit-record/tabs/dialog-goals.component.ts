@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-edit-table-goals',
+  selector: 'app-edit-dialog-goals',
   standalone: true,
   imports: [FormsModule, CommonModule],
   template: `

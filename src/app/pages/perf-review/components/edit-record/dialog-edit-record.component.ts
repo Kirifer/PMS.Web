@@ -4,11 +4,20 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { LucideAngularModule } from 'lucide-angular';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { EventEmitter, Output } from '@angular/core';
-import { EditTableCompetenciesComponent } from './table-competencies.component';
-import { EditTableGoalsComponent } from './table-goals.component';
-import { EditFormEmployeeComponent } from './form-employee.component';
-import { EditConfirmationComponent } from "./confirmation.component";
+import { EditTableCompetenciesComponent } from './tabs/dialog-competencies.component';
+import { EditTableGoalsComponent } from './tabs/dialog-goals.component';
+import { EditFormEmployeeComponent } from './tabs/dialog-employee.component';
+import { EditConfirmationComponent } from "./tabs/dialog-confirmation.component";
 import { PerformanceRecord } from '../performance-review-table.component';
+import { ToastComponent } from '../../../../components/toast/toast.component';
+import {
+  EMPLOYEE_INITIAL_STATE,
+  EMPLOYEE_DATA_INITIAL_STATE,
+  COMPETENCY_DATA_INITIAL_STATE,
+  GOALS_DATA_INITIAL_STATE,
+  TABS,
+  LOOKUP_USERS,
+} from './constants/data.constants';
 
 @Component({
   selector: 'app-edit-performance-review',
@@ -21,7 +30,8 @@ import { PerformanceRecord } from '../performance-review-table.component';
     EditTableCompetenciesComponent,
     EditTableGoalsComponent,
     EditFormEmployeeComponent,
-    EditConfirmationComponent
+    EditConfirmationComponent,
+    ToastComponent
   ],
   template: `
   <div
@@ -54,21 +64,22 @@ import { PerformanceRecord } from '../performance-review-table.component';
 
         <div class="mt-4 max-h-96 overflow-y-auto">
           <ng-container *ngIf="activeTab === 0">
-            <app-edit-form-employee
+            <app-edit-dialog-employee
               [employeeData]="employeeData"
+              [lookUpUsers]="lookUpUsers" 
               (startDateChange)="onStartDateChange($event)"
               (endDateChange)="onEndDateChange($event)"
             />
           </ng-container>
           <ng-container *ngIf="activeTab === 1">
-            <app-edit-table-goals
+            <app-edit-dialog-goals
               [goalsData]="goalsData"
               [startDate]="employee.startDate"
               [endDate]="employee.endDate"
             />
           </ng-container>
           <ng-container *ngIf="activeTab === 2">
-            <app-edit-table-competencies
+            <app-edit-dialog-competencies
               [competencyData]="competencyData"
               [competencyOptions]="competencyOptions"
               [competencies]="competencies"
@@ -77,17 +88,16 @@ import { PerformanceRecord } from '../performance-review-table.component';
             />
           </ng-container>
           <ng-container *ngIf="activeTab === 3">
-          <app-edit-confirmation
+          <app-edit-dialog-confirmation
           [employeeData]="employeeData"
           [goalsData]="goalsData"
           [competencyData]="competencyData"
           [competencies]="competencies"
-        ></app-edit-confirmation>
-
+            />
           </ng-container>
         </div>
 
-        <div class="mt-6 flex justify-end space-x-4">
+          <div class="mt-6 flex justify-end space-x-4">
           <button
             (click)="closeDialog()"
             class="px-4 py-2 bg-gray-300 rounded-md text-gray-700 hover:bg-gray-400"
@@ -102,14 +112,17 @@ import { PerformanceRecord } from '../performance-review-table.component';
           </button>
         </div>
       </div>
+
+      <app-toast></app-toast>
+
     </div>`, 
 })
 export class EditPerformanceReviewComponent implements OnChanges, OnInit {
   @Output() close = new EventEmitter<void>();
   @Output() updateTable = new EventEmitter<{ success: boolean; updatedData: PerformanceRecord }>();
-
+  @ViewChild(ToastComponent) toastComponent!: ToastComponent;
   @Input() performanceRecord: PerformanceRecord | null = null;
-  @Input() performanceReviews$: any; 
+  @Input() performanceReviews$: any;  
   @Input() performanceRecordNotNull: PerformanceRecord = {
     id: '',
     name: '',
@@ -124,12 +137,22 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
     competencies: [],
   };
   
+  employee = { ...EMPLOYEE_INITIAL_STATE };
+  employeeData = { ...EMPLOYEE_DATA_INITIAL_STATE };
+  competencyData = [...COMPETENCY_DATA_INITIAL_STATE];
+  goalsData = [...GOALS_DATA_INITIAL_STATE];
+  lookUpUsers = [...LOOKUP_USERS];
+  activeTab = 0;
+  tabs = [...TABS];
+  competencies: { competency: string }[] = [];
+  competencyOptions: any[] = [];
   performanceReviews: any[] = [];
   allPerformanceReviews: any[] = [];
-  // competencyOptions: any[] = [];
-  // competencies: any[] = [];
+
+  constructor(private http: HttpClient, private cd: ChangeDetectorRef) {}
 
   ngOnInit(): void {
+    this.fetchLookupUsers(); 
     if (this.performanceReviews$) {
       this.performanceReviews$.subscribe(
         (data: any) => {
@@ -146,96 +169,7 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
     }
     this.fetchCompetencies();
   }
-
-  employee = {
-    startDate: '',
-    endDate: '',
-  };
-  employeeData = {
-    id: '', 
-    name: '',
-    departmentType: '',
-    startYear: 0,
-    endYear: 0,
-    supervisorId: '',
-    startDate: '',
-    endDate: '',
-    activeSupervisor: false,
-  };
-  competencyData = [
-    {
-      id: '',
-      competencyId: '',
-      competency: {
-        id: '',
-        description: '',
-        competency: '',
-        level: '',
-        isActive: false,
-      },
-      orderNo: 1,
-      weight: 0,
-    },
-    {
-      id: '',
-      competencyId: '',
-      competency: {
-        id: '',
-        description: '',
-        competency: '',
-        level: '',
-        isActive: false,
-      },
-      orderNo: 2,
-      weight: 0,
-    },
-    {
-      id: '',
-      competencyId: '',
-      competency: {
-        id: '',
-        description: '',
-        competency: '',
-        level: '',
-        isActive: false,
-      },
-      orderNo: 3,
-      weight: 0,
-    },
-    {
-      id: '',
-      competencyId: '',
-      competency: {
-        id: '',
-        description: '',
-        competency: '',
-        level: '',
-        isActive: false,
-      },
-      orderNo: 4,
-      weight: 0,
-    },
-  ];
   
-  competencies: { competency: string }[] = [];
-  competencyOptions: any[] = [];
-
-  goalsData = [
-    { id:'', orderNo: 1, goals: '', weight: 0, date: '', measure4: '', measure3: '', measure2: '', measure1: '' },
-    { id:'', orderNo: 2, goals: '', weight: 0, date: '', measure4: '', measure3: '', measure2: '', measure1: '' },
-    { id:'', orderNo: 3, goals: '', weight: 0, date: '', measure4: '', measure3: '', measure2: '', measure1: '' },
-    { id:'', orderNo: 4, goals: '', weight: 0, date: '', measure4: '', measure3: '', measure2: '', measure1: '' },
-    { id:'', orderNo: 5, goals: '', weight: 0, date: '', measure4: '', measure3: '', measure2: '', measure1: '' },
-  ];
-
-  activeTab = 0;
-  tabs = [
-    { label: 'Employee Details' },
-    { label: 'Goals' },
-    { label: 'Competencies' },
-    { label: 'Confirmation' },
-  ];
-
   ngOnChanges(changes: SimpleChanges) {
     if (changes['performanceRecord'] && this.performanceRecord) {
 
@@ -325,6 +259,18 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
     );
   }
 
+  fetchLookupUsers(): void {
+    this.http.get<any>('https://localhost:7012/lookup/users').subscribe(
+      (data) => {
+        if (data?.data) {
+          this.lookUpUsers = data.data;       
+        }
+        console.log('Lookup users', this.lookUpUsers);
+      },
+      (error) => console.error('Error fetching lookup users:', error)
+    );
+  }
+  
   onRowsChange(updatedRows: any[]): void {
     this.competencyData = updatedRows;
     this.cd.detectChanges();
@@ -349,6 +295,17 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
 
   closeDialog() {
     this.close.emit();
+  }
+
+  formatDate(date: string): string {
+    if (!date) return '';
+    const formattedDate = new Date(date);
+    return formattedDate.toISOString().split('T')[0];
+  }
+
+  showToast(message: string) {
+    const toast = this.toastComponent;
+    toast.show(message);
   }
 
   mapCompetency(competency: any) {
@@ -383,7 +340,49 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
         competencies: [],
       };
     }
-
+  
+    if (
+      !this.employeeData.name ||
+      !this.employeeData.departmentType ||
+      !this.employeeData.startDate ||
+      !this.employeeData.endDate
+    ) {
+      this.showToast('Please fill in all required employee fields!');
+      return;
+    }
+  
+    for (const goal of this.goalsData) {
+      if (!goal.goals || goal.weight === 0 || !goal.date) {
+        this.showToast('Please fill in all required goal fields!');
+        return;
+      }
+    }
+  
+    const totalGoalWeight = this.goalsData.reduce(
+      (sum, goal) => sum + goal.weight,
+      0
+    );
+    if (totalGoalWeight !== 100) {
+      this.showToast('The total weight for goals must equal 100%.');
+      return;
+    }
+  
+    for (const competency of this.competencyData) {
+      if (!competency.competencyId || competency.weight === 0) {
+        this.showToast('Please fill in all required competency fields!');
+        return;
+      }
+    }
+  
+    const totalCompetencyWeight = this.competencyData.reduce(
+      (sum, competency) => sum + competency.weight,
+      0
+    );
+    if (totalCompetencyWeight !== 100) {
+      this.showToast('The total weight for competencies must equal 100%.');
+      return;
+    }
+  
     this.performanceRecord.goals = this.goalsData.map((goal: any) => ({
       id: goal.id || '',
       orderNo: goal.orderNo,
@@ -395,7 +394,7 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
       measure2: goal.measure2 || '',
       measure1: goal.measure1 || '',
     }));
-
+  
     const Payload = {
       id: this.employeeData.id,
       name: this.employeeData.name || '',
@@ -409,16 +408,16 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
       goals: this.performanceRecord.goals,
       competencies: this.competencyData.map(this.mapCompetency),
     };
-
+  
     this.http.put<any>(`https://localhost:7012/performance-reviews/${this.employeeData.id}`, Payload).subscribe(
       (response) => {
         console.log('Response from API:', response);
         this.closeDialog();
-
+  
         this.updateTable.emit({
-          success:true,
+          success: true,
           updatedData: this.performanceRecord!,
-        })
+        });
       },
       (error) => {
         console.error('Error occurred:', error);
@@ -429,12 +428,5 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
       }
     );
   }
-
-  constructor(private http: HttpClient, private cd: ChangeDetectorRef) {}
-
-  formatDate(date: string): string {
-    if (!date) return '';
-    const formattedDate = new Date(date);
-    return formattedDate.toISOString().split('T')[0];
-  }
+  
 }

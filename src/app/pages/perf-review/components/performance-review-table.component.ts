@@ -7,7 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AddPerformanceReviewComponent } from './add-record/dialog-add-record.component';
 import { InfoDialog } from './info-dialog.component';
-import { EditPerformanceReviewComponent } from './edit-record/edit-performance-review.component';
+import { EditPerformanceReviewComponent } from './edit-record/dialog-edit-record.component';
 
 export interface PerformanceRecord {
   id: string;

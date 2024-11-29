@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-edit-table-competencies',
+  selector: 'app-edit-dialog-competencies',
   standalone: true,
   imports: [FormsModule, CommonModule],
   template: `
