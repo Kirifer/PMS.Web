@@ -49,11 +49,11 @@ import {
               <span class="text-gray-600 font-medium w-1/3"
                 >Employee Name:</span
               >
-              <span class="text-gray-800">{{ employeeData.name }}</span>
+              <span class="text-gray-800">{{ employeeData.employeeName }}</span>
             </div>
             <div class="flex items-center">
               <span class="text-gray-600 font-medium w-1/3">Supervisor:</span>
-              <span class="text-gray-800">{{ employeeData.supervisorId }}</span>
+              <span class="text-gray-800">{{ employeeData.supervisor }}</span>
             </div>
             <div class="flex items-center">
               <span class="text-gray-600 font-medium w-1/3">Review Year:</span>
@@ -243,8 +243,9 @@ export class InfoDialog implements OnInit {
             // Map the response to the component properties
             this.employeeData = {
               name: data.name,
+              employeeName: data.employee.fullName,
               departmentType: data.departmentType,
-              supervisorId: data.supervisorId,
+              supervisor: data.supervisor.fullName,
               startYear: data.startYear,
               endYear: data.endYear,
               startDate: data.startDate,
@@ -255,7 +256,7 @@ export class InfoDialog implements OnInit {
             this.goalsData = data.goals || [];
             this.competencyData = data.competencies || [];
 
-            console.log(data);
+            console.log('test', this.employeeData);
           } else {
             console.error(
               'Failed to fetch performance review details:',

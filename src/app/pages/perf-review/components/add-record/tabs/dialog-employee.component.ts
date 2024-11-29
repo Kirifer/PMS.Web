@@ -11,22 +11,31 @@ import { Router } from '@angular/router';
     <div class="max-w-5xl mx-auto p-6 bg-white  rounded-lg">
       <!-- <h1 class="text-3xl font-semibold text-gray-700 mb-6">Employee Form</h1> -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Full Name -->
+        <!-- Employee Name -->
         <div class="flex flex-col">
-          <label for="name" class="text-gray-600 mb-2">Full Name</label>
+          <label for="name" class="text-gray-600 mb-2">Employee</label>
           <select
             id="name"
-            [(ngModel)]="employeeData.name"
+            [(ngModel)]="employeeData.employee.id"
             name="name"
             class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
           >
             <option value="" disabled selected>Select a User</option>
-            <option *ngFor="let user of lookUpUsers" [value]="user.fullName">
+            <option *ngFor="let user of lookUpUsers" [value]="user.id">
               {{ user.fullName }}
             </option>
           </select>
         </div>
 
+        <div class="flex flex-col">
+        <label for="name" class="text-gray-600 mb-2">Record Name</label>
+          <input
+            id="name"
+            [(ngModel)]="employeeData.name"
+            name="name"
+            class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
         <!-- Department -->
         <div class="flex flex-col">
           <label for="department" class="text-gray-600 mb-2">Department</label>
@@ -105,18 +114,20 @@ import { Router } from '@angular/router';
         </div>
 
         <!-- Supervisor ID -->
-        <div class="flex flex-col">
-          <label for="supervisorId" class="text-gray-600 mb-2"
-            >Supervisor ID</label
-          >
-          <input
-            id="supervisorId"
-            type="text"
-            [(ngModel)]="employeeData.supervisorId"
-            name="supervisorId"
+     <!-- Employee Name -->
+     <div class="flex flex-col">
+          <label for="supervisor" class="text-gray-600 mb-2">Supervisor</label>
+          <select
+            id="supervisor"
+            [(ngModel)]="employeeData.supervisor.id"
+            name="supervisor"
             class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-            placeholder="Enter supervisor's ID"
-          />
+          >
+            <option value="" disabled selected>Select a User</option>
+            <option *ngFor="let supervisor of lookUpSupervisors" [value]="supervisor.id">
+              {{ supervisor.fullName }}
+            </option>
+          </select>
         </div>
 
         <!-- Active Supervisor -->
@@ -148,6 +159,7 @@ export class DialogEmployeeComponent {
     supervisorId: '',
   };
   @Input() lookUpUsers: any[] = [];
+  @Input() lookUpSupervisors: any[] = [];
   @Output() startDateChange = new EventEmitter<string>();
   @Output() endDateChange = new EventEmitter<string>();
   @Output() proceedToGoals = new EventEmitter<void>();
