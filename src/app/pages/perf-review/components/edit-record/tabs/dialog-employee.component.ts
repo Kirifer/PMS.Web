@@ -129,7 +129,7 @@ import { Router } from '@angular/router';
   `,
   styles: [],
 })
-export class EditFormEmployeeComponent {
+export class EditFormEmployeeComponent  {
   @Input() employeeData: any = {
     name: '',
     departmentType: '',

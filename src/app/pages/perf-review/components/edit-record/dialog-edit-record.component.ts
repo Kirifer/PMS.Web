@@ -69,6 +69,7 @@ import {
               [lookUpUsers]="lookUpUsers" 
               (startDateChange)="onStartDateChange($event)"
               (endDateChange)="onEndDateChange($event)"
+              
             />
           </ng-container>
           <ng-container *ngIf="activeTab === 1">
@@ -167,6 +168,7 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
         }
       );
     }
+    console.log(this.employeeData.name)
     this.fetchCompetencies();
   }
   
@@ -197,14 +199,24 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
     this.competencyData = updatedData;
   }
 
+  // onEmployeeDataChange(updatedData: any) {
+  //   this.employeeData = updatedData;
+  // }
+
   populateCompetencyOptions(): void {
     this.fetchCompetencies();
   }
   
+  getUserFullName(userId: string): string | undefined {
+    const user = this.lookUpUsers.find(u => u.id === userId);
+    return user ? user.fullname : undefined;
+  }
+
+  
   populateFormData(record: PerformanceRecord) {
     this.employeeData = {
       id: record.id,
-      name: record.name,
+      name: this.getUserFullName(record.id) || record.name, // Fetch the full name from lookupUsers
       departmentType: record.departmentType,
       startYear: record.startYear,
       endYear: record.endYear,

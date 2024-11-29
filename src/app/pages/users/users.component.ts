@@ -193,7 +193,7 @@ export class UsersComponent implements OnInit {
 
   fetchUsers() {
     this.http
-      .get<{ data: UserRecord[] }>('https://localhost:7012/users')
+      .get<{ data: UserRecord[] }>('https://localhost:7012/lookup/users')
       .subscribe({
         next: (response) => {
           if (response && Array.isArray(response.data)) {
