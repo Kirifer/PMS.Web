@@ -29,6 +29,11 @@ export interface PerformanceRecord {
   goals: Goal[];
   competencies: Competency[];
 }
+export interface User {
+  id: string;
+  fullname: string;
+  // Add other properties if needed
+}
 
 export interface Goal {
   id: string;

@@ -71,31 +71,32 @@ import {
         </ul>
       </div>
 
-      <div class="mt-4 max-h-96 overflow-y-auto">
-        <ng-container *ngIf="activeTab === 0">
-          <app-edit-dialog-employee
-            [employeeData]="employeeData"
-            [lookUpUsers]="lookUpUsers"
-            (startDateChange)="onStartDateChange($event)"
-            (endDateChange)="onEndDateChange($event)"
-          />
-        </ng-container>
-        <ng-container *ngIf="activeTab === 1">
-          <app-edit-dialog-goals
-            [goalsData]="goalsData"
-            [startDate]="employee.startDate"
-            [endDate]="employee.endDate"
-          />
-        </ng-container>
-        <ng-container *ngIf="activeTab === 2">
-          <app-edit-dialog-competencies
-            [competencyData]="competencyData"
-            [competencyOptions]="competencyOptions"
-            [competencies]="competencies"
-            (competencyChange)="onRowsChange($event)"
-          />
-        </ng-container>
-        <ng-container *ngIf="activeTab === 3">
+        <div class="mt-4 max-h-96 overflow-y-auto">
+          <ng-container *ngIf="activeTab === 0">
+            <app-edit-dialog-employee
+              [employeeData]="employeeData"
+              [lookUpUsers]="lookUpUsers" 
+              (startDateChange)="onStartDateChange($event)"
+              (endDateChange)="onEndDateChange($event)"
+            />
+          </ng-container>
+          <ng-container *ngIf="activeTab === 1">
+            <app-edit-dialog-goals
+              [goalsData]="goalsData"
+              [startDate]="employee.startDate"
+              [endDate]="employee.endDate"
+            />
+          </ng-container>
+          <ng-container *ngIf="activeTab === 2">
+            <app-edit-dialog-competencies
+              [competencyData]="competencyData"
+              [competencyOptions]="competencyOptions"
+              [competencies]="competencies"
+              (competencyChange)="onRowsChange($event)"
+              
+            />
+          </ng-container>
+          <ng-container *ngIf="activeTab === 3">
           <app-edit-dialog-confirmation
             [employeeData]="employeeData"
             [goalsData]="goalsData"
@@ -184,6 +185,7 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
         }
       );
     }
+    console.log(this.employeeData.name)
     this.fetchCompetencies();
   }
 
@@ -222,14 +224,24 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
     this.competencyData = updatedData;
   }
 
+  // onEmployeeDataChange(updatedData: any) {
+  //   this.employeeData = updatedData;
+  // }
+
   populateCompetencyOptions(): void {
     this.fetchCompetencies();
   }
+  
+  getUserFullName(userId: string): string | undefined {
+    const user = this.lookUpUsers.find(u => u.id === userId);
+    return user ? user.fullname : undefined;
+  }
 
+  
   populateFormData(record: PerformanceRecord) {
     this.employeeData = {
       id: record.id,
-      name: record.name,
+      name: this.getUserFullName(record.id) || record.name, // Fetch the full name from lookupUsers
       departmentType: record.departmentType,
       startYear: record.startYear,
       endYear: record.endYear,

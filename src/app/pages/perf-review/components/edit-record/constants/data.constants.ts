@@ -1,3 +1,5 @@
+import { User } from "../../performance-review-table.component";
+
 export const EMPLOYEE_INITIAL_STATE = {
   startDate: '',
   endDate: '',
@@ -39,7 +41,11 @@ export const GOALS_DATA_INITIAL_STATE = Array(5)
   })
   .map((item, index) => ({ ...item, orderNo: index + 1 }));
 
-export const LOOKUP_USERS = [];
+  export const LOOKUP_USERS: User[] = [
+    { id: '', fullname: '' },
+    { id: '', fullname: '' },
+    { id: '', fullname: '' },
+  ];
 
 export const TABS = [
   { label: 'Employee Details' },
