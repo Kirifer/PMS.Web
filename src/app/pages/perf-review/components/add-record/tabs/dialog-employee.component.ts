@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
           <select
             id="name"
             [(ngModel)]="employeeData.employee.id"
-            name="name"
+            (change)="onEmployeeChange()"
             class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
           >
             <option value="" disabled selected>Select a User</option>
@@ -28,7 +28,7 @@ import { Router } from '@angular/router';
         </div>
 
         <div class="flex flex-col">
-        <label for="name" class="text-gray-600 mb-2">Record Name</label>
+          <label for="name" class="text-gray-600 mb-2">Record Name</label>
           <input
             id="name"
             [(ngModel)]="employeeData.name"
@@ -113,22 +113,21 @@ import { Router } from '@angular/router';
           </select>
         </div>
 
-        <!-- Supervisor ID -->
-     <!-- Employee Name -->
-     <div class="flex flex-col">
-          <label for="supervisor" class="text-gray-600 mb-2">Supervisor</label>
-          <select
-            id="supervisor"
-            [(ngModel)]="employeeData.supervisor.id"
-            name="supervisor"
-            class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="" disabled selected>Select a User</option>
-            <option *ngFor="let supervisor of lookUpSupervisors" [value]="supervisor.id">
-              {{ supervisor.fullName }}
-            </option>
-          </select>
-        </div>
+       <!-- Supervisor -->
+        <div class="flex flex-col">
+  <label for="supervisor" class="text-gray-600 mb-2">Supervisor</label>
+  <select
+    id="supervisor"
+    [(ngModel)]="employeeData.supervisor.id"
+    (change)="onSupervisorChange()"
+    class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+  >
+    <option value="" disabled selected>Select a User</option>
+    <option *ngFor="let supervisor of lookUpSupervisors" [value]="supervisor.id">
+      {{ supervisor.fullName }}
+    </option>
+  </select>
+</div>
 
         <!-- Active Supervisor -->
         <div class="flex items-center col-span-2 mt-[-15px]">
@@ -156,7 +155,14 @@ export class DialogEmployeeComponent {
     endYear: '',
     startDate: '',
     endDate: '',
-    supervisorId: '',
+    employee: {
+      id: '',
+      fullName: '',
+    },
+    supervisor: {
+      id: '',
+      fullName: '',
+    },
   };
   @Input() lookUpUsers: any[] = [];
   @Input() lookUpSupervisors: any[] = [];
@@ -167,6 +173,24 @@ export class DialogEmployeeComponent {
 
   constructor() {
     this.generateYearsRange();
+  }
+
+  onEmployeeChange() {
+    const selectedEmployee = this.lookUpUsers.find(
+      (user) => user.id === this.employeeData.employee.id
+    );
+    if (selectedEmployee) {
+      this.employeeData.employee.fullName = selectedEmployee.fullName;
+    }
+  }
+  
+  onSupervisorChange() {
+    const selectedSupervisor = this.lookUpSupervisors.find(
+      (supervisor) => supervisor.id === this.employeeData.supervisor.id
+    );
+    if (selectedSupervisor) {
+      this.employeeData.supervisor.fullName = selectedSupervisor.fullName;
+    }
   }
 
   onStartDateChange(event: Event) {
