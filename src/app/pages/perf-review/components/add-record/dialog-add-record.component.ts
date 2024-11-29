@@ -131,6 +131,8 @@ export class AddPerformanceReviewComponent implements OnInit {
   ngOnInit(): void {
     this.fetchCompetencies();
     this.fetchLookupUsers();
+    console.log('users')
+    
   }
 
   onRowsChange(updatedRows: any[]) {
@@ -188,7 +190,9 @@ export class AddPerformanceReviewComponent implements OnInit {
       (data) => {
         if (data?.data) {
           this.lookUpUsers = data.data;
+       
         }
+        console.log(this.lookUpUsers)
       },
       (error) => console.error('Error fetching lookup users:', error)
     );
