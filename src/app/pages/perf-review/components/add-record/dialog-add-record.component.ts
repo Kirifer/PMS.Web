@@ -123,7 +123,7 @@ export class AddPerformanceReviewComponent implements OnInit {
   competencyData = [...COMPETENCY_DATA_INITIAL_STATE];
   goalsData = [...GOALS_DATA_INITIAL_STATE];
   lookUpUsers = [...LOOKUP_USERS];
-  lookUpSupervisors = [ ...LOOKUP_SUPERVISORS ];
+  lookUpSupervisors = [...LOOKUP_SUPERVISORS];
   activeTab = 0;
   tabs = [...TABS];
 
@@ -259,6 +259,9 @@ export class AddPerformanceReviewComponent implements OnInit {
     //   return;
     // }
 
+    const supervisorId = this.employeeData.supervisor.id || '';
+    const supervisorFullName = this.employeeData.supervisor.fullName || '';
+
     const Payload = {
       name: this.employeeData.name || '',
       departmentType: this.employeeData.departmentType || 'None',
@@ -267,8 +270,16 @@ export class AddPerformanceReviewComponent implements OnInit {
       startDate: this.formatDate(this.employeeData.startDate),
       endDate: this.formatDate(this.employeeData.endDate),
       employeeId: this.employeeData.employee.id || '',
-      supervisorId: this.employeeData.supervisor.id || '',
-      supervisorFullName: this.employeeData.supervisor.fullName || '',
+      supervisorId: supervisorId,
+      supervisor: {
+        id: supervisorId,
+        fullName: supervisorFullName,
+      },
+      employee: {
+        id: this.employeeData.employee.id || '',
+        fullName: this.employeeData.employee.fullName || '',
+      },
+      supervisorFullName: supervisorFullName,
       goals: this.goalsData.map((goal: any) => ({
         orderNo: goal.orderNo,
         goals: goal.goals || '',
@@ -312,13 +323,14 @@ export class AddPerformanceReviewComponent implements OnInit {
         }
       );
 
-      this.updateTable.emit({
-        success: true,
-        newData: {
-          ...this.employeeData,
-          supervisorFullName: this.employeeData.supervisor.fullName, // Include supervisor's name
-        },
-      });
+    // Emit the supervisor data along with employee data
+    this.updateTable.emit({
+      success: true,
+      newData: {
+        ...this.employeeData,
+        supervisorFullName: supervisorFullName, // Include supervisor's name
+      },
+    });
   }
   // Git Test
 }

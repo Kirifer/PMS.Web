@@ -17,11 +17,11 @@ import { CommonModule } from '@angular/common';
           </div>
           <div class="flex items-center">
             <span class="text-gray-600 font-medium w-1/3">Employee Name:</span>
-            <span class="text-gray-800">{{ employeeData.name }}</span>
+            <span class="text-gray-800">{{ employeeData.employee.fullName }}</span>
           </div>
           <div class="flex items-center">
             <span class="text-gray-600 font-medium w-1/3">Supervisor:</span>
-            <span class="text-gray-800">{{ employeeData.supervisorId }}</span>
+            <span class="text-gray-800">{{ employeeData.supervisor.fullName }}</span>
           </div>
           <div class="flex items-center">
             <span class="text-gray-600 font-medium w-1/3">Review Year:</span>
@@ -175,7 +175,7 @@ export class DialogConfirmationComponent implements OnInit {
   @Input() competencies!: any[];
 
   ngOnInit(): void {
-    // console.log('Employee Data:', this.employeeData);
+    console.log('Employee Data:', this.employeeData);
     // console.log('Goals Data:', this.goalsData);
     console.log('Competency Data:', this.competencyData);
     console.log('Competencies:', this.competencies);
