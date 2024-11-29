@@ -16,6 +16,7 @@ import {
   GOALS_DATA_INITIAL_STATE,
   TABS,
   LOOKUP_USERS,
+  LOOKUP_SUPERVISORS,
 } from './constants/data.constants';
 
 @Component({
@@ -63,7 +64,8 @@ import {
           <ng-container *ngIf="activeTab === 0">
             <app-dialog-employee
               [employeeData]="employeeData"
-              [lookUpUsers]="lookUpUsers" 
+              [lookUpUsers]="lookUpUsers"
+              [lookUpSupervisors]="lookUpSupervisors"
               (startDateChange)="onStartDateChange($event)"
               (endDateChange)="onEndDateChange($event)"
             />
@@ -121,9 +123,10 @@ export class AddPerformanceReviewComponent implements OnInit {
   competencyData = [...COMPETENCY_DATA_INITIAL_STATE];
   goalsData = [...GOALS_DATA_INITIAL_STATE];
   lookUpUsers = [...LOOKUP_USERS];
+  lookUpSupervisors = [ ...LOOKUP_SUPERVISORS ];
   activeTab = 0;
   tabs = [...TABS];
-  
+
   competencies: { competency: string }[] = [];
   competencyOptions: any[] = [];
 
@@ -132,8 +135,7 @@ export class AddPerformanceReviewComponent implements OnInit {
   ngOnInit(): void {
     this.fetchCompetencies();
     this.fetchLookupUsers();
-    console.log('users')
-    
+    this.fetchLookupSupervisors();
   }
 
   onRowsChange(updatedRows: any[]) {
@@ -191,11 +193,22 @@ export class AddPerformanceReviewComponent implements OnInit {
       (data) => {
         if (data?.data) {
           this.lookUpUsers = data.data;
-       
         }
-        console.log(this.lookUpUsers)
+        console.log(this.lookUpUsers);
       },
       (error) => console.error('Error fetching lookup users:', error)
+    );
+  }
+
+  fetchLookupSupervisors(): void {
+    this.http.get<any>('https://localhost:7012/lookup/supervisors').subscribe(
+      (data) => {
+        if (data?.data) {
+          this.lookUpSupervisors = data.data;
+        }
+        console.log(this.lookUpSupervisors);
+      },
+      (error) => console.error('Error fetching lookup supervisors:', error)
     );
   }
 
@@ -203,48 +216,48 @@ export class AddPerformanceReviewComponent implements OnInit {
     const startYear = new Date(this.employeeData.startDate).getFullYear() || 0;
     const endYear = new Date(this.employeeData.endDate).getFullYear() || 0;
 
-    if (
-      !this.employeeData.name ||
-      !this.employeeData.departmentType ||
-      !this.employeeData.startDate ||
-      !this.employeeData.endDate
-    ) {
-      this.showToast('Please fill in all required employee fields!');
-      return;
-    }
+    // if (
+    //   !this.employeeData.name ||
+    //   !this.employeeData.departmentType ||
+    //   !this.employeeData.startDate ||
+    //   !this.employeeData.endDate
+    // ) {
+    //   this.showToast('Please fill in all required employee fields!');
+    //   return;
+    // }
 
-    for (const goal of this.goalsData) {
-      if (!goal.goals || goal.weight === 0 || !goal.date) {
-        this.showToast('Please fill in all required goal fields!');
-        return;
-      }
-    }
+    // for (const goal of this.goalsData) {
+    //   if (!goal.goals || goal.weight === 0 || !goal.date) {
+    //     this.showToast('Please fill in all required goal fields!');
+    //     return;
+    //   }
+    // }
 
-    const totalGoalWeight = this.goalsData.reduce(
-      (sum, goal) => sum + goal.weight,
-      0
-    );
-    if (totalGoalWeight !== 100) {
-      this.showToast('The total weight for goals must equal 100%.');
-      return;
-    }
+    // const totalGoalWeight = this.goalsData.reduce(
+    //   (sum, goal) => sum + goal.weight,
+    //   0
+    // );
+    // if (totalGoalWeight !== 100) {
+    //   this.showToast('The total weight for goals must equal 100%.');
+    //   return;
+    // }
 
-    for (const competency of this.competencyData) {
-      if (!competency.competencyId || competency.weight === 0) {
-        this.showToast('Please fill in all required competency fields!');
-        return;
-      }
-    }
+    // for (const competency of this.competencyData) {
+    //   if (!competency.competencyId || competency.weight === 0) {
+    //     this.showToast('Please fill in all required competency fields!');
+    //     return;
+    //   }
+    // }
 
-    const totalCompetencyWeight = this.competencyData.reduce(
-      (sum, competency) => sum + competency.weight,
-      0
-    );
+    // const totalCompetencyWeight = this.competencyData.reduce(
+    //   (sum, competency) => sum + competency.weight,
+    //   0
+    // );
 
-    if (totalCompetencyWeight !== 100) {
-      this.showToast('The total weight for competencies must equal 100%.');
-      return;
-    }
+    // if (totalCompetencyWeight !== 100) {
+    //   this.showToast('The total weight for competencies must equal 100%.');
+    //   return;
+    // }
 
     const Payload = {
       name: this.employeeData.name || '',
@@ -253,8 +266,9 @@ export class AddPerformanceReviewComponent implements OnInit {
       endYear: endYear,
       startDate: this.formatDate(this.employeeData.startDate),
       endDate: this.formatDate(this.employeeData.endDate),
-      employeeId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      supervisorId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      employeeId: this.employeeData.employee.id || '',
+      supervisorId: this.employeeData.supervisor.id || '',
+      supervisorFullName: this.employeeData.supervisor.fullName || '',
       goals: this.goalsData.map((goal: any) => ({
         orderNo: goal.orderNo,
         goals: goal.goals || '',
@@ -298,7 +312,13 @@ export class AddPerformanceReviewComponent implements OnInit {
         }
       );
 
-    this.updateTable.emit({ success: true, newData: this.employeeData });
+      this.updateTable.emit({
+        success: true,
+        newData: {
+          ...this.employeeData,
+          supervisorFullName: this.employeeData.supervisor.fullName, // Include supervisor's name
+        },
+      });
   }
   // Git Test
 }

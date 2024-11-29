@@ -17,8 +17,15 @@ export interface PerformanceRecord {
   endYear: number;
   startDate: string;
   endDate: string;
-  employeeId: string;
   supervisorId: string;
+  employee: {
+    id: string;
+    fullName: string;
+  }
+  supervisor :{
+    id: string;
+    fullName: string;
+  }
   goals: Goal[];
   competencies: Competency[];
 }
@@ -97,7 +104,7 @@ export interface competency {
       >
         <option value="">All Supervisors</option>
         <option *ngFor="let supervisor of supervisors" [value]="supervisor.id">
-          {{ supervisor.id }}
+          {{ supervisor.name }}
         </option>
       </select>
       <!-- Add Record Button -->
@@ -142,7 +149,7 @@ export interface competency {
           {{ record.name }}
         </td>
         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-          {{ record.supervisorId }}
+          {{ record.supervisor.fullName }}
         </td>
         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
           <button (click)="openEditDialog(record)" class="text-indigo-600 hover:text-indigo-900 mr-3">
@@ -223,8 +230,8 @@ export class PerformanceReviewTableComponent implements OnInit {
           this.supervisors = Array.from(
             new Map(
               this.performanceReviews.map((pr) => [
-                pr.supervisorId,
-                { id: pr.supervisorId, name: pr.name },
+                pr.supervisor,
+                { id: pr.supervisor.id, name: pr.supervisor.fullName },
               ])
             ).values()
           ).sort((a, b) => a.name.localeCompare(b.name));
@@ -253,7 +260,7 @@ export class PerformanceReviewTableComponent implements OnInit {
         : true;
 
       const matchesSupervisorFilter = this.supervisorFilter
-        ? record.supervisorId === this.supervisorFilter
+        ? record.supervisor.id === this.supervisorFilter
         : true;
 
       return (
