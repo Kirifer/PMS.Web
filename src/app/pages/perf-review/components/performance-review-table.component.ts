@@ -19,6 +19,10 @@ export interface PerformanceRecord {
   endDate: string;
   employeeId: string;
   supervisorId: string;
+  supervisor :{
+    id: string;
+    fullName: string;
+  }
   goals: Goal[];
   competencies: Competency[];
 }
@@ -137,7 +141,7 @@ export interface competency {
           {{ record.name }}
         </td>
         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-          {{ record.supervisorId }}
+          {{ record.supervisor.fullName }}
         </td>
         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
           <button (click)="openEditDialog(record)" class="text-indigo-600 hover:text-indigo-900 mr-3">

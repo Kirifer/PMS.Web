@@ -9,6 +9,10 @@ export const EMPLOYEE_DATA_INITIAL_STATE = {
   startYear: '',
   endYear: '',
   supervisorId: '',
+  supervisor: {
+    id: '',
+    fullName: '',
+  },
   startDate: '',
   endDate: '',
   activeSupervisor: false,

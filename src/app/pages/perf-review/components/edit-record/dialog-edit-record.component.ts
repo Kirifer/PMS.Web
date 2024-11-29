@@ -132,6 +132,10 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
     startDate: '',
     endDate: '',
     employeeId: '',
+    supervisor: {
+      id: '',
+      fullName: '',
+    },
     supervisorId: '',
     goals: [],
     competencies: [],
@@ -173,7 +177,9 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['performanceRecord'] && this.performanceRecord) {
 
-      this.populateFormData(this.performanceRecord);
+      if (this.performanceRecord) {
+        this.populateFormData(this.performanceRecord);
+      }
       this.populateCompetencyOptions();
     } else {
       this.performanceRecord = {
@@ -184,6 +190,11 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
         endYear: 0,
         startDate: '',
         endDate: '',
+        supervisor:
+        {
+          id: '',
+          fullName: '',
+        },
         employeeId: '',
         supervisorId: '',
         goals: [],
@@ -208,6 +219,10 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
       departmentType: record.departmentType,
       startYear: record.startYear,
       endYear: record.endYear,
+      supervisor: {
+        id: record.supervisor.id,
+        fullName: record.supervisor.fullName,
+      },
       supervisorId: record.supervisorId,
       startDate: record.startDate,
       endDate: record.endDate,
@@ -335,6 +350,10 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
         startDate: '',
         endDate: '',
         employeeId: '',
+        supervisor: {
+          id: '',
+          fullName: '',
+        },
         supervisorId: '',
         goals: [],
         competencies: [],
@@ -405,7 +424,7 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
       endDate: this.formatDate(this.employeeData.endDate),
       employeeId: this.employeeData.id || '3fa85f64-5717-4562-b3fc-2c963f66afa6',
       supervisorId: this.employeeData.supervisorId || '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      goals: this.performanceRecord.goals,
+      goals: this.performanceRecord?.goals || [],
       competencies: this.competencyData.map(this.mapCompetency),
     };
   
