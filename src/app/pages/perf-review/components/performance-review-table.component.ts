@@ -122,9 +122,9 @@ export interface competency {
     <div *ngIf="isLoading; else dataContent">
       <app-table-skeleton></app-table-skeleton>
     </div>
+    <ng-template #dataContent>
 
     <div class="overflow-x-auto bg-white rounded-lg shadow-lg">
-      <ng-template #dataContent>
         <table class="min-w-full divide-y divide-gray-200">
           <thead class="bg-gray-50">
             <tr>
@@ -177,7 +177,9 @@ export interface competency {
                 </button>
               </td>
             </tr>
+            
           </tbody>
+          
         </table>
 
         <app-add-performance-review
@@ -197,8 +199,9 @@ export interface competency {
           (updateTable)="onEditRecord($event)"
           (close)="closeEditDialog()"
         />
-      </ng-template>
+     
     </div>
+    </ng-template>
   `,
 })
 export class PerformanceReviewTableComponent implements OnInit {
