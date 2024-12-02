@@ -25,6 +25,7 @@ import {
   GOALS_DATA_INITIAL_STATE,
   TABS,
   LOOKUP_USERS,
+  LOOKUP_SUPERVISORS
 } from './constants/data.constants';
 
 @Component({
@@ -76,6 +77,7 @@ import {
             <app-edit-dialog-employee
               [employeeData]="employeeData"
               [lookUpUsers]="lookUpUsers" 
+              [lookUpSupervisors]="lookUpSupervisors"
               (startDateChange)="onStartDateChange($event)"
               (endDateChange)="onEndDateChange($event)"
             />
@@ -153,6 +155,7 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
     supervisorId: '',
     goals: [],
     competencies: [],
+    supervisorFullName: '',
   };
 
   employee = { ...EMPLOYEE_INITIAL_STATE };
@@ -160,6 +163,7 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
   competencyData = [...COMPETENCY_DATA_INITIAL_STATE];
   goalsData = [...GOALS_DATA_INITIAL_STATE];
   lookUpUsers = [...LOOKUP_USERS];
+  lookUpSupervisors = [...LOOKUP_SUPERVISORS];
   activeTab = 0;
   tabs = [...TABS];
   competencies: { competency: string }[] = [];
@@ -187,6 +191,7 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
     }
     console.log(this.employeeData.name)
     this.fetchCompetencies();
+    this.fetchLookupSupervisors();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -215,6 +220,7 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
         supervisorId: '',
         goals: [],
         competencies: [],
+        supervisorFullName: '',
       };
       this.populateFormData(this.performanceRecord);
     }
@@ -241,10 +247,14 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
   populateFormData(record: PerformanceRecord) {
     this.employeeData = {
       id: record.id,
-      name: this.getUserFullName(record.id) || record.name, // Fetch the full name from lookupUsers
+      name: record.name, // Fetch the full name from lookupUsers
       departmentType: record.departmentType,
       startYear: record.startYear,
       endYear: record.endYear,
+      employee: {
+        id: record.employee.id,
+        fullName: record.employee.fullName
+      },
       supervisor: {
         id: record.supervisor.id,
         fullName: record.supervisor.fullName,
@@ -253,6 +263,7 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
       startDate: record.startDate,
       endDate: record.endDate,
       activeSupervisor: record.supervisorId !== '',
+      
     };
 
     this.goalsData = record.goals.map((goal) => ({
@@ -311,6 +322,18 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
         console.log('Lookup users', this.lookUpUsers);
       },
       (error) => console.error('Error fetching lookup users:', error)
+    );
+  }
+
+  fetchLookupSupervisors(): void {
+    this.http.get<any>('https://localhost:7012/lookup/supervisors').subscribe(
+      (data) => {
+        if (data?.data) {
+          this.lookUpSupervisors = data.data;
+        }
+        console.log(this.lookUpSupervisors);
+      },
+      (error) => console.error('Error fetching lookup supervisors:', error)
     );
   }
 
@@ -392,26 +415,25 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
         supervisorId: '',
         goals: [],
         competencies: [],
+        supervisorFullName: '',
       };
     }
-
-    if (
-      !this.employeeData.name ||
-      !this.employeeData.departmentType ||
-      !this.employeeData.startDate ||
-      !this.employeeData.endDate
-    ) {
+  
+    // Ensure all required fields are filled
+    if (!this.employeeData.name || !this.employeeData.departmentType || !this.employeeData.startDate || !this.employeeData.endDate) {
       this.showToast('Please fill in all required employee fields!');
       return;
     }
-
+  
+    // Check for valid goals data
     for (const goal of this.goalsData) {
       if (!goal.goals || goal.weight === 0 || !goal.date) {
         this.showToast('Please fill in all required goal fields!');
         return;
       }
     }
-
+  
+    // Ensure goal weights sum to 100%
     const totalGoalWeight = this.goalsData.reduce(
       (sum, goal) => sum + goal.weight,
       0
@@ -420,14 +442,16 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
       this.showToast('The total weight for goals must equal 100%.');
       return;
     }
-
+  
+    // Ensure valid competencies
     for (const competency of this.competencyData) {
       if (!competency.competencyId || competency.weight === 0) {
         this.showToast('Please fill in all required competency fields!');
         return;
       }
     }
-
+  
+    // Ensure competency weights sum to 100%
     const totalCompetencyWeight = this.competencyData.reduce(
       (sum, competency) => sum + competency.weight,
       0
@@ -436,7 +460,12 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
       this.showToast('The total weight for competencies must equal 100%.');
       return;
     }
-
+  
+    // Capture supervisor's full name
+    const supervisorId = this.employeeData.supervisor.id || '';
+    const supervisorFullName = this.employeeData.supervisor.fullName || '';
+  
+    // Prepare the payload
     this.performanceRecord.goals = this.goalsData.map((goal: any) => ({
       id: goal.id || '',
       orderNo: goal.orderNo,
@@ -448,40 +477,47 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
       measure2: goal.measure2 || '',
       measure1: goal.measure1 || '',
     }));
-
+  
     const Payload = {
       id: this.employeeData.id,
       name: this.employeeData.name || '',
       departmentType: this.employeeData.departmentType || 'None',
-      startYear: isNaN(this.employeeData.startYear)
-        ? 0
-        : this.employeeData.startYear,
-      endYear: isNaN(this.employeeData.endYear) ? 0 : this.employeeData.endYear,
+      startYear: this.employeeData.startYear || 0,
+      endYear: this.employeeData.endYear || 0,
       startDate: this.formatDate(this.employeeData.startDate),
       endDate: this.formatDate(this.employeeData.endDate),
-      employeeId:
-        this.employeeData.id || '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      supervisorId:
-        this.employeeData.supervisorId ||
-        '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      employeeId: this.employeeData.employee.id || '',
+      supervisorId: supervisorId,
+      supervisor: {
+        id: supervisorId,
+        fullName: supervisorFullName,
+      },
+      employee: {
+        id: this.employeeData.employee.id || '',
+        fullName: this.employeeData.employee.fullName || '',
+      },
+      supervisorFullName: supervisorFullName,
       goals: this.performanceRecord?.goals || [],
       competencies: this.competencyData.map(this.mapCompetency),
     };
-
+  
     this.http
-      .put<any>(
-        `https://localhost:7012/performance-reviews/${this.employeeData.id}`,
-        Payload
-      )
+      .put<any>(`https://localhost:7012/performance-reviews/${this.employeeData.id}`, Payload)
       .subscribe(
         (response) => {
           console.log('Response from API:', response);
           this.closeDialog();
+  
+          // Emit updated data with supervisor full name
+          // this.updateTable.emit({
+          //   success: true,
+          //   updatedData: { 
+          //     ...this.performanceRecord,
+          //     supervisorFullName: supervisorFullName, 
+          //   },
+          // });
 
-          this.updateTable.emit({
-            success: true,
-            updatedData: this.performanceRecord!,
-          });
+          
         },
         (error) => {
           console.error('Error occurred:', error);
@@ -492,4 +528,5 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
         }
       );
   }
+  
 }

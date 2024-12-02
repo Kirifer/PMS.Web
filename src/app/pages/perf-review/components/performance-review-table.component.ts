@@ -28,6 +28,8 @@ export interface PerformanceRecord {
   }
   goals: Goal[];
   competencies: Competency[];
+  supervisorFullName: string;
+
 }
 export interface User {
   id: string;
@@ -351,8 +353,15 @@ export class PerformanceReviewTableComponent implements OnInit {
       endYear: 0,
       startDate: '',
       endDate: '',
-      employeeId: '',
       supervisorId: '',
+      employee: {
+        id: '',
+        fullName: '',
+      },
+      supervisor: {
+        id: '',
+        fullName: '',
+      },
       goals: [],
       competencies: [],
     };

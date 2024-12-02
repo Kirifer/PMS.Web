@@ -12,6 +12,10 @@ export const EMPLOYEE_DATA_INITIAL_STATE = {
   startYear: 0,
   endYear: 0,
   supervisorId: '',
+  employee: {
+    id: '',
+    fullName: '',
+  },
   supervisor: {
     id: '',
     fullName: '',
@@ -19,7 +23,15 @@ export const EMPLOYEE_DATA_INITIAL_STATE = {
   startDate: '',
   endDate: '',
   activeSupervisor: false,
+  
 };
+
+export const LOOKUP_SUPERVISORS = [
+  {
+    id: '',
+    fullName: '',
+  },
+];
 
 export const COMPETENCY_DATA_INITIAL_STATE = Array(4)
   .fill({

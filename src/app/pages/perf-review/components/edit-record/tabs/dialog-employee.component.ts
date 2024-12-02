@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms'; // Import FormsModule here
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -10,20 +10,31 @@ import { Router } from '@angular/router';
   template: `
     <div class="max-w-5xl mx-auto p-6 bg-white rounded-lg">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Full Name -->
+        <!-- Full Name (Employee) -->
         <div class="flex flex-col">
-          <label for="name" class="text-gray-600 mb-2">Full Name</label>
+          <label for="name" class="text-gray-600 mb-2">Employee</label>
           <select
+            id="name"
+            [(ngModel)]="employeeData.employee.id"
+            (change)="onEmployeeChange()"
+            class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="" disabled selected>Select a User</option>
+            <option *ngFor="let user of lookUpUsers" [value]="user.id">
+              {{ user.fullName }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Record Name -->
+        <div class="flex flex-col">
+          <label for="name" class="text-gray-600 mb-2">Record Name</label>
+          <input
             id="name"
             [(ngModel)]="employeeData.name"
             name="name"
             class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="" disabled selected>Select a User</option>
-            <option *ngFor="let user of lookUpUsers" [value]="user.fullName">
-              {{ user.fullName }}
-            </option>
-          </select>
+          />
         </div>
 
         <!-- Department -->
@@ -100,17 +111,20 @@ import { Router } from '@angular/router';
           </select>
         </div>
 
-        <!-- Supervisor ID -->
+        <!-- Supervisor -->
         <div class="flex flex-col">
-          <label for="supervisorId" class="text-gray-600 mb-2">Supervisor ID</label>
-          <input
-            id="supervisorId"
-            type="text"
-            [(ngModel)]="employeeData.supervisorId"
-            name="supervisorId"
+          <label for="supervisor" class="text-gray-600 mb-2">Supervisor</label>
+          <select
+            id="supervisor"
+            [(ngModel)]="employeeData.supervisor.id"
+            (change)="onSupervisorChange()"
             class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-            placeholder="Enter supervisor's ID"
-          />
+          >
+            <option value="" disabled selected>Select a User</option>
+            <option *ngFor="let supervisor of lookUpSupervisors" [value]="supervisor.id">
+              {{ supervisor.fullName }}
+            </option>
+          </select>
         </div>
 
         <!-- Active Supervisor -->
@@ -129,7 +143,7 @@ import { Router } from '@angular/router';
   `,
   styles: [],
 })
-export class EditFormEmployeeComponent  {
+export class EditFormEmployeeComponent implements OnInit {
   @Input() employeeData: any = {
     name: '',
     departmentType: '',
@@ -137,13 +151,20 @@ export class EditFormEmployeeComponent  {
     endYear: '',
     startDate: '',
     endDate: '',
-    supervisorId: '',
+    employee: {
+      id: '',
+      fullName: '',
+    },
+    supervisor: {
+      id: '',
+      fullName: '',
+    },
   };
   @Input() lookUpUsers: any[] = [];
+  @Input() lookUpSupervisors: any[] = [];
   @Output() startDateChange = new EventEmitter<string>();
   @Output() endDateChange = new EventEmitter<string>();
   @Output() employeeDataChange = new EventEmitter<any>();
-
   years: number[] = [];
   departmentTypes = [
     'None',
@@ -160,6 +181,28 @@ export class EditFormEmployeeComponent  {
 
   constructor() {
     this.generateYearsRange();
+  }
+  ngOnInit(): void {
+    // throw new Error('Method not implemented.');
+    console.log('sdas',this.employeeData)
+  }
+
+  onEmployeeChange() {
+    const selectedEmployee = this.lookUpUsers.find(
+      (user) => user.id === this.employeeData.employee.id
+    );
+    if (selectedEmployee) {
+      this.employeeData.employee.fullName = selectedEmployee.fullName;
+    }
+  }
+
+  onSupervisorChange() {
+    const selectedSupervisor = this.lookUpSupervisors.find(
+      (supervisor) => supervisor.id === this.employeeData.supervisor.id
+    );
+    if (selectedSupervisor) {
+      this.employeeData.supervisor.fullName = selectedSupervisor.fullName;
+    }
   }
 
   onStartDateChange(event: Event) {
@@ -184,7 +227,11 @@ export class EditFormEmployeeComponent  {
     const currentYear = new Date().getFullYear();
     const startYear = currentYear - 5;
     const endYear = currentYear + 5;
-    this.years = Array.from({ length: endYear - startYear + 1 }, (_, i) => startYear + i);
+
+    this.years = Array.from(
+      { length: endYear - startYear + 1 },
+      (_, i) => startYear + i
+    );
   }
 
   isFormValid(): boolean {
