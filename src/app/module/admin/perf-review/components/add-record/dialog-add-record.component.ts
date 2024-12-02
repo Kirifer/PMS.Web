@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LucideAngularModule } from 'lucide-angular';
@@ -9,7 +9,6 @@ import { DialogGoalsComponent } from './tabs/dialog-goals.component';
 import { DialogEmployeeComponent } from './tabs/dialog-employee.component';
 import { DialogConfirmationComponent } from './tabs/dialog-confirmation.component';
 import { ToastComponent } from '../../../../../shared/components/toast/toast.component';
-
 import {
   EMPLOYEE_INITIAL_STATE,
   EMPLOYEE_DATA_INITIAL_STATE,
@@ -19,6 +18,8 @@ import {
   LOOKUP_USERS,
   LOOKUP_SUPERVISORS,
 } from './constants/data.constants';
+import { PerformanceReviewService } from '@app/core/services/performance-review.service';
+import { LookUpService } from '@app/core/services/lookup.service';
 
 @Component({
   selector: 'app-add-performance-review',
@@ -113,6 +114,7 @@ import {
       <app-toast></app-toast>
     </div>
   `,
+  providers: [PerformanceReviewService, LookUpService],
 })
 export class AddPerformanceReviewComponent implements OnInit {
   @Output() updateTable = new EventEmitter<any>();
@@ -131,7 +133,8 @@ export class AddPerformanceReviewComponent implements OnInit {
   competencies: { competency: string }[] = [];
   competencyOptions: any[] = [];
 
-  constructor(private http: HttpClient) {}
+  private performanceReviewService = inject(PerformanceReviewService);
+  private lookUpService = inject(LookUpService);
 
   ngOnInit(): void {
     this.fetchCompetencies();
@@ -176,7 +179,7 @@ export class AddPerformanceReviewComponent implements OnInit {
   }
 
   fetchCompetencies(): void {
-    this.http.get<any>('https://localhost:7012/lookup/competencies').subscribe(
+    this.lookUpService.fetchCompetencies().subscribe(
       (data) => {
         if (data?.data) {
           this.competencies = data.data;
@@ -190,7 +193,7 @@ export class AddPerformanceReviewComponent implements OnInit {
   }
 
   fetchLookupUsers(): void {
-    this.http.get<any>('https://localhost:7012/lookup/users').subscribe(
+    this.lookUpService.fetchUsers().subscribe(
       (data) => {
         if (data?.data) {
           this.lookUpUsers = data.data;
@@ -202,7 +205,7 @@ export class AddPerformanceReviewComponent implements OnInit {
   }
 
   fetchLookupSupervisors(): void {
-    this.http.get<any>('https://localhost:7012/lookup/supervisors').subscribe(
+    this.lookUpService.fetchSupervisors().subscribe(
       (data) => {
         if (data?.data) {
           this.lookUpSupervisors = data.data;
@@ -216,6 +219,9 @@ export class AddPerformanceReviewComponent implements OnInit {
   submitForm() {
     const startYear = new Date(this.employeeData.startDate).getFullYear() || 0;
     const endYear = new Date(this.employeeData.endDate).getFullYear() || 0;
+
+    const supervisorId = this.employeeData.supervisor.id || '';
+    const supervisorFullName = this.employeeData.supervisor.fullName || '';
 
     // if (
     //   !this.employeeData.name ||
@@ -260,10 +266,7 @@ export class AddPerformanceReviewComponent implements OnInit {
     //   return;
     // }
 
-    const supervisorId = this.employeeData.supervisor.id || '';
-    const supervisorFullName = this.employeeData.supervisor.fullName || '';
-
-    const Payload = {
+    const payload = {
       name: this.employeeData.name || '',
       departmentType: this.employeeData.departmentType || 'None',
       startYear: startYear,
@@ -310,19 +313,17 @@ export class AddPerformanceReviewComponent implements OnInit {
       })),
     };
 
-    this.http
-      .post<any>('https://localhost:7012/performance-reviews', Payload)
-      .subscribe(
-        (response) => {
-          console.log('Response from API:', response);
-          this.showToast('Record added successfully!');
-          this.closeDialog();
-        },
-        (error) => {
-          console.error('Error occurred:', error);
-          this.showToast('Error adding record. Please try again.');
-        }
-      );
+    this.performanceReviewService.addRecord(payload).subscribe(
+      (response) => {
+        console.log('Response from API:', response);
+        this.showToast('Record added successfully!');
+        this.closeDialog();
+      },
+      (error) => {
+        console.error('Error occurred:', error);
+        this.showToast('Error adding record. Please try again.');
+      }
+    );
 
     // Emit the supervisor data along with employee data
     this.updateTable.emit({

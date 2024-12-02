@@ -10,7 +10,7 @@ import {
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
-
+import { PerformanceReviewService } from '@app/core/services/performance-review.service';
 @Component({
   selector: 'app-info-dialog',
   imports: [CommonModule],
@@ -201,6 +201,7 @@ import {
       </div>
     </div>
   `,
+  providers: [PerformanceReviewService],
 })
 export class InfoDialog implements OnInit {
   @Input() id: string | undefined; // Receives the ID
@@ -211,63 +212,52 @@ export class InfoDialog implements OnInit {
   competencyData: any[] = [];
   @Output() dataFetched = new EventEmitter<any>();
 
-  http = inject(HttpClient);
-
-  constructor() {}
+  private performanceReviewService = inject(PerformanceReviewService);
 
   ngOnInit() {
     console.log('Received ID:', this.id);
     if (this.id) {
-      this.fetchPerformanceReviewDetails();
+      this.fetchPerformanceReviewById();
     }
     console.log(this.competencies);
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['id'] && this.id) {
-      this.fetchPerformanceReviewDetails();
+      this.fetchPerformanceReviewById();
     }
   }
 
-  fetchPerformanceReviewDetails() {
+  private fetchPerformanceReviewById() {
     if (!this.id) return;
 
-    this.http
-      .get(`https://localhost:7012/performance-reviews/${this.id}`)
-      .subscribe(
-        (response: any) => {
-          // Check if the response has a 'data' property and handle it accordingly
-          if (response && response.succeeded && response.data) {
-            const data = response.data;
-
-            // Map the response to the component properties
-            this.employeeData = {
-              name: data.name,
-              employeeName: data.employee.fullName,
-              departmentType: data.departmentType,
-              supervisor: data.supervisor.fullName,
-              startYear: data.startYear,
-              endYear: data.endYear,
-              startDate: data.startDate,
-              endDate: data.endDate,
-              // add more fields if necessary
-            };
-
-            this.goalsData = data.goals || [];
-            this.competencyData = data.competencies || [];
-
-            console.log('test', this.employeeData);
-          } else {
-            console.error(
-              'Failed to fetch performance review details:',
-              response
-            );
-          }
-        },
-        (error) => {
-          console.error('Error fetching performance review details:', error);
+    this.performanceReviewService.fetchPerformanceReviewById(this.id).subscribe(
+      (response: any) => {
+        if (response && response.succeeded && response.data) {
+          const data = response.data;
+          this.employeeData = {
+            name: data.name,
+            employeeName: data.employee.fullName,
+            departmentType: data.departmentType,
+            supervisor: data.supervisor.fullName,
+            startYear: data.startYear,
+            endYear: data.endYear,
+            startDate: data.startDate,
+            endDate: data.endDate,
+          };
+          this.goalsData = data.goals || [];
+          this.competencyData = data.competencies || [];
+        } else {
+          console.error(
+            'Failed to fetch performance review details:',
+            response
+          );
         }
-      );
+      },
+      (error) => {
+        console.error('Error fetching performance review details:', error);
+      }
+    );
   }
 
   getCompetencyName(competencyId: string): string | undefined {

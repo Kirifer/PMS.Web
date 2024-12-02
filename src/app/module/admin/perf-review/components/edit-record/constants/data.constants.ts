@@ -1,4 +1,4 @@
-import { User } from "../../table/performance.interface";
+import { User } from "@app/core/models/performance.interface";
 
 export const EMPLOYEE_INITIAL_STATE = {
   startDate: '',
