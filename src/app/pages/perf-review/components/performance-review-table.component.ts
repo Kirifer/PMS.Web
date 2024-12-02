@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { NgFor } from '@angular/common';
-import { LucideAngularModule, Edit, Trash } from 'lucide-angular';
+import { LucideAngularModule, Edit, Trash, Plus } from 'lucide-angular';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -112,8 +112,9 @@ export interface competency {
       <!-- Add Record Button -->
       <button
         (click)="openAddDialog()"
-        class="px-4 py-2 bg-blue-500 rounded-md text-white hover:bg-blue-600"
+          class="bg-blue-900 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300 flex items-center"
       >
+      <i-lucide [img]="Plus" class="w-5 h-5 mr-2"></i-lucide>
         Add Record
       </button>
     </div>
@@ -211,6 +212,7 @@ export class PerformanceReviewTableComponent implements OnInit {
   supervisors: { id: string; name: string }[] = [];
   departmentFilter: string = '';
   supervisorFilter: string = '';
+ 
 
   // EditRecord
   selectedRecord: PerformanceRecord | null = null;
@@ -345,6 +347,7 @@ export class PerformanceReviewTableComponent implements OnInit {
 
   readonly Edit = Edit;
   readonly Trash = Trash;
+  readonly Plus = Plus;
 
   headers = [
     'ID',
