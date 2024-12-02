@@ -5,6 +5,7 @@ import { UsersComponent } from './module/users/users.component';
 import { LoginComponent } from './module/login/login.component';
 import { PerfReviewComponent2 } from './module/perf-review copy/perf-review.component';
 import { UserProfileComponent } from './module/users/components/user-profile/user-profile';
+import { UsersComponent2 } from './module/users copy/users.component';
 export const routes: Routes = [
   {
     path: 'dashboard',
@@ -24,6 +25,10 @@ export const routes: Routes = [
   {
     path: 'user-profile',
     component: UserProfileComponent,
+  },
+  {
+    path: 'users-2',
+    component: UsersComponent2,
   },
   {
     path: 'login',
