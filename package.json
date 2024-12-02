@@ -23,6 +23,7 @@
     "@material-tailwind/html": "^2.3.2",
     "lucide-angular": "^0.460.0",
     "rxjs": "~7.8.0",
+    "tailwindcss-animated": "^1.1.2",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.10"
   },

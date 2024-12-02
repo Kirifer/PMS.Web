@@ -20,7 +20,7 @@ import { UserCreateDto, UserRecord } from './user.interface';
     TableSkeletonComponent,
   ],
   template: `
-    <div class="min-h-screen bg-gray-50 py-6 px-4 sm:px-6 lg:px-8">
+    <div class="min-h-screen bg-gray-50 py-6 px-4 sm:px-6 lg:px-8 rounded-tl-2xl rounded-bl-2xl ">
       <div class="max-w-full mx-auto px-4">
         <div class="flex justify-between items-center mb-6">
           <h1 class="text-3xl font-semibold text-gray-900">Users List</h1>
@@ -72,7 +72,7 @@ import { UserCreateDto, UserRecord } from './user.interface';
         </div>
         <ng-template #dataContent>
           <div class="overflow-x-auto bg-white rounded-lg shadow-lg">
-            <table class="min-w-full divide-y divide-gray-200">
+            <table class="min-w-full divide-y divide-gray-200 animate-fade-right animate-once animate-duration-300 animate-ease-linear">
               <thead class="bg-gray-50">
                 <tr>
                   <th
@@ -205,7 +205,7 @@ export class UsersComponent implements OnInit {
 
             setTimeout(() => {
               this.isLoading = false;
-            }, 1000);
+            });
           }
         },
         error: (err) => {

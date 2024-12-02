@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { SideNavComponent } from './shared/components/side-nav/side-nav.component';
+// import { SideNavComponent } from './shared/components/side-nav/side-nav.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router, NavigationEnd, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { SideNavComponent } from '@shared/components/side-nav/side-nav.component';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,7 @@ import { CommonModule } from '@angular/common';
       <app-side-nav *ngIf="showSideNav" />
 
       <!-- Main Content Area -->
-      <div class="flex-1 overflow-y-auto">
+      <div class="flex-1 overflow-y-auto bg-blue-900">
         <router-outlet></router-outlet>
       </div>
     </div>

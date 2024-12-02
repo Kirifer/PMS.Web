@@ -1,33 +1,39 @@
 import { Routes } from '@angular/router';
+// Admin Pages
 import { DashboardComponent } from './module/admin/dashboard/dashboard.component';
-import { PerfReviewComponent } from './module/admin/perf-review/perf-review.component';
 import { UsersComponent } from './module/admin/users/users.component';
-import { LoginComponent } from './module/login/login.component';
-import { PerfReviewComponent2 } from './module/perf-review copy/perf-review.component';
+import { PerfReviewComponent } from './module/admin/perf-review/perf-review.component';
 import { UserProfileComponent } from './module/admin/users/components/user-profile/user-profile';
+
+// Auth Pages
+import { LoginComponent } from './module/auth/login/login.component';
+
+// User Pages
+import { UserDashboardComponent } from './module/users/dashboard/dashboard.component';
 
 export const routes: Routes = [
   {
-    path: 'dashboard',
+    path: 'admin/dashboard',
     component: DashboardComponent,
   },
   {
-    path: 'perf-rev',
+    path: 'admin/perf-rev',
     component: PerfReviewComponent,
-  },  {
-    path: 'perf-rev-2',
-    component: PerfReviewComponent2,
   },
   {
-    path: 'users',
+    path: 'admin/users',
     component: UsersComponent,
   },
   {
-    path: 'user-profile',
+    path: 'admin/user-profile',
     component: UserProfileComponent,
   },
   {
-    path: 'login',
+    path: 'auth/login',
     component: LoginComponent,
+  },
+  {
+    path: 'user/dashboard',
+    component: UserDashboardComponent,
   },
 ];

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import {
   LucideAngularModule,
@@ -21,89 +21,98 @@ interface NavItem {
 @Component({
   selector: 'app-side-nav',
   standalone: true,
-  imports: [CommonModule, RouterLink, LucideAngularModule],
+  imports: [CommonModule, RouterLink, RouterModule, LucideAngularModule],
   template: `
     <nav
-      class="h-screen bg-blue-900 text-white border-r shadow-sm rounded-tr-2xl rounded-br-2xl flex flex-col transition-all ease-in-out duration-200"
+      class="h-screen bg-blue-900 text-white shadow-sm flex flex-col transition-all duration-300"
       [ngClass]="{
         'w-64': isExpanded,
         'w-20': !isExpanded
       }"
-      (mouseenter)="isExpanded = true"
-      (mouseleave)="closeSidebar()"
     >
-      <div class="p-4 flex justify-between items-center">
-        <!-- Logo and Title Section for Expanded State -->
+      <div class="p-4 flex justify-between items-center mt-4">
+        <!-- Logo Section -->
         <div
           class="flex items-center gap-2 cursor-pointer"
           (click)="toggleSidenav()"
         >
           <img
-            src="images/logo.png"
-            alt="IT Squarehub Logo"
-            class="w-10 h-10 rounded-full"
+            src="images/its-icon_v1.3.png"
+            alt="IT Squarehub Icon"
+            class="w-auto h-8 ml-[2px]"
+            [class.hidden]="isExpanded"
           />
-          <h1
-            class="font-bold text-xl ml-2 transition-opacity duration-200"
-            *ngIf="isExpanded"
-          >
-            IT Squarehub
-          </h1>
+          <img
+            src="images/its-logo_v1.3-dark.png"
+            alt="IT Squarehub Logo"
+            class="w-full h-8"
+            [class.hidden]="!isExpanded"
+          />
         </div>
       </div>
 
       <!-- Subtitle for Expanded State -->
       <div *ngIf="isExpanded">
         <p
-          class="text-xs text-gray-300 items-center justify-center ml-8 mt-[-15px]"
+          class="text-xs text-gray-300 items-center justify-center ml-8 mt-[-5px]"
         >
           Performance Management System
         </p>
       </div>
 
       <!-- Navigation Items -->
-      <div class="flex flex-col gap-2 mt-4">
+      <div
+        class="flex flex-col gap-2 mt-2 group relative"
+        *ngFor="let item of navItems"
+      >
         <a
-          *ngFor="let item of navItems"
           [routerLink]="item.link"
-          class="nav-item flex items-center gap-2 p-2 hover:bg-blue-950  transition-all ease-in-out duration-300"
+          routerLinkActive="bg-blue-700 text-white border-l-4 border-blue-500"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-item flex items-center gap-2 p-2 hover:bg-blue-700 transition-all duration-200"
           [ngClass]="{
             'justify-center': !isExpanded,
             'w-full pl-4': isExpanded
           }"
         >
           <span class="nav-icon">
-            <i-lucide [img]="item.icon" class="my-icon"></i-lucide>
+            <i-lucide
+              [img]="item.icon"
+              class="my-icon"
+              data-tooltip-target="tooltip-right"
+            ></i-lucide>
           </span>
-          <span
-            [class.hidden]="!isExpanded"
-            class="text-sm font-bold transition-opacity duration-200 ease-in-out"
+          <div
+            data-tooltip="tooltip-right-end"
+            data-tooltip-placement="right-end"
+            class="absolute left-full ml-2 top-1/2 transform -translate-y-1/2 hidden group-hover:flex items-center whitespace-nowrap rounded-lg bg-black px-3 py-1 text-sm text-white shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           >
+            {{ item.label }}
+          </div>
+          <span [class.hidden]="!isExpanded" class="text-sm font-bold">
             {{ item.label }}
           </span>
         </a>
       </div>
 
       <!-- User Profile and Logout Section as Navigation Items -->
-      <div class="flex flex-col gap-2 mt-auto border-t border-gray-400">
+      <div class="flex flex-col gap-2 mt-auto mb-4">
         <a
-          *ngFor="let item of userActions"
-          [routerLink]="item.link"
-          class="nav-item flex items-center gap-2 p-2 cursor-pointer hover:bg-blue-950  transition-all ease-in-out duration-300"
+          [routerLink]=""
+          class="nav-item flex items-center gap-2 p-2 cursor-pointer hover:bg-blue-950"
           [ngClass]="{
             'justify-center': !isExpanded,
             'w-full pl-4': isExpanded
           }"
-          (click)="item.action ? item.action() : null"
         >
-          <i-lucide [img]="item.icon" class="w-6 h-6"></i-lucide>
+          <img
+            src="https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=612x612&w=0&k=20&c=s0aTdmT5aU6b8ot7VKm11DeID6NctRCpB755rA1BIP0="
+            alt="avatar"
+            class="relative inline-block h-9 w-9 !rounded-full  object-cover object-center"
+          />
           <div *ngIf="isExpanded" class="text-left">
-            <p class="text-sm font-bold">
-              {{ item.label }}
-            </p>
-            <p class="text-xs text-gray-300">
-              {{ item.role }}
-            </p>
+            <p class="text-sm font-bold"></p>
+            <p class="text-xs text-gray-300"></p>
           </div>
         </a>
       </div>
@@ -122,25 +131,29 @@ export class SideNavComponent implements OnInit {
 
   // Navigation items
   navItems: NavItem[] = [
-    { icon: this.HouseIcon, label: 'Home', link: '/dashboard' },
-    { icon: this.UsersIcon, label: 'Users', link: '/users' },
-    { icon: this.TicketIcon, label: 'Performance Review', link: '/perf-rev' },
+    { icon: this.HouseIcon, label: 'Home', link: 'admin/dashboard' },
+    { icon: this.UsersIcon, label: 'Users', link: 'admin/users' },
+    {
+      icon: this.TicketIcon,
+      label: 'Performance Review',
+      link: 'admin/perf-rev',
+    },
   ];
 
-  userActions: NavItem[] = [
-    {
-      icon: this.UserIcon,
-      label: 'John Doe',
-      role: 'Administrator',
-      link: '/user-profile',
-    },
-    {
-      icon: this.LogOutIcon,
-      label: 'Logout',
-      link: '',
-      action: () => this.logout(),
-    },
-  ];
+  // userActions: NavItem[] = [
+  //   {
+  //     icon: this.UserIcon,
+  //     label: 'John Doe',
+  //     role: 'Administrator',
+  //     link: '/user-profile',
+  //   },
+  //   {
+  //     icon: this.LogOutIcon,
+  //     label: 'Logout',
+  //     link: '',
+  //     action: () => this.logout(),
+  //   },
+  // ];
 
   // LogoutIcon: LucideIconData|undefined;
 

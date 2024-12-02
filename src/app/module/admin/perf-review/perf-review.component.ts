@@ -6,7 +6,7 @@ import { PerformanceReviewTableComponent } from './components/table/performance-
   standalone: true,
   imports: [PerformanceReviewTableComponent],
   template: `
-    <div class="min-h-screen bg-gray-50 py-6 px-4 sm:px-6 lg:px-8">
+    <div class="min-h-screen bg-gray-50 py-6 px-4 sm:px-6 lg:px-8 rounded-tl-2xl rounded-bl-2xl">
       <div class="max-w-full mx-auto px-4">
         <div class="flex justify-between items-center mb-6">
           <h1 class="text-3xl font-semibold text-gray-900">
