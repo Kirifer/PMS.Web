@@ -8,8 +8,7 @@ import { CommonModule } from '@angular/common';
 import { AddPerformanceReviewComponent } from './add-record/dialog-add-record.component';
 import { InfoDialog } from './info-dialog.component';
 import { EditPerformanceReviewComponent } from './edit-record/dialog-edit-record.component';
-
-
+import { TableSkeletonComponent } from '../../../components/Loading/table-skeleton/table-skeleton.component';
 export interface PerformanceRecord {
   id: string;
   name: string;
@@ -22,15 +21,14 @@ export interface PerformanceRecord {
   employee: {
     id: string;
     fullName: string;
-  }
-  supervisor :{
+  };
+  supervisor: {
     id: string;
     fullName: string;
-  }
+  };
   goals: Goal[];
   competencies: Competency[];
   supervisorFullName: string;
-
 }
 export interface User {
   id: string;
@@ -78,8 +76,10 @@ export interface competency {
     EditPerformanceReviewComponent,
     InfoDialog,
     FormsModule,
+    TableSkeletonComponent,
   ],
-  template: `<div class="flex justify-between items-center mb-6">
+  template: `
+    <div class="flex justify-between items-center mb-6">
       <input
         (keyup)="applyFilter($event)"
         placeholder="Search records"
@@ -119,76 +119,90 @@ export interface competency {
       </button>
     </div>
 
+    <div *ngIf="isLoading; else dataContent">
+      <app-table-skeleton></app-table-skeleton>
+    </div>
+    <ng-template #dataContent>
+
     <div class="overflow-x-auto bg-white rounded-lg shadow-lg">
-  <table class="min-w-full divide-y divide-gray-200">
-    <thead class="bg-gray-50">
-      <tr>
-      
-        <th *ngFor="let header of headers" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-          {{ header }}
-        </th>
-      </tr>
-    </thead>
-    <tbody class="bg-white divide-y divide-gray-200">
-      <tr *ngFor="let record of performanceReviews; let i = index">
-        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-          {{ i + 1 }}
-        </td>
-        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-          <button (click)="openInfoDialog(record.id)">
-            {{ record.departmentType }}
-          </button>
-        </td>
-        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-          {{ record.startYear }} - {{ record.endYear }}
-        </td>
-        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-          {{ record.startDate }}
-        </td>
-        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-          {{ record.endDate }}
-        </td>
-        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-          {{ record.name }}
-        </td>
-        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-          {{ record.supervisor.fullName }}
-        </td>
-        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-          <button (click)="openEditDialog(record)" class="text-indigo-600 hover:text-indigo-900 mr-3">
-            <i-lucide [img]="Edit" class="w-5 h-5"></i-lucide>
-          </button>
-          <button
-            class="text-red-600 hover:text-red-900"
-            (click)="deleteRecord(record.id)"
-          >
-            <i-lucide [img]="Trash" class="w-5 h-5"></i-lucide>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <app-add-performance-review
-    *ngIf="isAddDialogOpen"
-    (updateTable)="onAddRecord($event)"
-    (close)="closeAddDialog()"
-  />
-  <app-info-dialog
-    *ngIf="isInfoDialogOpen"
-    [id]="selectedId"
-    (close)="closeInfoDialog()"
-    [competencies]="competencies"
-  />
-  <app-edit-performance-review
-    *ngIf="isEditDialogOpen"
-    [performanceRecord]="selectedRecord"
-    (updateTable)="onEditRecord($event)"
-    (close)="closeEditDialog()"
-  />
-</div>
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th
+                *ngFor="let header of headers"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                {{ header }}
+              </th>
+            </tr>
+          </thead>
 
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr *ngFor="let record of performanceReviews; let i = index">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                {{ i + 1 }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <button (click)="openInfoDialog(record.id)">
+                  {{ record.departmentType }}
+                </button>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                {{ record.startYear }} - {{ record.endYear }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                {{ record.startDate }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                {{ record.endDate }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                {{ record.name }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                {{ record.supervisor.fullName }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <button
+                  (click)="openEditDialog(record)"
+                  class="text-indigo-600 hover:text-indigo-900 mr-3"
+                >
+                  <i-lucide [img]="Edit" class="w-5 h-5"></i-lucide>
+                </button>
+                <button
+                  class="text-red-600 hover:text-red-900"
+                  (click)="deleteRecord(record.id)"
+                >
+                  <i-lucide [img]="Trash" class="w-5 h-5"></i-lucide>
+                </button>
+              </td>
+            </tr>
+            
+          </tbody>
+          
+        </table>
 
-    `,
+        <app-add-performance-review
+          *ngIf="isAddDialogOpen"
+          (updateTable)="onAddRecord($event)"
+          (close)="closeAddDialog()"
+        />
+        <app-info-dialog
+          *ngIf="isInfoDialogOpen"
+          [id]="selectedId"
+          (close)="closeInfoDialog()"
+          [competencies]="competencies"
+        />
+        <app-edit-performance-review
+          *ngIf="isEditDialogOpen"
+          [performanceRecord]="selectedRecord"
+          (updateTable)="onEditRecord($event)"
+          (close)="closeEditDialog()"
+        />
+     
+    </div>
+    </ng-template>
+  `,
 })
 export class PerformanceReviewTableComponent implements OnInit {
   performanceReviews: PerformanceRecord[] = [];
@@ -226,12 +240,12 @@ export class PerformanceReviewTableComponent implements OnInit {
         if (data && data.data) {
           this.performanceReviews = data.data;
           this.allPerformanceReviews = [...this.performanceReviews];
-  
+
           // Filter unique departments
           this.departments = Array.from(
             new Set(this.performanceReviews.map((pr) => pr.departmentType))
           ).sort();
-  
+
           // Filter unique supervisors by their ID
           const uniqueSupervisors = new Map(
             this.performanceReviews.map((pr) => [
@@ -239,9 +253,9 @@ export class PerformanceReviewTableComponent implements OnInit {
               { id: pr.supervisor.id, name: pr.supervisor.fullName },
             ])
           );
-  
-          this.supervisors = Array.from(uniqueSupervisors.values()).sort((a, b) =>
-            a.name.localeCompare(b.name)
+
+          this.supervisors = Array.from(uniqueSupervisors.values()).sort(
+            (a, b) => a.name.localeCompare(b.name)
           );
         }
       },
@@ -249,11 +263,10 @@ export class PerformanceReviewTableComponent implements OnInit {
         console.error('Error fetching performance reviews:', error);
       }
     );
-  
+
     this.fetchCompetencies();
     this.loadPerformanceReviews();
   }
-  
 
   applyFilter(event?: Event) {
     const filterValue = event
@@ -280,14 +293,22 @@ export class PerformanceReviewTableComponent implements OnInit {
   }
 
   loadPerformanceReviews() {
+    this.isLoading = true;
     this.http.get<any>('https://localhost:7012/performance-reviews').subscribe(
       (data) => {
         if (data?.data) {
           this.performanceReviews = data.data;
           this.allPerformanceReviews = [...this.performanceReviews];
         }
+
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 1000);
       },
-      (error) => console.error('Error fetching performance reviews:', error)
+      (error) => {
+        console.error('Error fetching performance reviews:', error);
+        this.isLoading = true;
+      }
     );
   }
 
@@ -345,6 +366,7 @@ export class PerformanceReviewTableComponent implements OnInit {
   isAddDialogOpen = false;
   isEditDialogOpen = false;
   isInfoDialogOpen = false;
+  isLoading = false;
 
   openAddDialog() {
     this.isAddDialogOpen = true;

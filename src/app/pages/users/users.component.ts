@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LucideAngularModule, Edit, Trash, Plus } from 'lucide-angular';
+import { LucideAngularModule, Edit, Trash, Table2, Plus } from 'lucide-angular';
 import { AddUserComponent } from './components/add-user/add-user.component';
 import { HttpClient } from '@angular/common/http';
 import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { FormsModule } from '@angular/forms';
+import { TableCompetenciesComponent } from '../perf-review copy/components/add-record/table-competencies.component';
+import { TableSkeletonComponent } from '../../components/Loading/table-skeleton/table-skeleton.component';
 
 export interface UserCreateDto {
   firstName: string;
@@ -35,6 +37,7 @@ export interface UserRecord {
     FormsModule,
     AddUserComponent,
     EditUserComponent,
+    TableSkeletonComponent,
   ],
   template: `
     <div class="min-h-screen bg-gray-50 py-6 px-4 sm:px-6 lg:px-8">
@@ -61,6 +64,7 @@ export interface UserRecord {
             class="px-4 py-2 border rounded-lg shadow-sm mr-4"
           >
             <option value="">All Positions</option>
+            <option value="">All Positions</option>
             <option *ngFor="let position of positions" [value]="position">
               {{ position }}
             </option>
@@ -83,48 +87,54 @@ export interface UserRecord {
           </button>
         </div>
 
-        <div class="overflow-x-auto bg-white rounded-lg shadow-lg">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-              <tr>
-                <th
-                  *ngFor="let header of headers"
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  {{ header }}
-                </th>
-              </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <tr *ngFor="let user of filteredUsers">
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {{ user.name }}
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {{ user.email }}
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {{ user.position }}
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button
-                    class="text-indigo-600 hover:text-indigo-900 mr-3"
-                    (click)="openEditUserModal(user)"
-                    class="text-indigo-600 hover:text-indigo-900 mr-3"
-                  >
-                    <i-lucide [img]="Edit" class="w-5 h-5"></i-lucide>
-                  </button>
-                  <button
-                    class="text-red-600 hover:text-red-900"
-                    (click)="deleteUser(user.id)"
-                  >
-                    <i-lucide [img]="Trash" class="w-5 h-5"></i-lucide>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <div *ngIf="isLoading; else dataContent">
+          <app-table-skeleton></app-table-skeleton>
         </div>
+        <ng-template #dataContent>
+
+        <div class="overflow-x-auto bg-white rounded-lg shadow-lg">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th
+                    *ngFor="let header of headers"
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    {{ header }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <tr *ngFor="let user of filteredUsers">
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {{ user.name }}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {{ user.email }}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {{ user.position }}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button
+                      class="text-indigo-600 hover:text-indigo-900 mr-3"
+                      (click)="openEditUserModal(user)"
+                      class="text-indigo-600 hover:text-indigo-900 mr-3"
+                    >
+                      <i-lucide [img]="Edit" class="w-5 h-5"></i-lucide>
+                    </button>
+                    <button
+                      class="text-red-600 hover:text-red-900"
+                      (click)="deleteUser(user.id)"
+                    >
+                      <i-lucide [img]="Trash" class="w-5 h-5"></i-lucide>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+        </ng-template>
 
         <div *ngIf="isEditModalVisible">
           <app-edit-user
@@ -152,6 +162,7 @@ export class UsersComponent implements OnInit {
   readonly Trash = Trash;
   readonly Plus = Plus;
   isEditModalVisible: boolean = false;
+  isLoading = false;
   userToEdit: UserRecord | null = null;
 
   users: UserRecord[] = [];
@@ -194,6 +205,8 @@ export class UsersComponent implements OnInit {
   }
 
   fetchUsers() {
+    this.isLoading = true;
+
     this.http
       .get<{ data: UserRecord[] }>('https://localhost:7012/lookup/users')
       .subscribe({
@@ -207,14 +220,18 @@ export class UsersComponent implements OnInit {
               }));
             this.filteredUsers = [...this.users];
 
-            // Dynamically populate positions from user data
             this.positions = Array.from(
               new Set(this.users.map((user) => user.position))
             ).sort();
+
+            setTimeout(() => {
+              this.isLoading = false;
+            }, 1000);
           }
         },
         error: (err) => {
           console.error('Error Fetching Users:', err);
+          this.isLoading = true;
         },
       });
   }
