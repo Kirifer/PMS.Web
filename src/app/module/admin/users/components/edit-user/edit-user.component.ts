@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { UserRecord } from '../../users.component';
+import { UserRecord } from '../../user.interface';
 
 @Component({
   selector: 'app-edit-user',

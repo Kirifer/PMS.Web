@@ -8,60 +8,9 @@ import { CommonModule } from '@angular/common';
 import { AddPerformanceReviewComponent } from '../add-record/dialog-add-record.component';
 import { InfoDialog } from '../info-dialog/info-dialog.component';
 import { EditPerformanceReviewComponent } from '../edit-record/dialog-edit-record.component';
-import { TableSkeletonComponent } from '../../../../shared/components/loading/table-skeleton/table-skeleton.component';
-export interface PerformanceRecord {
-  id: string;
-  name: string;
-  departmentType: string;
-  startYear: number;
-  endYear: number;
-  startDate: string;
-  endDate: string;
-  supervisorId: string;
-  employee: {
-    id: string;
-    fullName: string;
-  };
-  supervisor: {
-    id: string;
-    fullName: string;
-  };
-  goals: Goal[];
-  competencies: Competency[];
-  supervisorFullName: string;
-}
-export interface User {
-  id: string;
-  fullname: string;
-}
+import { TableSkeletonComponent } from '../../../../../shared/components/loading/table-skeleton/table-skeleton.component';
+import { PerformanceRecord } from './performance.interface';
 
-export interface Goal {
-  id: string;
-  orderNo: number;
-  goals: string;
-  weight: number;
-  date: string;
-  measure4: string;
-  measure3: string;
-  measure2: string;
-  measure1: string;
-}
-
-export interface Competency {
-  id: string;
-  competencyId: string;
-  orderNo: number;
-  weight: number;
-  competency: competency;
-}
-
-export interface competency {
-  id: string;
-  description: string;
-  competency: string;
-  level: string;
-  isActive: boolean;
-}
 
 @Component({
   selector: 'app-performance-review-table',
@@ -112,9 +61,9 @@ export interface competency {
       <!-- Add Record Button -->
       <button
         (click)="openAddDialog()"
-          class="bg-blue-900 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300 flex items-center"
+        class="bg-blue-900 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300 flex items-center"
       >
-      <i-lucide [img]="Plus" class="w-5 h-5 mr-2"></i-lucide>
+        <i-lucide [img]="Plus" class="w-5 h-5 mr-2"></i-lucide>
         Add Record
       </button>
     </div>
@@ -123,8 +72,7 @@ export interface competency {
       <app-table-skeleton></app-table-skeleton>
     </div>
     <ng-template #dataContent>
-
-    <div class="overflow-x-auto bg-white rounded-lg shadow-lg">
+      <div class="overflow-x-auto bg-white rounded-lg shadow-lg">
         <table class="min-w-full divide-y divide-gray-200">
           <thead class="bg-gray-50">
             <tr>
@@ -177,9 +125,7 @@ export interface competency {
                 </button>
               </td>
             </tr>
-            
           </tbody>
-          
         </table>
 
         <app-add-performance-review
@@ -199,8 +145,7 @@ export interface competency {
           (updateTable)="onEditRecord($event)"
           (close)="closeEditDialog()"
         />
-     
-    </div>
+      </div>
     </ng-template>
   `,
 })
@@ -215,7 +160,6 @@ export class PerformanceReviewTableComponent implements OnInit {
   supervisors: { id: string; name: string }[] = [];
   departmentFilter: string = '';
   supervisorFilter: string = '';
- 
 
   // EditRecord
   selectedRecord: PerformanceRecord | null = null;
@@ -303,7 +247,7 @@ export class PerformanceReviewTableComponent implements OnInit {
 
         setTimeout(() => {
           this.isLoading = false;
-        }, 1000);
+        });
       },
       (error) => {
         console.error('Error fetching performance reviews:', error);

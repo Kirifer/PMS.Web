@@ -16,8 +16,8 @@ import { EditTableCompetenciesComponent } from './tabs/dialog-competencies.compo
 import { EditTableGoalsComponent } from './tabs/dialog-goals.component';
 import { EditFormEmployeeComponent } from './tabs/dialog-employee.component';
 import { EditConfirmationComponent } from './tabs/dialog-confirmation.component';
-import { PerformanceRecord } from '../table/performance-review-table.component';
-import { ToastComponent } from '../../../../shared/components/toast/toast.component';
+import { PerformanceRecord } from '../table/performance.interface';
+import { ToastComponent } from '../../../../../shared/components/toast/toast.component';
 import {
   EMPLOYEE_INITIAL_STATE,
   EMPLOYEE_DATA_INITIAL_STATE,

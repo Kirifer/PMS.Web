@@ -8,22 +8,19 @@ import { UserProfileComponent } from './module/users/components/user-profile/use
 import { UsersComponent2 } from './module/users copy/users.component';
 export const routes: Routes = [
   {
-    path: 'dashboard',
+    path: 'admin/dashboard',
     component: DashboardComponent,
   },
   {
-    path: 'perf-rev',
+    path: 'admin/perf-rev',
     component: PerfReviewComponent,
-  },  {
-    path: 'perf-rev-2',
-    component: PerfReviewComponent2,
   },
   {
-    path: 'users',
+    path: 'admin/users',
     component: UsersComponent,
   },
   {
-    path: 'user-profile',
+    path: 'admin/user-profile',
     component: UserProfileComponent,
   },
   {
@@ -33,5 +30,9 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+  },
+  {
+    path: 'user/dashboard',
+    component: UserDashboardComponent,
   },
 ];
