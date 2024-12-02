@@ -512,13 +512,13 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
           this.closeDialog();
   
           // Emit updated data with supervisor full name
-          // this.updateTable.emit({
-          //   success: true,
-          //   updatedData: {
-          //     ...this.performanceRecord,
-          //     supervisorFullName: supervisorFullName,
-          //   },
-          // });
+          this.updateTable.emit({
+            success: true,
+            updatedData: {
+              ...this.performanceRecord,
+              supervisorFullName: supervisorFullName ?? undefined,  // This ensures supervisorFullName is optional
+            } as PerformanceRecord,  // Type assertion that allows supervisorFullName to be optional
+          });
           
           
           

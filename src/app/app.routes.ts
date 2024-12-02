@@ -1,16 +1,11 @@
 import { Routes } from '@angular/router';
-// Admin Pages
-import { DashboardComponent } from './module/admin/dashboard/dashboard.component';
-import { UsersComponent } from './module/admin/users/users.component';
-import { PerfReviewComponent } from './module/admin/perf-review/perf-review.component';
-import { UserProfileComponent } from './module/admin/users/components/user-profile/user-profile';
-
-// Auth Pages
-import { LoginComponent } from './module/auth/login/login.component';
-
-// User Pages
-import { UserDashboardComponent } from './module/users/dashboard/dashboard.component';
-
+import { DashboardComponent } from './module/dashboard/dashboard.component';
+import { PerfReviewComponent } from './module/perf-review/perf-review.component';
+import { UsersComponent } from './module/users/users.component';
+import { LoginComponent } from './module/login/login.component';
+import { PerfReviewComponent2 } from './module/perf-review copy/perf-review.component';
+import { UserProfileComponent } from './module/users/components/user-profile/user-profile';
+import { UsersComponent2 } from './module/users copy/users.component';
 export const routes: Routes = [
   {
     path: 'admin/dashboard',
@@ -29,7 +24,11 @@ export const routes: Routes = [
     component: UserProfileComponent,
   },
   {
-    path: 'auth/login',
+    path: 'users-2',
+    component: UsersComponent2,
+  },
+  {
+    path: 'login',
     component: LoginComponent,
   },
   {

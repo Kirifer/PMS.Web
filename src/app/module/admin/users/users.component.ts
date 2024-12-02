@@ -5,8 +5,28 @@ import { AddUserComponent } from './components/add-user/add-user.component';
 import { HttpClient } from '@angular/common/http';
 import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { FormsModule } from '@angular/forms';
-import { TableSkeletonComponent } from '../../../shared/components/loading/table-skeleton/table-skeleton.component';
-import { UserCreateDto, UserRecord } from './user.interface';
+import { TableCompetenciesComponent } from '../perf-review copy/components/add-record/table-competencies.component';
+import { TableSkeletonComponent } from '../../shared/components/loading/table-skeleton/table-skeleton.component';
+
+export interface UserCreateDto {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  position: string;
+  isSupervisor: boolean;
+}
+
+export interface UserRecord {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  position: string;
+  name?: string;
+  is_deleted?: boolean;
+  isSupervisor: boolean;
+}
 
 @Component({
   selector: 'app-users',
@@ -20,7 +40,7 @@ import { UserCreateDto, UserRecord } from './user.interface';
     TableSkeletonComponent,
   ],
   template: `
-    <div class="min-h-screen bg-gray-50 py-6 px-4 sm:px-6 lg:px-8 rounded-tl-2xl rounded-bl-2xl ">
+    <div class="min-h-screen bg-gray-50 py-6 px-4 sm:px-6 lg:px-8">
       <div class="max-w-full mx-auto px-4">
         <div class="flex justify-between items-center mb-6">
           <h1 class="text-3xl font-semibold text-gray-900">Users List</h1>
@@ -71,7 +91,7 @@ import { UserCreateDto, UserRecord } from './user.interface';
         </div>
         <ng-template #dataContent>
           <div class="overflow-x-auto bg-white rounded-lg shadow-lg">
-            <table class="min-w-full divide-y divide-gray-200 ">
+            <table class="min-w-full divide-y divide-gray-200 animate-fade-right animate-once animate-duration-300 animate-ease-linear">
               <thead class="bg-gray-50">
                 <tr>
                   <th
@@ -111,7 +131,7 @@ import { UserCreateDto, UserRecord } from './user.interface';
                 </tr>
               </tbody>
             </table>
-          </div>
+        </div>
         </ng-template>
 
         <div *ngIf="isEditModalVisible">
@@ -204,7 +224,7 @@ export class UsersComponent implements OnInit {
 
             setTimeout(() => {
               this.isLoading = false;
-            });
+            }, 1000);
           }
         },
         error: (err) => {
