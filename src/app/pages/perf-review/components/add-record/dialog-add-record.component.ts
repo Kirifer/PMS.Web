@@ -328,7 +328,7 @@ export class AddPerformanceReviewComponent implements OnInit {
       success: true,
       newData: {
         ...this.employeeData,
-        supervisorFullName: supervisorFullName, // Include supervisor's name
+        // Include supervisor's name
       },
     });
   }

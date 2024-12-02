@@ -223,28 +223,34 @@ export class PerformanceReviewTableComponent implements OnInit {
         if (data && data.data) {
           this.performanceReviews = data.data;
           this.allPerformanceReviews = [...this.performanceReviews];
-
+  
+          // Filter unique departments
           this.departments = Array.from(
             new Set(this.performanceReviews.map((pr) => pr.departmentType))
           ).sort();
-
-          this.supervisors = Array.from(
-            new Map(
-              this.performanceReviews.map((pr) => [
-                pr.supervisor,
-                { id: pr.supervisor.id, name: pr.supervisor.fullName },
-              ])
-            ).values()
-          ).sort((a, b) => a.name.localeCompare(b.name));
+  
+          // Filter unique supervisors by their ID
+          const uniqueSupervisors = new Map(
+            this.performanceReviews.map((pr) => [
+              pr.supervisor.id,
+              { id: pr.supervisor.id, name: pr.supervisor.fullName },
+            ])
+          );
+  
+          this.supervisors = Array.from(uniqueSupervisors.values()).sort((a, b) =>
+            a.name.localeCompare(b.name)
+          );
         }
       },
       (error) => {
         console.error('Error fetching performance reviews:', error);
       }
     );
+  
     this.fetchCompetencies();
     this.loadPerformanceReviews();
   }
+  
 
   applyFilter(event?: Event) {
     const filterValue = event
