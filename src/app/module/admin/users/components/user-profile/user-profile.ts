@@ -1,277 +1,161 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LucideAngularModule, Edit, Trash } from 'lucide-angular';
-import { HttpClient } from '@angular/common/http';
+import {
+  LucideAngularModule,
+  Mail,
+  Phone,
+  Building2,
+  CalendarDays,
+  Users,
+  TrendingUp,
+  Award,
+} from 'lucide-angular';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule, FormsModule],
+  imports: [CommonModule, LucideAngularModule, FormsModule, HttpClientModule], // Include HttpClientModule here
   template: `
-    <div class="container mx-auto min-h-screen bg-gray-50 py-6 px-4 sm:px-6 lg:px-8 pb-2" >
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <!-- Profile Section -->
-        <div class="space-y-3">
-          <div class="text-sm text-gray-500 uppercase tracking-wide">
-            Profile Image
+    <div class="max-w-7xl mx-auto p-8 bg-card rounded-lg ">
+      <div class="flex items-center">
+        <img
+          class="w-30 h-30 rounded-full"
+          src="https://placehold.co/120x120"
+          alt="Profile Picture"
+        />
+        <div class="ml-4">
+          <h2 class="text-xl font-semibold">John Doe</h2>
+          <p class="text-muted-foreground">Website • San Francisco, CA</p>
+          <div class="mt-2">
+            
           </div>
-          <div class="bg-pink-50 rounded-lg p-4 text-center">
-            <img
-              src="/placeholder.svg?height=200&width=200"
-              alt="Profile"
-              class="mx-auto rounded-lg mb-4"
-            />
-            <button class="text-blue-500 text-sm">Change Profile Image</button>
-          </div>
-
-          <div class="space-y-4">
-            <div class="text-sm text-gray-500 uppercase tracking-wide">
-              Employee Details
-            </div>
-            <div class="space-y-4">
-              <div>
-                <label class="block text-sm text-gray-500">First Name</label>
-                <input
-                  type="text"
-                  value="Russel"
-                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label class="block text-sm text-gray-500">Last Name</label>
-                <input
-                  type="text"
-                  value="Sims"
-                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label class="block text-sm text-gray-500">Email Address</label>
-                <div class="mt-1 flex">
-                  <input
-                    type="email"
-                    value="russell@mycompany.com"
-                    class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                  />
-                  <button class="ml-2 text-gray-400 hover:text-gray-500">
-                    <svg
-                      class="h-5 w-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                      ></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div>
-                <label class="block text-sm text-gray-500">Phone Number</label>
-                <div class="mt-1 flex">
-                  <input
-                    type="tel"
-                    value="+1 255 29345690"
-                    class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                  />
-                  <button class="ml-2 text-gray-400 hover:text-gray-500">
-                    <svg
-                      class="h-5 w-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                      ></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div>
-                <label class="block text-sm text-gray-500">Position</label>
-                <input
-                  type="text"
-                  value="iOS Developer"
-                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Role & Team Section -->
-        <div class="space-y-6">
-          <div>
-            <div class="text-sm text-gray-500 uppercase tracking-wide">
-              Role
-            </div>
-            <select
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          <div class="flex space-x-2 mt-2">
+            <span class="bg-green-500 text-white px-2 py-1 rounded-full text-xs"
+              >Active</span
             >
-              <option>Employee</option>
-            </select>
-          </div>
-
-          <!-- Bio Section -->
-          <div class="space-y-4">
-            <div>
-              <div class="text-sm text-gray-500 uppercase tracking-wide">
-                Bio
-              </div>
-              <input
-                type="text"
-                id="large-input"
-                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Write a brief bio..."
-              />
-            </div>
+          
           </div>
         </div>
-
-        <!-- Onboarding Section -->
-        <div class="space-y-6">
-          <div>
-            <div class="text-sm text-gray-500 uppercase tracking-wide">
-              Onboarding
-            </div>
-            <div class="mt-2">
-              <div class="flex justify-between items-center">
-                <span>Starts on</span>
-                <div class="flex items-center space-x-2">
-                  <span>21.05.2022</span>
-                  <button class="text-gray-400 hover:text-gray-500">
-                    <svg
-                      class="h-5 w-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                      ></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-
-              <div class="mt-4">
-                <label class="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    checked
-                    class="rounded text-blue-500 focus:ring-blue-500"
-                  />
-                  <span>Onboarding required</span>
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div class="text-sm text-gray-500 uppercase tracking-wide">
-              Current Status
-            </div>
-            <div class="mt-2 bg-green-50 rounded-lg p-2">
-              <div class="flex justify-between items-center">
-                <span>Onboarding</span>
-                <span>35%</span>
-              </div>
-              <div class="mt-2 h-2 bg-gray-200 rounded-full">
-                <div class="h-full w-1/3 bg-blue-500 rounded-full"></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="space-y-4">
-            <div class="text-sm text-gray-500 uppercase tracking-wide">
-              Onboarding Scripts
-            </div>
-            <div class="space-y-3">
-              <label class="flex items-center justify-between">
-                <span>Office Tour</span>
-                <div class="flex items-center space-x-2">
-                  <span>100%</span>
-                  <input
-                    type="checkbox"
-                    checked
-                    class="rounded text-blue-500 focus:ring-blue-500"
-                  />
-                </div>
-              </label>
-              <label class="flex items-center justify-between">
-                <span>Management Introductory</span>
-                <div class="flex items-center space-x-2">
-                  <span>0%</span>
-                  <input
-                    type="checkbox"
-                    class="rounded text-blue-500 focus:ring-blue-500"
-                  />
-                </div>
-              </label>
-              <label class="flex items-center justify-between">
-                <span>Work Tools</span>
-                <div class="flex items-center space-x-2">
-                  <span>20%</span>
-                  <input
-                    type="checkbox"
-                    checked
-                    class="rounded text-blue-500 focus:ring-blue-500"
-                  />
-                </div>
-              </label>
-              <label class="flex items-center justify-between">
-                <span>Meet Your Colleagues</span>
-                <div class="flex items-center space-x-2">
-                  <span>0%</span>
-                  <input
-                    type="checkbox"
-                    checked
-                    class="rounded text-blue-500 focus:ring-blue-500"
-                  />
-                </div>
-              </label>
-              <label class="flex items-center justify-between">
-                <span>Duties Journal</span>
-                <div class="flex items-center space-x-2">
-                  <span>0%</span>
-                  <input
-                    type="checkbox"
-                    checked
-                    class="rounded text-blue-500 focus:ring-blue-500"
-                  />
-                </div>
-              </label>
-            </div>
-          </div>
-        </div>
+        <button
+          class="ml-auto rounded-full border border-slate-300 py-2 px-4 text-center text-sm transition-all shadow-sm hover:shadow-lg text-slate-600 hover:text-white hover:bg-slate-800 hover:border-slate-800 focus:text-white focus:bg-slate-800 focus:border-slate-800 active:border-slate-800 active:text-white active:bg-slate-800 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+          type="button"
+        >
+          Edit Profile
+        </button>
       </div>
+      <div class="mt-6 border-t border-border pt-4">
+        <h2 class="text-lg font-semibold mb-4">Contact Information</h2>
+        <div class="space-y-3">
+          <div class="flex items-center gap-2 text-sm">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4 text-gray-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+              />
+            </svg>
+            <span>sarah.ander.com</span>
+          </div>
+         
+          <div class="flex items-center gap-2 text-sm">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4 text-gray-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+              />
+            </svg>
+            <span>+1 (555) 123-4567</span>
+          </div>
+          <div class="flex items-center gap-2 text-sm">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4 text-gray-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+              />
+            </svg>
+            <span>San Frcontaancisco Office</span>
+          </div>
 
-      <!-- Action Buttons -->
-      <div class="mt-8 flex space-x-4">
-        <button
-          class="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800"
-        >
-          Save Changes
-        </button>
-        <button
-          class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"
-        >
-          Cancel
-        </button>
+          <div class="mt-6 border-t border-border pt-4">
+        <h2 class="text-lg font-semibold mb-4">Employment Information</h2>
+        <div class="space-y-3">
+          <div class="flex items-center gap-2 text-sm">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4 text-gray-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+              />
+            </svg>
+            <span>Joined: January 15, 2020</span>
+          </div>
+        </div>
+
+        <div class="mt-6 border-t border-border pt-4">
+          <h3 class="text-lg font-semibold">Employee Stats</h3>
+          <div class="grid grid-cols-2 gap-4 mt-2">
+            <div class="bg-blue-900 text-white p-4 rounded-lg">
+              <p class="text-sm">2</p>
+              <p class="text-xs">Rating</p>
+            </div>
+            <div class="bg-blue-900 text-white p-4 rounded-lg">
+              <p class="text-sm">105</p>
+              <p class="text-xs">OFF MARKET</p>
+            </div>
+            <div class="bg-blue-900 text-white p-4 rounded-lg">
+              <p class="text-sm">Yes</p>
+              <p class="text-xs">MANAGEMENT</p>
+            </div>
+            <div class="bg-blue-900 text-white p-4 rounded-lg">
+              <p class="text-sm">🏠 Rent</p>
+              <p class="text-xs">TOP CATEGORY</p>
+            </div>
+            <div class="bg-blue-900 text-white p-4 rounded-lg">
+              <p class="text-sm">Honest</p>
+              <p class="text-xs">FEEDBACK</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   `,
 })
-export class UserProfileComponent {}
+export class UserProfileComponent implements OnInit {
+  constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {
+    // Initialize component
+  }
+}
