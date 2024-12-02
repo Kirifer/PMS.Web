@@ -90,8 +90,9 @@ export interface UserRecord {
         <div *ngIf="isLoading; else dataContent">
           <app-table-skeleton></app-table-skeleton>
         </div>
+        <ng-template #dataContent>
+
         <div class="overflow-x-auto bg-white rounded-lg shadow-lg">
-          <ng-template #dataContent>
             <table class="min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-50">
                 <tr>
@@ -132,8 +133,8 @@ export interface UserRecord {
                 </tr>
               </tbody>
             </table>
-          </ng-template>
         </div>
+        </ng-template>
 
         <div *ngIf="isEditModalVisible">
           <app-edit-user
