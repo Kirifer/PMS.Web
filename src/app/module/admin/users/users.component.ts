@@ -5,28 +5,8 @@ import { AddUserComponent } from './components/add-user/add-user.component';
 import { HttpClient } from '@angular/common/http';
 import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { FormsModule } from '@angular/forms';
-import { TableCompetenciesComponent } from '../perf-review copy/components/add-record/table-competencies.component';
-import { TableSkeletonComponent } from '../../shared/components/loading/table-skeleton/table-skeleton.component';
-
-export interface UserCreateDto {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  position: string;
-  isSupervisor: boolean;
-}
-
-export interface UserRecord {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  position: string;
-  name?: string;
-  is_deleted?: boolean;
-  isSupervisor: boolean;
-}
+import { TableSkeletonComponent } from '../../../shared/components/loading/table-skeleton/table-skeleton.component';
+import { UserCreateDto, UserRecord } from './user.interface';
 
 @Component({
   selector: 'app-users',
@@ -91,8 +71,7 @@ export interface UserRecord {
           <app-table-skeleton></app-table-skeleton>
         </div>
         <ng-template #dataContent>
-
-        <div class="overflow-x-auto bg-white rounded-lg shadow-lg">
+          <div class="overflow-x-auto bg-white rounded-lg shadow-lg">
             <table class="min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-50">
                 <tr>
@@ -133,7 +112,7 @@ export interface UserRecord {
                 </tr>
               </tbody>
             </table>
-        </div>
+          </div>
         </ng-template>
 
         <div *ngIf="isEditModalVisible">

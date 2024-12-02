@@ -1,10 +1,11 @@
 import { Routes } from '@angular/router';
-import { DashboardComponent } from './module/dashboard/dashboard.component';
-import { PerfReviewComponent } from './module/perf-review/perf-review.component';
-import { UsersComponent } from './module/users/users.component';
+import { DashboardComponent } from './module/admin/dashboard/dashboard.component';
+import { PerfReviewComponent } from './module/admin/perf-review/perf-review.component';
+import { UsersComponent } from './module/admin/users/users.component';
 import { LoginComponent } from './module/login/login.component';
 import { PerfReviewComponent2 } from './module/perf-review copy/perf-review.component';
-import { UserProfileComponent } from './module/users/components/user-profile/user-profile';
+import { UserProfileComponent } from './module/admin/users/components/user-profile/user-profile';
+
 export const routes: Routes = [
   {
     path: 'dashboard',
