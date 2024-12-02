@@ -19,6 +19,9 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, LucideAngularModule, FormsModule, HttpClientModule], // Include HttpClientModule here
   template: `
     <div class="max-w-7xl mx-auto p-8 bg-card rounded-lg ">
+    <div class="flex justify-between items-center mb-6">
+          <h1 class="text-3xl font-semibold text-gray-900">User Profile</h1>
+        </div>
       <div class="flex items-center">
         <img
           class="w-30 h-30 rounded-full"
