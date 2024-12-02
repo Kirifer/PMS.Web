@@ -245,6 +245,8 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
 
   
   populateFormData(record: PerformanceRecord) {
+
+
     this.employeeData = {
       id: record.id,
       name: record.name, // Fetch the full name from lookupUsers
@@ -263,6 +265,7 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
       startDate: record.startDate,
       endDate: record.endDate,
       activeSupervisor: record.supervisorId !== '',
+      supervisorFullname: record.supervisorFullName,
       
     };
 
@@ -511,12 +514,13 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
           // Emit updated data with supervisor full name
           // this.updateTable.emit({
           //   success: true,
-          //   updatedData: { 
+          //   updatedData: {
           //     ...this.performanceRecord,
-          //     supervisorFullName: supervisorFullName, 
+          //     supervisorFullName: supervisorFullName,
           //   },
           // });
-
+          
+          
           
         },
         (error) => {

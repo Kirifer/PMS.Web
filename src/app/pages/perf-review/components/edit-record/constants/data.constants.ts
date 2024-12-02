@@ -23,6 +23,7 @@ export const EMPLOYEE_DATA_INITIAL_STATE = {
   startDate: '',
   endDate: '',
   activeSupervisor: false,
+  supervisorFullname: '',
   
 };
 
