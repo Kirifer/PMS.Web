@@ -141,7 +141,7 @@ export interface UserCreateDto {
             <button type="button" (click)="closeAddUserModal()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">
               Cancel
             </button>
-            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+            <button type="submit" class="px-4 py-2 bg-blue-900 text-white rounded-md hover:bg-blue-600">
               Add User
             </button>
           </div>

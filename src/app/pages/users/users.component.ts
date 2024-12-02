@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LucideAngularModule, Edit, Trash } from 'lucide-angular';
+import { LucideAngularModule, Edit, Trash, Plus } from 'lucide-angular';
 import { AddUserComponent } from './components/add-user/add-user.component';
 import { HttpClient } from '@angular/common/http';
 import { EditUserComponent } from './components/edit-user/edit-user.component';
@@ -60,7 +60,7 @@ export interface UserRecord {
             (change)="applyFilter()"
             class="px-4 py-2 border rounded-lg shadow-sm mr-4"
           >
-          <option value="">All Positions</option>
+            <option value="">All Positions</option>
             <option *ngFor="let position of positions" [value]="position">
               {{ position }}
             </option>
@@ -75,9 +75,10 @@ export interface UserRecord {
             <option value="false">Non-Supervisors</option>
           </select>
           <button
-            class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300"
+            class="bg-blue-900 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300 flex items-center"
             (click)="openAddUserModal()"
           >
+            <i-lucide [img]="Plus" class="w-5 h-5 mr-2"></i-lucide>
             Add User
           </button>
         </div>
@@ -149,6 +150,7 @@ export class UsersComponent implements OnInit {
   isModalVisible: boolean = false;
   readonly Edit = Edit;
   readonly Trash = Trash;
+  readonly Plus = Plus;
   isEditModalVisible: boolean = false;
   userToEdit: UserRecord | null = null;
 
