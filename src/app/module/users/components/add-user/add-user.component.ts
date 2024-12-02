@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 import { LucideAngularModule, User } from 'lucide-angular';
-import { ToastComponent } from '../../../../components/toast/toast.component';
+import { ToastComponent } from '../../../../shared/components/toast/toast.component';
 
 // Define UserCreateDto interface with all necessary fields
 export interface UserCreateDto {
