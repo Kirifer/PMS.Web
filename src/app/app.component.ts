@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SideNavComponent } from './components/side-nav/side-nav.component';
+import { SideNavComponent } from './shared/components/side-nav/side-nav.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router, NavigationEnd, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';

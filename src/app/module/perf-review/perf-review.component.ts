@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { PerformanceReviewTableComponent } from './components/performance-review-table.component';
+import { PerformanceReviewTableComponent } from './components/table/performance-review-table.component';
 
 @Component({
   selector: 'app-perf-review',

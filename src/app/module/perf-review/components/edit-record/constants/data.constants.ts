@@ -1,4 +1,4 @@
-import { User } from "../../performance-review-table.component";
+import { User } from "../../table/performance-review-table.component";
 
 export const EMPLOYEE_INITIAL_STATE = {
   startDate: '',

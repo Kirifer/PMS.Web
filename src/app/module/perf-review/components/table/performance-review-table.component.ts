@@ -5,10 +5,10 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AddPerformanceReviewComponent } from './add-record/dialog-add-record.component';
-import { InfoDialog } from './info-dialog.component';
-import { EditPerformanceReviewComponent } from './edit-record/dialog-edit-record.component';
-import { TableSkeletonComponent } from '../../../components/Loading/table-skeleton/table-skeleton.component';
+import { AddPerformanceReviewComponent } from '../add-record/dialog-add-record.component';
+import { InfoDialog } from '../info-dialog/info-dialog.component';
+import { EditPerformanceReviewComponent } from '../edit-record/dialog-edit-record.component';
+import { TableSkeletonComponent } from '../../../../shared/components/loading/table-skeleton/table-skeleton.component';
 export interface PerformanceRecord {
   id: string;
   name: string;
@@ -125,7 +125,7 @@ export interface competency {
 
     <div class="overflow-x-auto bg-white rounded-lg shadow-lg">
       <ng-template #dataContent>
-        <table class="min-w-full divide-y divide-gray-200">
+        <table class="min-w-full divide-y divide-gray-200 border-2 rounded-">
           <thead class="bg-gray-50">
             <tr>
               <th

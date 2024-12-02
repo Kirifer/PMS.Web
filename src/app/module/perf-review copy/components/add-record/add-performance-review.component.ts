@@ -8,7 +8,7 @@ import { TableCompetenciesComponent } from './table-competencies.component';
 import { TableGoalsComponent } from './table-goals.component';
 import { FormEmployeeComponent } from './form-employee.component';
 import { ConfirmationComponent } from './confirmation.component';
-import { ToastComponent } from '../../../../components/toast/toast.component';
+import { ToastComponent } from '../../../../shared/components/toast/toast.component';
 
 @Component({
   selector: 'app-add-performance-review',

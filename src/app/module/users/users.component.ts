@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { FormsModule } from '@angular/forms';
 import { TableCompetenciesComponent } from '../perf-review copy/components/add-record/table-competencies.component';
-import { TableSkeletonComponent } from '../../components/Loading/table-skeleton/table-skeleton.component';
+import { TableSkeletonComponent } from '../../shared/components/loading/table-skeleton/table-skeleton.component';
 
 export interface UserCreateDto {
   firstName: string;

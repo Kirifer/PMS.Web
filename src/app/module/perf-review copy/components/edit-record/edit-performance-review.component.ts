@@ -8,7 +8,7 @@ import { EditTableCompetenciesComponent } from './table-competencies.component';
 import { EditTableGoalsComponent } from './table-goals.component';
 import { EditFormEmployeeComponent } from './form-employee.component';
 import { EditConfirmationComponent } from './confirmation.component';
-import { ToastComponent } from '../../../../components/toast/toast.component';
+import { ToastComponent } from '../../../../shared/components/toast/toast.component';
 
 @Component({
   selector: 'app-edit-haha-performance-review',

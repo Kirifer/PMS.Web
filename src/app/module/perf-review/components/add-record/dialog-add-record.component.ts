@@ -8,7 +8,7 @@ import { DialogCompetenciesComponent } from './tabs/dialog-competencies.componen
 import { DialogGoalsComponent } from './tabs/dialog-goals.component';
 import { DialogEmployeeComponent } from './tabs/dialog-employee.component';
 import { DialogConfirmationComponent } from './tabs/dialog-confirmation.component';
-import { ToastComponent } from '../../../../components/toast/toast.component';
+import { ToastComponent } from '../../../../shared/components/toast/toast.component';
 import {
   EMPLOYEE_INITIAL_STATE,
   EMPLOYEE_DATA_INITIAL_STATE,
