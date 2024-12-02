@@ -5,6 +5,7 @@ import { AddUserComponent } from './components/add-user/add-user.component';
 import { HttpClient } from '@angular/common/http';
 import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { FormsModule } from '@angular/forms';
+// import { TableCompetenciesComponent } from '../perf-review copy/components/add-record/table-competencies.component';
 import { TableSkeletonComponent } from '@app/shared/components/loading/table-skeleton/table-skeleton.component';
 
 export interface UserCreateDto {
@@ -27,6 +28,19 @@ export interface UserRecord {
   isSupervisor: boolean;
 }
 
+const TW_BUTTON_CUSTOM = 'bg-blue-900 text-white hover:bg-blue-700';
+const TW_BUTTON = 'p-2 rounded-lg transition';
+const TW_BUTTON_PRIMARY = 'bg-primary text-primary-foreground hover:bg-primary/80';
+const TW_BUTTON_ACCENT = 'bg-accent text-accent-foreground hover:bg-accent/80';
+const TW_BUTTON_SECONDARY = 'bg-secondary text-secondary-foreground hover:bg-secondary/80';
+const TW_BUTTON_MUTED = 'bg-muted text-muted-foreground hover:bg-muted/80';
+const TW_BORDER = 'border border-border';
+const TW_INPUT = 'border border-border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-primary';
+const TW_TABLE_ROW = 'border-b border-border hover:bg-muted/50 transition';
+const TW_BADGE = 'bg-yellow-500 text-white px-2 py-1 rounded-full';
+const TW_SHADOW = 'shadow-lg';
+const TW_CARD = 'bg-card p-4 rounded-lg border border-primary';
+
 @Component({
   selector: 'app-users',
   standalone: true,
@@ -39,122 +53,156 @@ export interface UserRecord {
     TableSkeletonComponent,
   ],
   template: `
-    <div class="min-h-screen bg-gray-50 py-6 px-4 sm:px-6 lg:px-8">
-      <div class="max-w-full mx-auto px-4">
-        <div class="flex justify-between items-center mb-6">
-          <h1 class="text-3xl font-semibold text-gray-900">Users List</h1>
-        </div>
-        <p class="text-sm text-gray-600 mt-[-20px] mb-4">
-          A comprehensive list of users showcasing their names, email addresses,
-          and positions within the organization.
-        </p>
+  <div class="min-h-screen bg-white py-6 px-4 rounded-tl-2xl rounded-bl-2xl sm:px-6 lg:px-8">
+  <div class="max-w-full mx-auto px-4">
+    <div class="p-6 bg-white rounded-lg mb-6">
+      <h1 class="text-3xl font-semibold text-gray-900">User Management</h1>
+      <p class="text-sm text-gray-600 mt-2">
+        Manage your team members and their account permissions here.
+      </p>
 
-        <div class="flex justify-between items-center mb-6">
-          <input
-            matInput
-            (keyup)="applyFilter($event)"
-            placeholder="Search users"
-            #input
-            class="px-4 py-2 border rounded-lg shadow-sm flex-grow mr-4"
+      <div class="flex justify-between items-center mt-4">
+        <span class="text-lg font-medium">All users 
+          <span class="text-muted-foreground">(44)</span>
+        </span>
+        <div class="flex items-center">
+          <input 
+            matInput 
+            (keyup)="applyFilter($event)" 
+            placeholder="Search users" 
+            #input 
+            class="${TW_INPUT}" 
           />
-          <select
-            [(ngModel)]="positionFilter"
-            (change)="applyFilter()"
-            class="px-4 py-2 border rounded-lg shadow-sm mr-4"
+          <select 
+            [(ngModel)]="positionFilter" 
+            (change)="applyFilter()" 
+            class="${TW_INPUT} ml-2 appearance-none pr-8"
           >
             <option value="">All Positions</option>
             <option *ngFor="let position of positions" [value]="position">
               {{ position }}
             </option>
           </select>
-          <select
-            [(ngModel)]="supervisorFilter"
-            (change)="applyFilter()"
-            class="px-4 py-2 border rounded-lg shadow-sm mr-4"
+
+          <select 
+            [(ngModel)]="supervisorFilter" 
+            (change)="applyFilter()" 
+            class="${TW_INPUT} ml-2 appearance-none pr-5"
           >
             <option value="">All Supervisors</option>
             <option value="true">Supervisors</option>
             <option value="false">Non-Supervisors</option>
           </select>
-          <button
-            class="bg-blue-900 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300 flex items-center"
-            (click)="openAddUserModal()"
-          >
-            <i-lucide [img]="Plus" class="w-5 h-5 mr-2"></i-lucide>
-            Add User
-          </button>
-        </div>
 
-        <div *ngIf="isLoading; else dataContent">
-          <app-table-skeleton></app-table-skeleton>
-        </div>
-        <ng-template #dataContent>
-          <div class="overflow-x-auto bg-white rounded-lg shadow-lg">
-            <table class="min-w-full divide-y divide-gray-200 animate-fade-right animate-once animate-duration-300 animate-ease-linear">
-              <thead class="bg-gray-50">
-                <tr>
-                  <th
-                    *ngFor="let header of headers"
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    {{ header }}
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="bg-white divide-y divide-gray-200">
-                <tr *ngFor="let user of filteredUsers">
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {{ user.name }}
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {{ user.email }}
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {{ user.position }}
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button
-                      class="text-indigo-600 hover:text-indigo-900 mr-3"
-                      (click)="openEditUserModal(user)"
-                      class="text-indigo-600 hover:text-indigo-900 mr-3"
-                    >
-                      <i-lucide [img]="Edit" class="w-5 h-5"></i-lucide>
-                    </button>
-                    <button
-                      class="text-red-600 hover:text-red-900"
-                      (click)="deleteUser(user.id)"
-                    >
-                      <i-lucide [img]="Trash" class="w-5 h-5"></i-lucide>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-        </div>
-        </ng-template>
-
-        <div *ngIf="isEditModalVisible">
-          <app-edit-user
-            [user]="userToEdit"
-            (userUpdated)="onUserUpdated($event)"
-            (reloadUsers)="fetchUsers()"
-            (cancel)="closeEditModal()"
-          ></app-edit-user>
-        </div>
-
-        <div *ngIf="isModalVisible">
-          <app-add-user
-            (userAdded)="onUserAdded($event)"
-            (closeModal)="closeModalHandler()"
-          ></app-add-user>
+          <button 
+          class="ml-4 ${TW_BUTTON} ${TW_BUTTON_CUSTOM} flex items-center" 
+          (click)="openAddUserModal()"
+        >
+          <i-lucide [img]="Plus" class="w-5 h-5 mr-2"></i-lucide>
+          Add User
+        </button>
+        
         </div>
       </div>
+
+      <div *ngIf="isLoading; else dataContent">
+        <app-table-skeleton></app-table-skeleton>
+      </div>
+
+      <ng-template #dataContent>
+        <div class="overflow-x-auto bg-white rounded-lg ${TW_BORDER} mt-4">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-muted text-muted-foreground">
+              <tr>
+                <th class="p-4 text-left">User Name</th>
+                <th class="p-4 text-left">Access</th>
+                <th class="p-4 text-left">Position</th>
+                <th class="p-4 text-left">Supervisor</th>
+                <th class="p-4 text-left">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr *ngFor="let user of filteredUsers" class="${TW_TABLE_ROW}">
+                <td class="p-4 flex items-center space-x-4">
+                  <input type="checkbox" class="mr-2" />
+
+                  <img
+                    src="https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=612x612&w=0&k=20&c=s0aTdmT5aU6b8ot7VKm11DeID6NctRCpB755rA1BIP0="
+                    alt="avatar"
+                    class="inline-block relative object-cover object-center !rounded-full w-10 h-10 border border-slate-800 p-0"
+                    />
+
+                  <div>
+                    <span class="block font-bold">{{ user.name }}</span>
+                    <span class="block text-sm text-muted-foreground">{{ user.email }}</span>
+                  </div>
+                </td>
+
+                <td class="p-4">
+                  <span 
+                    class="${TW_BADGE}" 
+                    [class.bg-green-500]="user.position === 'Admin'" 
+                    [class.bg-muted]="user.position !== 'Admin'"
+                  >
+                    {{ user.position === 'Admin' ? 'Admin' : 'Data Export' }}
+                  </span>
+                </td>
+                <td class="p-4">{{ user.position }}</td>
+                <td class="p-4">{{ user.isSupervisor }}</td>
+                <td class="p-4">
+                  <button 
+                    class="text-indigo-600 hover:text-indigo-900 mr-3" 
+                    (click)="openEditUserModal(user)"
+                  >
+                    <i-lucide [img]="Edit" class="w-5 h-5"></i-lucide>
+                  </button>
+                  <button 
+                    class="text-red-600 hover:text-red-900" 
+                    (click)="deleteUser(user.id)"
+                  >
+                    <i-lucide [img]="Trash" class="w-5 h-5"></i-lucide>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </ng-template>
+
+      <div *ngIf="isEditModalVisible">
+        <app-edit-user
+          [user]="userToEdit"
+          (userUpdated)="onUserUpdated($event)"
+          (reloadUsers)="fetchUsers()"
+          (cancel)="closeEditModal()"
+        ></app-edit-user>
+      </div>
+
+      <div *ngIf="isModalVisible">
+        <app-add-user
+          (userAdded)="onUserAdded($event)"
+          (closeModal)="closeModalHandler()"
+        ></app-add-user>
+      </div>
     </div>
+
+    <div class="flex justify-between mt-4">
+      <span class="text-muted-foreground">1 - 8 of 44</span>
+      <div class="flex space-x-2">
+        <button class="${TW_BUTTON} ${TW_BUTTON_SECONDARY}">1</button>
+        <button class="${TW_BUTTON} ${TW_BUTTON_MUTED}">2</button>
+        <button class="${TW_BUTTON} ${TW_BUTTON_MUTED}">3</button>
+        <button class="${TW_BUTTON} ${TW_BUTTON_MUTED}">...</button>
+      </div>
+    </div>
+  </div>
+</div>
   `,
+  // styleUrls: ['./users.component.css'],
 })
 export class UsersComponent implements OnInit {
-  // Existing properties
-  isModalVisible: boolean = false;
+
+    isModalVisible: boolean = false;
   readonly Edit = Edit;
   readonly Trash = Trash;
   readonly Plus = Plus;
@@ -166,8 +214,7 @@ export class UsersComponent implements OnInit {
   filteredUsers: UserRecord[] = [];
   headers = ['Name', 'Email Address', 'Position', 'Actions'];
 
-  // New properties
-  positions: string[] = ['Manager', 'Developer', 'Designer', 'QA', 'HR']; // Add positions here
+  positions: string[] = ['Manager', 'Developer', 'Designer', 'QA', 'HR'];
   positionFilter: string = '';
   supervisorFilter: string = '';
 
@@ -199,6 +246,15 @@ export class UsersComponent implements OnInit {
 
   ngOnInit() {
     this.fetchUsers();
+    this.loadScript('https://cdn.tailwindcss.com?plugins=forms,typography');
+    this.loadScript('https://unpkg.com/unlazy@0.11.3/dist/unlazy.with-hashing.iife.js');
+  }
+  loadScript(src: string) {
+    const script = document.createElement('script');
+    script.src = src;
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
   }
 
   fetchUsers() {

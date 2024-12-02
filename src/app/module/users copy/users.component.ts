@@ -53,9 +53,9 @@ const TW_CARD = 'bg-card p-4 rounded-lg border border-primary';
     TableSkeletonComponent,
   ],
   template: `
-  <div class="min-h-screen py-6 px-4 sm:px-6 lg:px-8">
+  <div class="min-h-screen bg-white py-6 px-4 rounded-tl-2xl rounded-bl-2xl sm:px-6 lg:px-8">
   <div class="max-w-full mx-auto px-4">
-    <div class="p-6 bg-background rounded-lg mb-6">
+    <div class="p-6 bg-white rounded-lg mb-6">
       <h1 class="text-3xl font-semibold text-gray-900">User Management</h1>
       <p class="text-sm text-gray-600 mt-2">
         Manage your team members and their account permissions here.
@@ -126,11 +126,11 @@ const TW_CARD = 'bg-card p-4 rounded-lg border border-primary';
                 <td class="p-4 flex items-center space-x-4">
                   <input type="checkbox" class="mr-2" />
 
-                  <img 
-                    [src]="'default-profile.jpg'" 
-                    alt="Profile Picture" 
-                    class="w-10 h-10 rounded-full object-cover mr-2" 
-                  />
+                  <img
+                    src="https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=612x612&w=0&k=20&c=s0aTdmT5aU6b8ot7VKm11DeID6NctRCpB755rA1BIP0="
+                    alt="avatar"
+                    class="inline-block relative object-cover object-center !rounded-full w-10 h-10 border border-slate-800 p-0"
+                    />
 
                   <div>
                     <span class="block font-bold">{{ user.name }}</span>

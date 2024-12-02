@@ -24,7 +24,7 @@ export const routes: Routes = [
     component: UserProfileComponent,
   },
   {
-    path: 'users-2',
+    path: 'admin/users-2',
     component: UsersComponent2,
   },
   {
