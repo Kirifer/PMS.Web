@@ -325,14 +325,11 @@ export class AddPerformanceReviewComponent implements OnInit {
       }
     );
 
-    // Emit the supervisor data along with employee data
     this.updateTable.emit({
       success: true,
       newData: {
         ...this.employeeData,
-        // Include supervisor's name
       },
     });
   }
-  // Git Test
 }
