@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LucideAngularModule, Edit, Trash, Table2 } from 'lucide-angular';
+import { LucideAngularModule, Edit, Trash, Table2, Plus } from 'lucide-angular';
 import { AddUserComponent } from './components/add-user/add-user.component';
 import { HttpClient } from '@angular/common/http';
 import { EditUserComponent } from './components/edit-user/edit-user.component';
