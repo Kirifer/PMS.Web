@@ -9,8 +9,9 @@ import { AddPerformanceReviewComponent } from '../add-record/dialog-add-record.c
 import { InfoDialog } from '../info-dialog/info-dialog.component';
 import { EditPerformanceReviewComponent } from '../edit-record/dialog-edit-record.component';
 import { TableSkeletonComponent } from '../../../../../shared/components/loading/table-skeleton/table-skeleton.component';
-import { PerformanceRecord } from './performance.interface';
-
+import { PerformanceRecord } from '@app/core/models/performance.interface';
+import { LookUpService } from '@app/core/services/lookup.service';
+import { PerformanceReviewService } from '@app/core/services/performance-review.service';
 
 @Component({
   selector: 'app-performance-review-table',
@@ -19,7 +20,6 @@ import { PerformanceRecord } from './performance.interface';
     NgFor,
     ReactiveFormsModule,
     LucideAngularModule,
-    HttpClientModule,
     CommonModule,
     AddPerformanceReviewComponent,
     EditPerformanceReviewComponent,
@@ -148,6 +148,7 @@ import { PerformanceRecord } from './performance.interface';
       </div>
     </ng-template>
   `,
+   providers: [PerformanceReviewService, LookUpService],
 })
 export class PerformanceReviewTableComponent implements OnInit {
   performanceReviews: PerformanceRecord[] = [];
@@ -161,6 +162,9 @@ export class PerformanceReviewTableComponent implements OnInit {
   departmentFilter: string = '';
   supervisorFilter: string = '';
 
+  private performanceReviewService = inject(PerformanceReviewService);
+  private lookUpService = inject(LookUpService);
+
   // EditRecord
   selectedRecord: PerformanceRecord | null = null;
 
@@ -170,46 +174,6 @@ export class PerformanceReviewTableComponent implements OnInit {
       this.allPerformanceReviews = [...this.performanceReviews];
       console.log('Updated table data:', this.performanceReviews);
     }
-  }
-
-  performanceReviews$ = this.getPerformanceReviews();
-
-  private getPerformanceReviews(): Observable<any> {
-    return this.http.get<any>('https://localhost:7012/performance-reviews');
-  }
-
-  ngOnInit() {
-    this.performanceReviews$.subscribe(
-      (data: any) => {
-        if (data && data.data) {
-          this.performanceReviews = data.data;
-          this.allPerformanceReviews = [...this.performanceReviews];
-
-          // Filter unique departments
-          this.departments = Array.from(
-            new Set(this.performanceReviews.map((pr) => pr.departmentType))
-          ).sort();
-
-          // Filter unique supervisors by their ID
-          const uniqueSupervisors = new Map(
-            this.performanceReviews.map((pr) => [
-              pr.supervisor.id,
-              { id: pr.supervisor.id, name: pr.supervisor.fullName },
-            ])
-          );
-
-          this.supervisors = Array.from(uniqueSupervisors.values()).sort(
-            (a, b) => a.name.localeCompare(b.name)
-          );
-        }
-      },
-      (error) => {
-        console.error('Error fetching performance reviews:', error);
-      }
-    );
-
-    this.fetchCompetencies();
-    this.loadPerformanceReviews();
   }
 
   applyFilter(event?: Event) {
@@ -236,34 +200,48 @@ export class PerformanceReviewTableComponent implements OnInit {
     });
   }
 
-  loadPerformanceReviews() {
+  ngOnInit() {
+    this.fetchCompetencies();
+    this.fetchPerformanceReviews();
+  }
+
+  fetchPerformanceReviews() {
     this.isLoading = true;
-    this.http.get<any>('https://localhost:7012/performance-reviews').subscribe(
-      (data) => {
+    this.performanceReviewService.fetchPerformanceReview().subscribe(
+      (data: any) => {
         if (data?.data) {
           this.performanceReviews = data.data;
           this.allPerformanceReviews = [...this.performanceReviews];
-        }
 
-        setTimeout(() => {
-          this.isLoading = false;
-        });
+          // Extract unique departments and supervisors
+          this.departments = Array.from(
+            new Set(this.performanceReviews.map((pr) => pr.departmentType))
+          ).sort();
+
+          const uniqueSupervisors = new Map(
+            this.performanceReviews.map((pr) => [
+              pr.supervisor.id,
+              { id: pr.supervisor.id, name: pr.supervisor.fullName },
+            ])
+          );
+          this.supervisors = Array.from(uniqueSupervisors.values()).sort(
+            (a, b) => a.name.localeCompare(b.name)
+          );
+        }
+        this.isLoading = false;
       },
       (error) => {
         console.error('Error fetching performance reviews:', error);
-        this.isLoading = true;
+        this.isLoading = false;
       }
     );
   }
 
-  fetchCompetencies(): void {
-    this.http.get<any>('https://localhost:7012/lookup/competencies').subscribe(
-      (data) => {
+  fetchCompetencies() {
+    this.lookUpService.fetchCompetencies().subscribe(
+      (data: any) => {
         if (data?.data) {
           this.competencies = data.data;
-
-          // console.log('Fetched competencies:', this.competencies); // Log the fetched data
-          // console.log('Competency options:', this.competencyOptions); // Log the unique competency options
         }
       },
       (error) => console.error('Error fetching competencies:', error)
@@ -271,24 +249,21 @@ export class PerformanceReviewTableComponent implements OnInit {
   }
 
   deleteRecord(id: string) {
-    const isDelete = confirm('Are you sure you want to delete?');
-    if (isDelete) {
-      this.http
-        .delete<any>(`https://localhost:7012/performance-reviews/${id}`)
-        .subscribe({
-          next: () => {
-            this.performanceReviews = this.performanceReviews.filter(
-              (record) => record.id !== id
-            );
-            this.allPerformanceReviews = this.allPerformanceReviews.filter(
-              (record) => record.id !== id
-            );
-          },
-          error: (err) => {
-            console.error('Error deleting record:', err);
-            alert('Failed to delete the record. Please try again.');
-          },
-        });
+    if (confirm('Are you sure you want to delete?')) {
+      this.performanceReviewService.deleteRecord(id).subscribe({
+        next: () => {
+          this.performanceReviews = this.performanceReviews.filter(
+            (record) => record.id !== id
+          );
+          this.allPerformanceReviews = this.allPerformanceReviews.filter(
+            (record) => record.id !== id
+          );
+        },
+        error: (err) => {
+          console.error('Error deleting record:', err);
+          alert('Failed to delete the record. Please try again.');
+        },
+      });
     }
   }
 
@@ -368,7 +343,7 @@ export class PerformanceReviewTableComponent implements OnInit {
   onEditRecord(event: { success: boolean; updatedData: PerformanceRecord }) {
     if (event.success) {
       console.log('Record successfully updated:', event.updatedData);
-      this.loadPerformanceReviews();
+      this.fetchPerformanceReviews();
     }
   }
 }
