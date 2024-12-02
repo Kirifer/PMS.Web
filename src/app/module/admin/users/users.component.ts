@@ -44,7 +44,6 @@ import { UserCreateDto, UserRecord } from './user.interface';
             class="px-4 py-2 border rounded-lg shadow-sm mr-4"
           >
             <option value="">All Positions</option>
-            <option value="">All Positions</option>
             <option *ngFor="let position of positions" [value]="position">
               {{ position }}
             </option>
@@ -72,7 +71,7 @@ import { UserCreateDto, UserRecord } from './user.interface';
         </div>
         <ng-template #dataContent>
           <div class="overflow-x-auto bg-white rounded-lg shadow-lg">
-            <table class="min-w-full divide-y divide-gray-200 animate-fade-right animate-once animate-duration-300 animate-ease-linear">
+            <table class="min-w-full divide-y divide-gray-200 ">
               <thead class="bg-gray-50">
                 <tr>
                   <th
