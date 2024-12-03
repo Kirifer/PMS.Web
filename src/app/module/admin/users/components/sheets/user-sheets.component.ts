@@ -34,19 +34,20 @@ import { UserRecord } from '../../user.interface';
       <!-- Sheet Content -->
       <div
         *ngIf="isSheetOpen"
-        class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end items-center"
+        class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end items-center backdrop-blur-sm "
       >
+      <!--  class="fixed inset-0 bg-gray-800 bg-opacity-50 backdrop-blur-sm transition-opacity duration-300" -->
         <div
           #sheetContainer
-          class="bg-white p-6 shadow-lg w-160 h-full transform transition-transform duration-500 ease-in-out translate-x-0"
+          class="bg-white p-6 shadow-lg w-2/5 h-full transform transition-transform duration-500 ease-in-out translate-x-0"
         >
           <div class="mb-4">
-            <h2 class="text-2xl font-semibold">User Profile</h2>
+            <h1 class="font-semibold text-xl text-gray-900">User Profile</h1>
             <p class="text-gray-600">View profile details of an employee</p>
           </div>
 
           <!-- User Profile Details -->
-          <div *ngIf="user" class="space-y-4">
+          <div *ngIf="user" class=" divide-y divide-gray-100 space-y-4">
             <div class="flex items-center justify-center">
               <!-- Center the image -->
               <img
@@ -55,53 +56,66 @@ import { UserRecord } from '../../user.interface';
                 alt="Profile Picture"
               />
             </div>
-            <div class="grid grid-cols-4 items-center gap-4">
-              <label class="text-right text-gray-700">Name</label>
-              <span class="font-bold col-span-3">{{ user.name }}</span>
+            <div class="grid grid-cols-1 gap-4">
+              <div class="flex justify-center items-center">
+                <!-- <label class="text-l text-gray-900">Name</label> -->
+                <span class="text-xl font-bold items-center">{{
+                  user.name
+                }}</span>
+              </div>
             </div>
-            <div class="grid grid-cols-4 items-center gap-4">
-              <label class="text-right text-gray-700">Email</label>
-              <span class="text-sm text-gray-500 col-span-3">{{
-                user.email
-              }}</span>
-            </div>
-            <div class="grid grid-cols-4 items-center gap-4">
-              <label class="text-right text-gray-700">Position</label>
-              <span class="text-sm text-gray-500 col-span-3">{{
-                user.position
-              }}</span>
-            </div>
-            <div class="grid grid-cols-4 items-center gap-4">
-              <label class="text-right text-gray-700">Status</label>
-              <span
-                class="px-2 py-1 rounded-full text-white"
-                [class.bg-green-500]="user.isActive"
-                [class.bg-gray-500]="!user.isActive"
-              >
-                {{ user.isActive ? 'Active' : 'Inactive' }}
-              </span>
-            </div>
-            <div class="grid grid-cols-4 items-center gap-4">
-              <label class="text-right text-gray-700">Role</label>
-              <span
-                class="px-2 py-1 rounded-full text-white"
-                [class.bg-violet-500]="user.isSupervisor"
-                [class.bg-gray-500]="!user.isSupervisor"
-                [class.text-black]="!user.isSupervisor"
-              >
-                {{ user.isSupervisor ? 'Supervisor' : 'Non-Supervisor' }}
-              </span>
-            </div>
-          </div>
+           
+              <!-- Email -->
+              <div class="grid grid-cols-4 items-center gap-4">
+                <label class="text-right text-gray-700">Email</label>
+                <span class="text-sm text-gray-500 col-span-3">
+                  {{ user.email }}
+                </span>
+              </div>
 
-          <!-- Footer -->
-          <div class="mt-4 text-right">
-            <button
-              (click)="closeSheetHandler()"
-              class="px-4 py-2 bg-blue-900 text-white rounded-md hover:bg-blue-600"
-            >
-              Close
-            </button>
+              <!-- Position -->
+              <div class="grid grid-cols-4 items-center gap-4">
+                <label class="text-right text-gray-700">Position</label>
+                <span class="text-sm text-gray-500 col-span-3">
+                  {{ user.position }}
+                </span>
+              </div>
+
+              <!-- Status -->
+              <div class="grid grid-cols-4 items-center gap-4">
+                <label class="text-right text-gray-700">Status</label>
+                <span
+                  class="px-2 py-1 rounded-full text-white "
+                  [class.bg-green-500]="user.isActive"
+                  [class.bg-gray-500]="!user.isActive"
+                >
+                  {{ user.isActive ? 'Active' : 'Inactive' }}
+                </span>
+              </div>
+
+              <!-- Role -->
+              <div class="grid grid-cols-4 items-center gap-4">
+                <label class="text-right text-gray-700">Role</label>
+                <span
+                  class="px-2 py-1 rounded-full "
+                  [class.bg-violet-500]="user.isSupervisor"
+                  [class.bg-gray-500]="!user.isSupervisor"
+                  [class.text-black]="!user.isSupervisor"
+                >
+                  {{ user.isSupervisor ? 'Supervisor' : 'Non-Supervisor' }}
+                </span>
+              </div>
+         
+
+            <!-- Footer -->
+            <div class="mt-4 text-right">
+              <button
+                (click)="closeSheetHandler()"
+                class="px-4 py-2 bg-blue-900 text-white rounded-md hover:bg-blue-600"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       </div>
