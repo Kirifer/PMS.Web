@@ -311,6 +311,7 @@ export class EditPerformanceReviewComponent implements OnChanges, OnInit {
           this.competencyOptions = [
             ...new Set(this.competencies.map((item) => item.competency)),
           ];
+          console.log('saddssdsds', this.competencyOptions)
         }
       },
       (error) => console.error('Error fetching competencies:', error)
