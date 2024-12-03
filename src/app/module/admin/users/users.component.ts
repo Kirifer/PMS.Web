@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   LucideAngularModule,
@@ -14,6 +14,7 @@ import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { FormsModule } from '@angular/forms';
 import { TableSkeletonComponent } from '@app/shared/components/loading/table-skeleton/table-skeleton.component';
 import { UserService } from '@app/core/services/users.service';
+import { SheetsComponent } from './components/sheets/sheets';
 import {
   TW_BUTTON,
   TW_BUTTON_CUSTOM,
@@ -36,6 +37,7 @@ import {
     AddUserComponent,
     EditUserComponent,
     TableSkeletonComponent,
+    SheetsComponent, // Import SheetsComponent
   ],
   template: `
     <div
@@ -116,13 +118,19 @@ import {
                       <input type="checkbox" class="mr-2" />
 
                       <img
+                        *ngIf="user"
+                        (click)="openSheet(user)"
+                        class="cursor-pointer"
                         src="https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=612x612&w=0&k=20&c=s0aTdmT5aU6b8ot7VKm11DeID6NctRCpB755rA1BIP0="
                         alt="avatar"
                         class="inline-block relative object-cover object-center !rounded-full w-10 h-10 border border-slate-400 p-0"
                       />
 
-                      <div>
-                        <span class="block font-bold">{{ user.name }}</span>
+                      <div  *ngIf="user"
+                        (click)="openSheet(user)"
+                        class="cursor-pointer" >
+                        
+                        <span  class="block font-bold">{{ user.name }}</span>
                         <span class="block text-sm text-muted-foreground">{{
                           user.email
                         }}</span>
@@ -175,6 +183,12 @@ import {
             </div>
           </ng-template>
 
+          <app-sheets
+            *ngIf="isSheetOpen"
+            [user]="selectedUser"
+            (closeSheet)="closeSheet()"
+          ></app-sheets>
+
           <div *ngIf="isEditModalVisible">
             <app-edit-user
               [user]="userToEdit"
@@ -225,6 +239,7 @@ import {
   providers: [UserService],
 })
 export class UsersComponent implements OnInit {
+  @Input() isSheetOpen = false;
   readonly ChevronLeft = ChevronLeft;
   readonly ChevronRight = ChevronRight;
   readonly Edit = Edit;
@@ -234,6 +249,7 @@ export class UsersComponent implements OnInit {
   isEditModalVisible: boolean = false;
   isModalVisible: boolean = false;
   isLoading = false;
+
   userToEdit: UserRecord | null = null;
   totalUsers: number = 0;
   currentPage: number = 1;
