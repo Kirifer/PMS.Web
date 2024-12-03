@@ -14,6 +14,7 @@ export interface UserRecord {
   email: string;
   position: string;
   name?: string;
+  isActive?: boolean;
   is_deleted?: boolean;
   isSupervisor: boolean;
 }

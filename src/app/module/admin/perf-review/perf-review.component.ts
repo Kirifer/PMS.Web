@@ -1,6 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { NgFor } from '@angular/common';
-import { LucideAngularModule, Edit, Trash, Plus } from 'lucide-angular';
+import {
+  LucideAngularModule,
+  Edit,
+  Trash,
+  Plus,
+  ChevronLeft,
+  ChevronRight,
+} from 'lucide-angular';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -12,23 +19,17 @@ import { TableSkeletonComponent } from '@shared/components/loading/table-skeleto
 import { PerformanceRecord } from '@app/core/models/performance.interface';
 import { LookUpService } from '@app/core/services/lookup.service';
 import { PerformanceReviewService } from '@app/core/services/performance-review.service';
-
-const TW_BUTTON_CUSTOM = 'bg-blue-900 text-white hover:bg-blue-700';
-const TW_BUTTON = 'p-2 rounded-lg transition';
-const TW_BUTTON_PRIMARY =
-  'bg-primary text-primary-foreground hover:bg-primary/80';
-const TW_BUTTON_ACCENT = 'bg-accent text-accent-foreground hover:bg-accent/80';
-const TW_BUTTON_SECONDARY =
-  'bg-secondary text-secondary-foreground hover:bg-secondary/80';
-const TW_BUTTON_MUTED = 'bg-muted text-muted-foreground hover:bg-muted/80';
-const TW_BORDER = 'border border-border';
-const TW_INPUT =
-  'border border-border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-primary';
-const TW_TABLE_ROW = 'border-b border-border hover:bg-muted/50 transition';
-const TW_BADGE = 'bg-yellow-500 text-white px-2 py-1 rounded-full';
-const TW_BADGE_2 = 'bg-violet-500 text-white px-2 py-1 rounded-full';
-const TW_SHADOW = 'shadow-lg';
-const TW_CARD = 'bg-card p-4 rounded-lg border border-primary';
+import {
+  TW_BUTTON,
+  TW_BUTTON_CUSTOM,
+  TW_BUTTON_MUTED,
+  TW_BUTTON_SECONDARY,
+  TW_INPUT,
+  TW_TABLE_ROW,
+  TW_BADGE,
+  TW_BADGE_2,
+  TW_BORDER,
+} from '@app/styles/table-styles';
 
 @Component({
   selector: 'app-performance-review',
@@ -103,7 +104,7 @@ const TW_CARD = 'bg-card p-4 rounded-lg border border-primary';
                 class="ml-4 ${TW_BUTTON} ${TW_BUTTON_CUSTOM} flex items-center"
                 (click)="openAddDialog()"
               >
-                <i-lucide [img]="Plus" class="w-5 h-5 mr-2"></i-lucide>
+                <i-lucide [img]="Plus" class="w-4 h-4"></i-lucide>
                 Add Record
               </button>
             </div>
@@ -128,7 +129,10 @@ const TW_CARD = 'bg-card p-4 rounded-lg border border-primary';
                     *ngFor="let record of performanceReviews; let i = index"
                     class="${TW_TABLE_ROW}"
                   >
-                    <td class="p-4 flex items-center space-x-4">
+                    <td
+                      class="p-4 flex items-center space-x-4 cursor-pointer"
+                      (click)="openInfoDialog(record.id)"
+                    >
                       <input type="checkbox" class="mr-2" />
 
                       <img
@@ -138,7 +142,9 @@ const TW_CARD = 'bg-card p-4 rounded-lg border border-primary';
                       />
 
                       <div>
-                        <span class="block font-bold">{{ record.name }}</span>
+                        <span class="block font-bold">{{
+                          record.employee.fullName
+                        }}</span>
                         <span class="block text-sm text-muted-foreground">{{
                           record.departmentType
                         }}</span>
@@ -146,26 +152,10 @@ const TW_CARD = 'bg-card p-4 rounded-lg border border-primary';
 
                       <div></div>
                     </td>
-                    <!-- <td class="p-4">
-                      <span
-                        class="${TW_BADGE}"
-                        [class.bg-green-500]="record.is_Active"
-                        [class.bg-muted]="!record.is_Active"
-                      >
-                        {{ record.is_Active ? 'Active' : 'Inactive' }}
-                      </span> -->
-                      <!-- <span
-                        class="${TW_BADGE_2}"
-                        [class.bg-violet-500]="record.isSupervisor"
-                        [class.bg-muted]="!record.isSupervisor"
-                        [class.text-black]="!record.isSupervisor"
-                      >
-                        {{
-                          record.isSupervisor ? 'Supervisor' : 'Non-Supervisor'
-                        }}
-                      </span> -->
-                    <!-- </td> -->
 
+                    <td class="p-4">
+                      {{ record.name }}
+                    </td>
                     <td class="p-4">
                       {{ record.startYear }} - {{ record.endYear }}
                     </td>
@@ -216,13 +206,35 @@ const TW_CARD = 'bg-card p-4 rounded-lg border border-primary';
           </div>
         </div>
 
-        <div class="flex justify-between mt-4">
-          <span class="text-muted-foreground">1 - 8 of 44</span>
+        <div class="flex justify-between">
+          <span class="text-muted-foreground">
+            Showing {{ startItem }} to {{ endItem }} of
+            {{ allPerformanceReviews.length }} records
+          </span>
+
           <div class="flex space-x-2">
-            <button class="${TW_BUTTON} ${TW_BUTTON_SECONDARY}">1</button>
-            <button class="${TW_BUTTON} ${TW_BUTTON_MUTED}">2</button>
-            <button class="${TW_BUTTON} ${TW_BUTTON_MUTED}">3</button>
-            <button class="${TW_BUTTON} ${TW_BUTTON_MUTED}">...</button>
+            <button
+              class="${TW_BUTTON} ${TW_BUTTON_MUTED}"
+              (click)="currentPage = currentPage - 1"
+              [disabled]="currentPage === 1"
+            >
+              <i-lucide
+                [img]="ChevronLeft"
+                class="w-7 h-7 hover:text-blue-900 hover:bg-gray-200 hover:rounded-md"
+              ></i-lucide>
+            </button>
+            <button
+              class="${TW_BUTTON} ${TW_BUTTON_MUTED}"
+              (click)="currentPage = currentPage + 1"
+              [disabled]="
+                currentPage * itemsPerPage >= allPerformanceReviews.length
+              "
+            >
+              <i-lucide
+                [img]="ChevronRight"
+                class="w-7 h-7  hover:text-blue-900 hover:bg-gray-200 hover:rounded-md"
+              ></i-lucide>
+            </button>
           </div>
         </div>
       </div>
@@ -237,10 +249,18 @@ export class PerformanceReviewComponent implements OnInit {
   http = inject(HttpClient);
   competencies: any[] = [];
   tableData: any[] = [];
+  totalItems: number = 0;
   departments: string[] = [];
   supervisors: { id: string; name: string }[] = [];
   departmentFilter: string = '';
   supervisorFilter: string = '';
+  currentPage: number = 1;
+  itemsPerPage: number = 8;
+  startItem: number = 0;
+  endItem: number = 0;
+
+  readonly ChevronLeft = ChevronLeft;
+  readonly ChevronRight = ChevronRight;
 
   private performanceReviewService = inject(PerformanceReviewService);
   private lookUpService = inject(LookUpService);
@@ -263,7 +283,11 @@ export class PerformanceReviewComponent implements OnInit {
 
     this.performanceReviews = this.allPerformanceReviews.filter((record) => {
       const matchesSearch = filterValue
-        ? Object.values(record).join(' ').toLowerCase().includes(filterValue)
+        ? Object.values(record).join(' ').toLowerCase().includes(filterValue) ||
+          Object.values(record.employee)
+            .join(' ')
+            .toLowerCase()
+            .includes(filterValue)
         : true;
 
       const matchesDepartmentFilter = this.departmentFilter
@@ -278,6 +302,28 @@ export class PerformanceReviewComponent implements OnInit {
         matchesSearch && matchesDepartmentFilter && matchesSupervisorFilter
       );
     });
+
+    this.currentPage = 1;
+    this.updatePagination();
+  }
+
+  getPaginatedUsers(): PerformanceRecord[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.allPerformanceReviews.slice(startIndex, endIndex);
+  }
+
+  updatePagination(): void {
+    this.startItem = (this.currentPage - 1) * this.itemsPerPage + 1;
+    this.endItem = Math.min(
+      this.currentPage * this.itemsPerPage,
+      this.allPerformanceReviews.length
+    );
+  }
+
+  onPageChange(newPage: number): void {
+    this.currentPage = newPage;
+    this.updatePagination();
   }
 
   ngOnInit() {
@@ -292,6 +338,7 @@ export class PerformanceReviewComponent implements OnInit {
         if (data?.data) {
           this.performanceReviews = data.data;
           this.allPerformanceReviews = [...this.performanceReviews];
+          this.totalItems = this.allPerformanceReviews.length; // Set total items
 
           // Extract unique departments and supervisors
           this.departments = Array.from(
@@ -309,6 +356,7 @@ export class PerformanceReviewComponent implements OnInit {
           );
         }
         this.isLoading = false;
+        this.updatePagination();
       },
       (error) => {
         console.error('Error fetching performance reviews:', error);
@@ -353,6 +401,7 @@ export class PerformanceReviewComponent implements OnInit {
 
   headers = [
     'Name',
+    'Record Name',
     'Review Year',
     'Start Date',
     'End Date',

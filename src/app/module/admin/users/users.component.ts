@@ -4,54 +4,27 @@ import {
   LucideAngularModule,
   Edit,
   Trash,
-  Table2,
   Plus,
-  User,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-angular';
 import { AddUserComponent } from './components/add-user/add-user.component';
-import { HttpClient } from '@angular/common/http';
+import { UserCreateDto, UserRecord } from './user.interface';
 import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { FormsModule } from '@angular/forms';
 import { TableSkeletonComponent } from '@app/shared/components/loading/table-skeleton/table-skeleton.component';
 import { UserService } from '@app/core/services/users.service';
-
-export interface UserCreateDto {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  position: string;
-  isSupervisor: boolean;
-}
-
-export interface UserRecord {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  position: string;
-  name?: string;
-  is_deleted?: boolean;
-  isSupervisor: boolean;
-  is_Active?: boolean;
-}
-
-const TW_BUTTON_CUSTOM = 'bg-blue-900 text-white hover:bg-blue-700';
-const TW_BUTTON = 'p-2 rounded-lg transition';
-const TW_BUTTON_PRIMARY =
-  'bg-primary text-primary-foreground hover:bg-primary/80';
-const TW_BUTTON_ACCENT = 'bg-accent text-accent-foreground hover:bg-accent/80';
-const TW_BUTTON_SECONDARY =
-  'bg-secondary text-secondary-foreground hover:bg-secondary/80';
-const TW_BUTTON_MUTED = 'bg-muted text-muted-foreground hover:bg-muted/80';
-const TW_BORDER = 'border border-border';
-const TW_INPUT =
-  'border border-border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-primary';
-const TW_TABLE_ROW = 'border-b border-border hover:bg-muted/50 transition';
-const TW_BADGE = 'bg-yellow-500 text-white px-2 py-1 rounded-full';
-const TW_BADGE_2 = 'bg-violet-500 text-white px-2 py-1 rounded-full';
-const TW_SHADOW = 'shadow-lg';
-const TW_CARD = 'bg-card p-4 rounded-lg border border-primary';
+import {
+  TW_BUTTON,
+  TW_BUTTON_CUSTOM,
+  TW_BUTTON_MUTED,
+  TW_BUTTON_SECONDARY,
+  TW_INPUT,
+  TW_TABLE_ROW,
+  TW_BADGE,
+  TW_BADGE_2,
+  TW_BORDER,
+} from '@app/styles/table-styles';
 
 @Component({
   selector: 'app-users',
@@ -69,7 +42,7 @@ const TW_CARD = 'bg-card p-4 rounded-lg border border-primary';
       class="h-[calc(100vh-.75rem)] bg-white mt-3 rounded-tl-2xl rounded-bl-2xl sm:px-6 lg:px-8"
     >
       <div class="max-w-full mx-auto py-3">
-        <div class="p-2 bg-white rounded-lg mb-6">
+        <div class="p-2 bg-white rounded-lg mb-2">
           <h1 class="text-3xl font-semibold text-gray-900">User Management</h1>
           <p class="text-sm text-gray-600 mt-2">
             Manage your team members and their account permissions here.
@@ -113,7 +86,7 @@ const TW_CARD = 'bg-card p-4 rounded-lg border border-primary';
                 class="ml-4 ${TW_BUTTON} ${TW_BUTTON_CUSTOM} flex items-center"
                 (click)="openAddUserModal()"
               >
-                <i-lucide [img]="Plus" class="w-5 h-5 mr-2"></i-lucide>
+                <i-lucide [img]="Plus" class="w-4 h-4"></i-lucide>
                 Add User
               </button>
             </div>
@@ -131,13 +104,12 @@ const TW_CARD = 'bg-card p-4 rounded-lg border border-primary';
                     <th class="p-4 text-left">User Name</th>
                     <th class="p-4 text-left">Role</th>
                     <th class="p-4 text-left">Position</th>
-                    <!-- <th class="p-4 text-center">Supervisor</th> -->
                     <th class="p-4 text-left">Actions</th>
                   </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                   <tr
-                    *ngFor="let user of filteredUsers"
+                    *ngFor="let user of getPaginatedUsers()"
                     class="${TW_TABLE_ROW}"
                   >
                     <td class="p-4 flex items-center space-x-4">
@@ -158,22 +130,25 @@ const TW_CARD = 'bg-card p-4 rounded-lg border border-primary';
 
                       <div></div>
                     </td>
-                    <td class="p-4">
+                    <td class="p-4 space-x-1">
                       <span
                         class="${TW_BADGE}"
-                        [class.bg-green-500]="user.is_Active"
-                        [class.bg-muted]="!user.is_Active"
+                        [class.bg-blue-900]="user.isActive"
+                        [class.bg-yellow-500]="!user.isActive"
+
                       >
-                        {{ user.is_Active ? 'Active' : 'Inactive' }}
+                        
+                          {{ user.isActive ? 'Active' : 'Inactive' }}
                       </span>
+
                       <span
                         class="${TW_BADGE_2}"
                         [class.bg-violet-500]="user.isSupervisor"
-                        [class.bg-muted]="!user.isSupervisor"
-                        [class.text-black]="!user.isSupervisor"
+                        [class.bg-cyan-500]="!user.isSupervisor"
+                       
                       >
                         {{
-                          user.isSupervisor ? 'Supervisor' : 'Non-Supervisor'
+                          user.isSupervisor ? 'Supervisor' : 'Employee'
                         }}
                       </span>
                     </td>
@@ -216,39 +191,73 @@ const TW_CARD = 'bg-card p-4 rounded-lg border border-primary';
             ></app-add-user>
           </div>
         </div>
-
-        <div class="flex justify-between mt-4">
-          <span class="text-muted-foreground">1 - 8 of 44</span>
+        <div class="flex justify-between">
+          <span class="text-muted-foreground">
+            Showing {{ startItem }} to {{ endItem }} of
+            {{ filteredUsers.length }} users
+          </span>
           <div class="flex space-x-2">
-            <button class="${TW_BUTTON} ${TW_BUTTON_SECONDARY}">1</button>
-            <button class="${TW_BUTTON} ${TW_BUTTON_MUTED}">2</button>
-            <button class="${TW_BUTTON} ${TW_BUTTON_MUTED}">3</button>
-            <button class="${TW_BUTTON} ${TW_BUTTON_MUTED}">...</button>
+            <button
+              class="${TW_BUTTON} ${TW_BUTTON_MUTED}"
+              (click)="currentPage = currentPage - 1"
+              [disabled]="currentPage === 1"
+            >
+              <i-lucide
+                [img]="ChevronLeft"
+                class="w-7 h-7 hover:text-blue-900 hover:bg-gray-200 hover:rounded-md"
+              ></i-lucide>
+            </button>
+            <button
+              class="${TW_BUTTON} ${TW_BUTTON_MUTED}"
+              (click)="currentPage = currentPage + 1"
+              [disabled]="currentPage * itemsPerPage >= filteredUsers.length"
+            >
+              <i-lucide
+                [img]="ChevronRight"
+                class="w-7 h-7  hover:text-blue-900 hover:bg-gray-200 hover:rounded-md"
+              ></i-lucide>
+            </button>
           </div>
         </div>
       </div>
     </div>
   `,
   providers: [UserService],
-  // styleUrls: ['./users.component.css'],
 })
 export class UsersComponent implements OnInit {
-  isModalVisible: boolean = false;
+  readonly ChevronLeft = ChevronLeft;
+  readonly ChevronRight = ChevronRight;
   readonly Edit = Edit;
   readonly Trash = Trash;
   readonly Plus = Plus;
+
   isEditModalVisible: boolean = false;
+  isModalVisible: boolean = false;
   isLoading = false;
   userToEdit: UserRecord | null = null;
   totalUsers: number = 0;
+  currentPage: number = 1;
+  itemsPerPage: number = 8;
+  startItem: number = 0;
+  endItem: number = 0;
+  positionFilter: string = '';
+  supervisorFilter: string = '';
 
   users: UserRecord[] = [];
   filteredUsers: UserRecord[] = [];
-  headers = ['Name', 'Email Address', 'Position', 'Actions'];
 
+  headers = ['Name', 'Email Address', 'Position', 'Actions'];
   positions: string[] = ['Manager', 'Developer', 'Designer', 'QA', 'HR'];
-  positionFilter: string = '';
-  supervisorFilter: string = '';
+
+  private userService = inject(UserService);
+
+  ngOnInit() {
+    this.fetchUsers();
+    this.loadScript('https://cdn.tailwindcss.com?plugins=forms,typography');
+    this.loadScript(
+      'https://unpkg.com/unlazy@0.11.3/dist/unlazy.with-hashing.iife.js'
+    );
+  }
 
   applyFilter(event?: Event) {
     const filterValue = event
@@ -272,16 +281,11 @@ export class UsersComponent implements OnInit {
 
       return matchesSearch && matchesSupervisorFilter && matchesPositionFilter;
     });
+
+    this.currentPage = 1;
+    this.updatePagination();
   }
 
-  private userService = inject(UserService);
-  ngOnInit() {
-    this.fetchUsers();
-    this.loadScript('https://cdn.tailwindcss.com?plugins=forms,typography');
-    this.loadScript(
-      'https://unpkg.com/unlazy@0.11.3/dist/unlazy.with-hashing.iife.js'
-    );
-  }
   loadScript(src: string) {
     const script = document.createElement('script');
     script.src = src;
@@ -289,9 +293,9 @@ export class UsersComponent implements OnInit {
     script.defer = true;
     document.body.appendChild(script);
   }
+
   fetchUsers() {
     this.isLoading = true;
-
     this.userService.fetchUsers().subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
@@ -301,13 +305,15 @@ export class UsersComponent implements OnInit {
               ...user,
               name: `${user.firstName} ${user.lastName}`,
             }));
-
+            console.log(response.data)
           this.filteredUsers = [...this.users];
           this.totalUsers = this.users.length;
 
           this.positions = Array.from(
             new Set(this.users.map((user) => user.position))
           ).sort();
+
+          this.updatePagination();
 
           setTimeout(() => {
             this.isLoading = false;
@@ -321,12 +327,51 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  openAddUserModal() {
-    this.isModalVisible = true;
+  deleteUser(id: number) {
+    if (confirm('Are you sure you want to delete this user?')) {
+      this.userService.deleteUser(id).subscribe({
+        next: () => {
+          this.users = this.users.filter((user) => user.id !== id);
+          this.filteredUsers = [...this.users];
+        },
+        error: (err) => {
+          console.error('Error deleting user:', err);
+          alert('Failed to delete the user. Please try again.');
+        },
+      });
+    }
   }
 
-  closeModalHandler() {
-    this.isModalVisible = false;
+  getPaginatedUsers(): UserRecord[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.filteredUsers.slice(startIndex, endIndex);
+  }
+
+  updatePagination(): void {
+    this.startItem = (this.currentPage - 1) * this.itemsPerPage + 1;
+    this.endItem = Math.min(
+      this.currentPage * this.itemsPerPage,
+      this.filteredUsers.length
+    );
+  }
+
+  onPageChange(newPage: number): void {
+    this.currentPage = newPage;
+    this.updatePagination();
+  }
+
+
+  onUserUpdated(updatedUser: UserRecord) {
+    const index = this.users.findIndex((user) => user.id === updatedUser.id);
+    if (index !== -1) {
+      this.users[index] = {
+        ...updatedUser,
+        name: `${updatedUser.firstName} ${updatedUser.lastName}`,
+      };
+      this.filteredUsers = [...this.users];
+    }
+    this.closeEditModal();
   }
 
   onUserAdded(newUser: UserCreateDto) {
@@ -345,32 +390,12 @@ export class UsersComponent implements OnInit {
     this.isModalVisible = false;
   }
 
-  deleteUser(id: number) {
-    if (confirm('Are you sure you want to delete this user?')) {
-      this.userService.deleteUser(id).subscribe({
-        next: () => {
-          this.users = this.users.filter((user) => user.id !== id);
-          this.filteredUsers = [...this.users];
-        },
-        error: (err) => {
-          console.error('Error deleting user:', err);
-          alert('Failed to delete the user. Please try again.');
-        },
-      });
-    }
+  openAddUserModal() {
+    this.isModalVisible = true;
   }
 
-  // EDIT USERS
-  onUserUpdated(updatedUser: UserRecord) {
-    const index = this.users.findIndex((user) => user.id === updatedUser.id);
-    if (index !== -1) {
-      this.users[index] = {
-        ...updatedUser,
-        name: `${updatedUser.firstName} ${updatedUser.lastName}`,
-      };
-      this.filteredUsers = [...this.users];
-    }
-    this.closeEditModal();
+  closeModalHandler() {
+    this.isModalVisible = false;
   }
 
   openEditUserModal(user: UserRecord) {
