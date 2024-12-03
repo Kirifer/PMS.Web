@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 import { LucideAngularModule, User } from 'lucide-angular';
+import { UserService } from '@app/core/services/users.service';
 
 // Define UserCreateDto interface with all necessary fields
 export interface UserCreateDto {
@@ -201,10 +202,12 @@ export interface UserCreateDto {
       </div>
     </div>
   `,
+  providers: [UserService],
 })
 export class AddUserComponent {
   @Output() closeModal = new EventEmitter<void>();
   @Output() userAdded = new EventEmitter<UserCreateDto>();
+  private userService = inject(UserService);
 
   readonly User = User;
 
@@ -224,27 +227,23 @@ export class AddUserComponent {
   }
 
   submitUserForm() {
-    // Check if password and confirm password match
     if (this.password !== this.confirmPassword) {
       alert('Passwords do not match.');
       return;
     }
 
-    // Ensure all required fields are filled
     if (
       !this.firstName ||
       !this.lastName ||
       !this.email ||
       !this.password ||
-      !this.position ||
-      this.isSupervisor === undefined
+      !this.position
     ) {
       alert('Please fill in all required fields.');
       return;
     }
 
-    // Create new user object
-    const newUser: UserCreateDto = {
+    const payload = {
       firstName: this.firstName,
       lastName: this.lastName,
       email: this.email,
@@ -254,27 +253,24 @@ export class AddUserComponent {
       is_deleted: false,
     };
 
-    // Send the POST request to the API
-    this.http
-      .post<UserCreateDto>('https://localhost:7012/users', newUser)
-      .subscribe(
-        (response) => {
-          this.userAdded.emit(newUser);
-          this.closeAddUserModal();
-        },
-        (error) => {
-          console.error('Error adding user:', error);
-          if (error.error && error.error.errors) {
-            const validationErrors = error.error.errors;
-            let errorMessage = 'Validation errors:\n';
-            validationErrors.forEach((err: any) => {
-              errorMessage += `- ${err.message || 'Unknown error'}\n`;
-            });
-            alert(errorMessage);
-          } else {
-            alert('An unexpected error occurred. Please try again.');
-          }
+    this.userService.addUser(payload).subscribe(
+      (response) => {
+        this.userAdded.emit(payload);
+        this.closeAddUserModal();
+      },
+      (error) => {
+        console.error('Error adding user:', error);
+        if (error.error && error.error.errors) {
+          const validationErrors = error.error.errors;
+          let errorMessage = 'Validation errors:\n';
+          validationErrors.forEach((err: any) => {
+            errorMessage += `- ${err.message || 'Unknown error'}\n`;
+          });
+          alert(errorMessage);
+        } else {
+          alert('An unexpected error occurred. Please try again.');
         }
-      );
+      }
+    );
   }
 }
