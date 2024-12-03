@@ -51,7 +51,7 @@ import { UserRecord } from '../../user.interface';
               <!-- Center the image -->
               <img
                 class="w-32 h-32 rounded-full"
-                src="https://placehold.co/160x160"
+                src="https://docs.material-tailwind.com/img/face-2.jpg"
                 alt="Profile Picture"
               />
             </div>
