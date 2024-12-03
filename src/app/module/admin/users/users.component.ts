@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, Edit, Trash, Table2, Plus } from 'lucide-angular';
 import { AddUserComponent } from './components/add-user/add-user.component';
 import { HttpClient } from '@angular/common/http';
 import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { FormsModule } from '@angular/forms';
-// import { TableCompetenciesComponent } from '../perf-review copy/components/add-record/table-competencies.component';
 import { TableSkeletonComponent } from '@app/shared/components/loading/table-skeleton/table-skeleton.component';
+import { SheetsComponent } from './components/sheets/sheets';
 
 export interface UserCreateDto {
   firstName: string;
@@ -56,6 +56,7 @@ const TW_CARD = 'bg-card p-4 rounded-lg border border-primary';
     AddUserComponent,
     EditUserComponent,
     TableSkeletonComponent,
+    SheetsComponent, // Import SheetsComponent
   ],
   template: `
     <div
@@ -137,13 +138,19 @@ const TW_CARD = 'bg-card p-4 rounded-lg border border-primary';
                       <input type="checkbox" class="mr-2" />
 
                       <img
+                        *ngIf="user"
+                        (click)="openSheet(user)"
+                        class="cursor-pointer"
                         src="https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=612x612&w=0&k=20&c=s0aTdmT5aU6b8ot7VKm11DeID6NctRCpB755rA1BIP0="
                         alt="avatar"
                         class="inline-block relative object-cover object-center !rounded-full w-10 h-10 border border-slate-400 p-0"
                       />
 
-                      <div>
-                        <span class="block font-bold">{{ user.name }}</span>
+                      <div  *ngIf="user"
+                        (click)="openSheet(user)"
+                        class="cursor-pointer" >
+                        
+                        <span  class="block font-bold">{{ user.name }}</span>
                         <span class="block text-sm text-muted-foreground">{{
                           user.email
                         }}</span>
@@ -193,6 +200,12 @@ const TW_CARD = 'bg-card p-4 rounded-lg border border-primary';
             </div>
           </ng-template>
 
+          <app-sheets
+            *ngIf="isSheetOpen"
+            [user]="selectedUser"
+            (closeSheet)="closeSheet()"
+          ></app-sheets>
+
           <div *ngIf="isEditModalVisible">
             <app-edit-user
               [user]="userToEdit"
@@ -225,14 +238,17 @@ const TW_CARD = 'bg-card p-4 rounded-lg border border-primary';
   // styleUrls: ['./users.component.css'],
 })
 export class UsersComponent implements OnInit {
+  @Input() isSheetOpen = false;
   isModalVisible: boolean = false;
   readonly Edit = Edit;
   readonly Trash = Trash;
   readonly Plus = Plus;
   isEditModalVisible: boolean = false;
   isLoading = false;
+
   userToEdit: UserRecord | null = null;
   totalUsers: number = 0;
+  selectedUser: UserRecord | null = null;
 
   users: UserRecord[] = [];
   filteredUsers: UserRecord[] = [];
@@ -324,6 +340,16 @@ export class UsersComponent implements OnInit {
 
   closeModalHandler() {
     this.isModalVisible = false;
+  }
+
+  openSheet(user: UserRecord): void {
+    this.selectedUser = user;
+    this.isSheetOpen = true;
+  }
+
+  closeSheet(): void {
+    this.isSheetOpen = false;
+    this.selectedUser = null;
   }
 
   onUserAdded(newUser: UserCreateDto) {
