@@ -1,12 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LucideAngularModule, Edit, Trash, Table2, Plus } from 'lucide-angular';
+import {
+  LucideAngularModule,
+  Edit,
+  Trash,
+  Table2,
+  Plus,
+  User,
+} from 'lucide-angular';
 import { AddUserComponent } from './components/add-user/add-user.component';
 import { HttpClient } from '@angular/common/http';
 import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { FormsModule } from '@angular/forms';
-// import { TableCompetenciesComponent } from '../perf-review copy/components/add-record/table-competencies.component';
 import { TableSkeletonComponent } from '@app/shared/components/loading/table-skeleton/table-skeleton.component';
+import { UserService } from '@app/core/services/users.service';
 
 export interface UserCreateDto {
   firstName: string;
@@ -59,17 +66,17 @@ const TW_CARD = 'bg-card p-4 rounded-lg border border-primary';
   ],
   template: `
     <div
-      class="min-h-screen bg-white py-6 px-4 rounded-tl-2xl rounded-bl-2xl sm:px-6 lg:px-8"
+      class="h-[calc(100vh-.75rem)] bg-white mt-3 rounded-tl-2xl rounded-bl-2xl sm:px-6 lg:px-8"
     >
-      <div class="max-w-full mx-auto px-4">
-        <div class="p-6 bg-white rounded-lg mb-6">
+      <div class="max-w-full mx-auto py-3">
+        <div class="p-2 bg-white rounded-lg mb-6">
           <h1 class="text-3xl font-semibold text-gray-900">User Management</h1>
           <p class="text-sm text-gray-600 mt-2">
             Manage your team members and their account permissions here.
           </p>
 
           <div class="flex justify-between items-center mt-4">
-            <span class="text-lg font-medium">
+            <span class="text-lg font-bold">
               All users
               <span class="text-muted-foreground">({{ totalUsers }})</span>
             </span>
@@ -120,11 +127,11 @@ const TW_CARD = 'bg-card p-4 rounded-lg border border-primary';
             <div class="overflow-x-auto bg-white rounded-lg ${TW_BORDER} mt-4">
               <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-muted text-muted-foreground">
-                  <tr>
+                  <tr class="uppercase">
                     <th class="p-4 text-left">User Name</th>
                     <th class="p-4 text-left">Role</th>
                     <th class="p-4 text-left">Position</th>
-                    <!-- <th class="p-4 text-left">Supervisor</th> -->
+                    <!-- <th class="p-4 text-center">Supervisor</th> -->
                     <th class="p-4 text-left">Actions</th>
                   </tr>
                 </thead>
@@ -222,6 +229,7 @@ const TW_CARD = 'bg-card p-4 rounded-lg border border-primary';
       </div>
     </div>
   `,
+  providers: [UserService],
   // styleUrls: ['./users.component.css'],
 })
 export class UsersComponent implements OnInit {
@@ -241,8 +249,6 @@ export class UsersComponent implements OnInit {
   positions: string[] = ['Manager', 'Developer', 'Designer', 'QA', 'HR'];
   positionFilter: string = '';
   supervisorFilter: string = '';
-
-  constructor(private http: HttpClient) {}
 
   applyFilter(event?: Event) {
     const filterValue = event
@@ -268,6 +274,7 @@ export class UsersComponent implements OnInit {
     });
   }
 
+  private userService = inject(UserService);
   ngOnInit() {
     this.fetchUsers();
     this.loadScript('https://cdn.tailwindcss.com?plugins=forms,typography');
@@ -282,42 +289,38 @@ export class UsersComponent implements OnInit {
     script.defer = true;
     document.body.appendChild(script);
   }
-
   fetchUsers() {
     this.isLoading = true;
 
-    this.http
-      .get<{ data: UserRecord[] }>('https://localhost:7012/lookup/users')
-      .subscribe({
-        next: (response) => {
-          if (response && Array.isArray(response.data)) {
-            this.users = response.data
-              .filter((user) => !user.is_deleted)
-              .map((user) => ({
-                ...user,
-                name: `${user.firstName} ${user.lastName}`,
-              }));
+    this.userService.fetchUsers().subscribe({
+      next: (response) => {
+        if (response && Array.isArray(response.data)) {
+          this.users = response.data
+            .filter((user: any) => !user.is_deleted)
+            .map((user: any) => ({
+              ...user,
+              name: `${user.firstName} ${user.lastName}`,
+            }));
 
-            this.filteredUsers = [...this.users];
-            this.totalUsers = this.users.length;
+          this.filteredUsers = [...this.users];
+          this.totalUsers = this.users.length;
 
-            this.positions = Array.from(
-              new Set(this.users.map((user) => user.position))
-            ).sort();
+          this.positions = Array.from(
+            new Set(this.users.map((user) => user.position))
+          ).sort();
 
-            setTimeout(() => {
-              this.isLoading = false;
-            }, 1000);
-          }
-        },
-        error: (err) => {
-          console.error('Error Fetching Users:', err);
-          this.isLoading = true;
-        },
-      });
+          setTimeout(() => {
+            this.isLoading = false;
+          });
+        }
+      },
+      error: (err) => {
+        console.error('Error Fetching Users:', err);
+        this.isLoading = false;
+      },
+    });
   }
 
-  // ADD USERS
   openAddUserModal() {
     this.isModalVisible = true;
   }
@@ -342,10 +345,9 @@ export class UsersComponent implements OnInit {
     this.isModalVisible = false;
   }
 
-  // DELETE USERS
   deleteUser(id: number) {
     if (confirm('Are you sure you want to delete this user?')) {
-      this.http.delete<any>(`https://localhost:7012/users/${id}`).subscribe({
+      this.userService.deleteUser(id).subscribe({
         next: () => {
           this.users = this.users.filter((user) => user.id !== id);
           this.filteredUsers = [...this.users];
