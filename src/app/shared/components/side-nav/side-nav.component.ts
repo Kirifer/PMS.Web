@@ -33,7 +33,7 @@ interface NavItem {
       <div class="p-4 flex justify-between items-center mt-4">
         <!-- Logo Section -->
         <div
-          class="flex items-center gap-2 cursor-pointer"
+          class="flex items-center gap-2 cursor-pointer"i
           (click)="toggleSidenav()"
         >
           <img
@@ -106,7 +106,7 @@ interface NavItem {
           }"
         >
           <img
-            src="https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=612x612&w=0&k=20&c=s0aTdmT5aU6b8ot7VKm11DeID6NctRCpB755rA1BIP0="
+            src="https://docs.material-tailwind.com/img/face-2.jpg"
             alt="avatar"
             class="relative inline-block h-9 w-9 !rounded-full  object-cover object-center"
           />
