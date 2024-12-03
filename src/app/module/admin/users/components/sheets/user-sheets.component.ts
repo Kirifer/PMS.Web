@@ -38,15 +38,15 @@ import { UserRecord } from '../../user.interface';
       >
         <div
           #sheetContainer
-          class="bg-white p-6 shadow-lg w-160 h-full transform transition-transform duration-500 ease-in-out translate-x-0"
+          class="bg-white p-6 shadow-lg w-120 h-full transform transition-transform duration-500 ease-in-out translate-x-0"
         >
           <div class="mb-4">
-            <h2 class="text-2xl font-semibold">User Profile</h2>
+            <h1 class="font-semibold text-gray-900">User Profile</h1>
             <p class="text-gray-600">View profile details of an employee</p>
           </div>
 
           <!-- User Profile Details -->
-          <div *ngIf="user" class="space-y-4">
+          <div *ngIf="user" class=" divide-y divide-gray-100 space-y-4">
             <div class="flex items-center justify-center">
               <!-- Center the image -->
               <img
@@ -55,9 +55,9 @@ import { UserRecord } from '../../user.interface';
                 alt="Profile Picture"
               />
             </div>
-            <div class="grid grid-cols-4 items-center gap-4">
-              <label class="text-right text-gray-700">Name</label>
-              <span class="font-bold col-span-3">{{ user.name }}</span>
+            <div class="grid grid-cols-4 items-center gap-2">
+              <label class="text-right text-black-700 center">Name</label>
+              <span class="font-bold col-span-5">{{ user.name }}</span>
             </div>
             <div class="grid grid-cols-4 items-center gap-4">
               <label class="text-right text-gray-700">Email</label>
