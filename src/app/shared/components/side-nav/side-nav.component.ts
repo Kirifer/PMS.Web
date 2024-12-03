@@ -131,12 +131,17 @@ export class SideNavComponent implements OnInit {
 
   // Navigation items
   navItems: NavItem[] = [
-    { icon: this.HouseIcon, label: 'Home', link: 'admin/dashboard' },
+    { icon: this.HouseIcon, label: 'Admin Dashboard', link: 'admin/dashboard' },
     { icon: this.UsersIcon, label: 'Users', link: 'admin/users' },
     {
       icon: this.TicketIcon,
       label: 'Performance Review',
       link: 'admin/perf-rev',
+    },
+    {
+      icon: this.TicketIcon,
+      label: 'Employee Dashboard',
+      link: 'emp/dashboard',
     },
   ];
 
