@@ -114,12 +114,13 @@ import {
                     *ngFor="let user of getPaginatedUsers()"
                     class="${TW_TABLE_ROW}"
                   >
-                    <td class="p-4 flex items-center space-x-4">
+                    <td class="p-4 flex items-center space-x-4"
+                    (click)="openSheet()">
                       <input type="checkbox" class="mr-2" />
 
                       <img
                         *ngIf="user"
-                        (click)="openSheet(user)"
+          
                         class="cursor-pointer"
                         src="https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=612x612&w=0&k=20&c=s0aTdmT5aU6b8ot7VKm11DeID6NctRCpB755rA1BIP0="
                         alt="avatar"
@@ -127,7 +128,7 @@ import {
                       />
 
                       <div  *ngIf="user"
-                        (click)="openSheet(user)"
+                
                         class="cursor-pointer" >
                         
                         <span  class="block font-bold">{{ user.name }}</span>
@@ -185,7 +186,6 @@ import {
 
           <app-sheets
             *ngIf="isSheetOpen"
-            [user]="selectedUser"
             (closeSheet)="closeSheet()"
           ></app-sheets>
 
@@ -239,7 +239,7 @@ import {
   providers: [UserService],
 })
 export class UsersComponent implements OnInit {
-  @Input() isSheetOpen = false;
+  isSheetOpen = false;
   readonly ChevronLeft = ChevronLeft;
   readonly ChevronRight = ChevronRight;
   readonly Edit = Edit;
@@ -422,5 +422,13 @@ export class UsersComponent implements OnInit {
   closeEditModal() {
     this.isEditModalVisible = false;
     this.userToEdit = null;
+  }
+
+  closeSheet() {
+    this.isSheetOpen = false;
+  }
+
+  openSheet() {
+    this.isSheetOpen = true;
   }
 }
