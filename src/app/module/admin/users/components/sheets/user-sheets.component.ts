@@ -1,5 +1,14 @@
 // sheets.component.ts
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ElementRef,
+  ViewChild,
+  HostListener,
+} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -7,18 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-
-export interface UserRecord {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  position: string;
-  name?: string;
-  is_deleted?: boolean;
-  isSupervisor: boolean;
-  is_Active?: boolean;
-}
+import { UserRecord } from '../../user.interface';
 
 @Component({
   selector: 'app-sheets',
@@ -33,19 +31,13 @@ export interface UserRecord {
   ],
   template: `
     <div class="flex justify-center items-center min-h-screen">
-      <button
-        (click)="openSheet()"
-        class="px-6 py-2 border border-gray-300 rounded-md hover:bg-gray-200"
-      >
-        Open
-      </button>
-
       <!-- Sheet Content -->
       <div
         *ngIf="isSheetOpen"
         class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end items-center"
       >
         <div
+          #sheetContainer
           class="bg-white p-6 shadow-lg w-160 h-full transform transition-transform duration-500 ease-in-out translate-x-0"
         >
           <div class="mb-4">
@@ -55,9 +47,10 @@ export interface UserRecord {
 
           <!-- User Profile Details -->
           <div *ngIf="user" class="space-y-4">
-            <div class="flex items-center justify-center"> <!-- Center the image -->
+            <div class="flex items-center justify-center">
+              <!-- Center the image -->
               <img
-                class="w-32 h-32 rounded-full" 
+                class="w-32 h-32 rounded-full"
                 src="https://placehold.co/160x160"
                 alt="Profile Picture"
               />
@@ -68,20 +61,24 @@ export interface UserRecord {
             </div>
             <div class="grid grid-cols-4 items-center gap-4">
               <label class="text-right text-gray-700">Email</label>
-              <span class="text-sm text-gray-500 col-span-3">{{ user.email }}</span>
+              <span class="text-sm text-gray-500 col-span-3">{{
+                user.email
+              }}</span>
             </div>
             <div class="grid grid-cols-4 items-center gap-4">
               <label class="text-right text-gray-700">Position</label>
-              <span class="text-sm text-gray-500 col-span-3">{{ user.position }}</span>
+              <span class="text-sm text-gray-500 col-span-3">{{
+                user.position
+              }}</span>
             </div>
             <div class="grid grid-cols-4 items-center gap-4">
               <label class="text-right text-gray-700">Status</label>
               <span
                 class="px-2 py-1 rounded-full text-white"
-                [class.bg-green-500]="user.is_Active"
-                [class.bg-gray-500]="!user.is_Active"
+                [class.bg-green-500]="user.isActive"
+                [class.bg-gray-500]="!user.isActive"
               >
-                {{ user.is_Active ? 'Active' : 'Inactive' }}
+                {{ user.isActive ? 'Active' : 'Inactive' }}
               </span>
             </div>
             <div class="grid grid-cols-4 items-center gap-4">
@@ -115,6 +112,7 @@ export class SheetsComponent implements OnInit {
   @Input() user: UserRecord | null = null;
   @Input() isSheetOpen = false;
   @Output() closeSheet = new EventEmitter<void>();
+  @ViewChild('sheetContainer') sheetContainer!: ElementRef;
 
   isLoading = false;
   users: UserRecord[] = [];
@@ -125,10 +123,21 @@ export class SheetsComponent implements OnInit {
     this.fetchUsers();
   }
 
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent): void {
+    // Check if the click is outside the sheet container
+    if (
+      this.isSheetOpen &&
+      !this.sheetContainer.nativeElement.contains(event.target)
+    ) {
+      this.closeSheetHandler();
+    }
+  }
+
   openSheet(): void {
     if (this.users.length > 0) {
       this.isSheetOpen = true;
-      this.user = this.users[0]; // Show the first user or modify as needed
+      this.user = this.users[0];
     }
   }
 

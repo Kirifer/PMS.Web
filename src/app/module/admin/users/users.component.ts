@@ -14,7 +14,7 @@ import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { FormsModule } from '@angular/forms';
 import { TableSkeletonComponent } from '@app/shared/components/loading/table-skeleton/table-skeleton.component';
 import { UserService } from '@app/core/services/users.service';
-import { SheetsComponent } from './components/sheets/sheets';
+import { SheetsComponent } from './components/sheets/user-sheets.component';
 import {
   TW_BUTTON,
   TW_BUTTON_CUSTOM,
@@ -114,24 +114,21 @@ import {
                     *ngFor="let user of getPaginatedUsers()"
                     class="${TW_TABLE_ROW}"
                   >
-                    <td class="p-4 flex items-center space-x-4"
-                    (click)="openSheet()">
+                    <td
+                      class="p-4 flex items-center space-x-4"
+                      (click)="openSheet()"
+                    >
                       <input type="checkbox" class="mr-2" />
 
                       <img
                         *ngIf="user"
-          
-                        
                         src="https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=612x612&w=0&k=20&c=s0aTdmT5aU6b8ot7VKm11DeID6NctRCpB755rA1BIP0="
                         alt="avatar"
                         class="cursor-pointer inline-block relative object-cover object-center !rounded-full w-10 h-10 border border-slate-400 p-0"
                       />
 
-                      <div  *ngIf="user"
-                
-                        class="cursor-pointer" >
-                        
-                        <span  class="block font-bold">{{ user.name }}</span>
+                      <div *ngIf="user" class="cursor-pointer">
+                        <span class="block font-bold">{{ user.name }}</span>
                         <span class="block text-sm text-muted-foreground">{{
                           user.email
                         }}</span>
@@ -144,21 +141,16 @@ import {
                         class="${TW_BADGE}"
                         [class.bg-blue-900]="user.isActive"
                         [class.bg-yellow-500]="!user.isActive"
-
                       >
-                        
-                          {{ user.isActive ? 'Active' : 'Inactive' }}
+                        {{ user.isActive ? 'Active' : 'Inactive' }}
                       </span>
 
                       <span
                         class="${TW_BADGE_2}"
                         [class.bg-violet-500]="user.isSupervisor"
                         [class.bg-cyan-500]="!user.isSupervisor"
-                       
                       >
-                        {{
-                          user.isSupervisor ? 'Supervisor' : 'Employee'
-                        }}
+                        {{ user.isSupervisor ? 'Supervisor' : 'Employee' }}
                       </span>
                     </td>
 
@@ -321,7 +313,7 @@ export class UsersComponent implements OnInit {
               ...user,
               name: `${user.firstName} ${user.lastName}`,
             }));
-            console.log(response.data)
+          console.log(response.data);
           this.filteredUsers = [...this.users];
           this.totalUsers = this.users.length;
 
@@ -376,7 +368,6 @@ export class UsersComponent implements OnInit {
     this.currentPage = newPage;
     this.updatePagination();
   }
-
 
   onUserUpdated(updatedUser: UserRecord) {
     const index = this.users.findIndex((user) => user.id === updatedUser.id);
