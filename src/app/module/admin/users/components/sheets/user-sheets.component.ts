@@ -34,11 +34,11 @@ import { EditUserComponent } from "../edit-user/edit-user.component";
   ],
   template: `
     <!-- List of users -->
-    <div class="user-list">
+    <!-- <div class="user-list">
       <div *ngFor="let user of users" (click)="openSheet(user)" class="user-item cursor-pointer">
         <p>{{ user.name }}</p>
       </div>
-    </div>
+    </div> -->
 
     <!-- Sheet Profile Card -->
     <div *ngIf="isSheetOpen" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end items-center backdrop-blur-sm">
