@@ -139,13 +139,12 @@ import {
                         src="https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=612x612&w=0&k=20&c=s0aTdmT5aU6b8ot7VKm11DeID6NctRCpB755rA1BIP0="
                         alt="avatar"
                         class="cursor-pointer inline-block relative object-cover object-center !rounded-full w-10 h-10 border border-slate-400 p-0"
-                        (click)="openSheet()"
                       />
 
                       <div
                         *ngIf="user"
                         class="cursor-pointer"
-                        (click)="openSheet()"
+                        (click)="openSheet(user)"
                       >
                         <span class="block font-bold">{{ user.name }}</span>
                         <span class="block text-sm text-muted-foreground">{{
@@ -203,6 +202,7 @@ import {
             Delete Users
           </button>
           <app-sheets
+            [user]="selectedUser"
             *ngIf="isSheetOpen"
             (closeSheet)="closeSheet()"
           ></app-sheets>
@@ -492,6 +492,6 @@ export class UsersComponent implements OnInit {
   openSheet(user: UserRecord): void {
     this.selectedUser = user;
     this.isSheetOpen = true;
-    console.log(`Opening sheet for user with ID: ${user.id}`);
+    console.log(`Opening sheet for user with ID: ${user.name}`);
   }
 }
