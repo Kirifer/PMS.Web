@@ -103,7 +103,19 @@ import {
               <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-muted text-muted-foreground">
                   <tr class="uppercase">
-                    <th class="p-4 text-left">User Name</th>
+                    <!-- <th class="p-4 text-left">
+                      <input
+                        type="checkbox"
+                        (change)="toggleSelectAll($event)"
+                      />
+                    </th> -->
+                    <th class="p-4 text-left">
+                    <input
+                        class="mr-3"
+                        type="checkbox"
+                        (change)="toggleSelectAll($event)"
+                      />  
+                    User Name</th>
                     <th class="p-4 text-left">Role</th>
                     <th class="p-4 text-left">Position</th>
                     <th class="p-4 text-left">Actions</th>
@@ -127,7 +139,11 @@ import {
                         
                       />
 
-                      <div *ngIf="user" class="cursor-pointer">
+                      <div
+                        *ngIf="user"
+                        class="cursor-pointer"
+                        (click)="openSheet()"
+                      >
                         <span class="block font-bold">{{ user.name }}</span>
                         <span class="block text-sm text-muted-foreground">{{
                           user.email
@@ -175,8 +191,18 @@ import {
               </table>
             </div>
           </ng-template>
-
-          <app-sheets *ngIf="isSheetOpen" [user]="selectedUser" (closeSheet)="closeSheet()"></app-sheets>
+          <button
+            *ngIf="selectedUsers.length > 1"
+            class="mt-4 text-red-600 hover:text-red-900"
+            (click)="deleteSelectedUsers()"
+            [disabled]="selectedUsers.length === 0"
+          >
+            Delete Users
+          </button>
+          <app-sheets
+            *ngIf="isSheetOpen"
+            (closeSheet)="closeSheet()"
+          ></app-sheets>
 
           <div *ngIf="isEditModalVisible">
             <app-edit-user
@@ -228,6 +254,7 @@ import {
   providers: [UserService],
 })
 export class UsersComponent implements OnInit {
+  selectedUsers: number[] = [];
   isSheetOpen = false;
   readonly ChevronLeft = ChevronLeft;
   readonly ChevronRight = ChevronRight;
@@ -263,6 +290,8 @@ export class UsersComponent implements OnInit {
     this.loadScript(
       'https://unpkg.com/unlazy@0.11.3/dist/unlazy.with-hashing.iife.js'
     );
+
+    console.log(this.fetchUsers)
   }
 
   applyFilter(event?: Event) {
@@ -388,11 +417,51 @@ export class UsersComponent implements OnInit {
       position: newUser.position,
       name: `${newUser.firstName} ${newUser.lastName}`,
       isSupervisor: newUser.isSupervisor,
+      dateCreated: newUser.dateCreated
     };
 
     this.users.push(createdUser);
     this.filteredUsers = [...this.users];
     this.isModalVisible = false;
+  }
+
+  toggleSelectAll(event: Event) {
+    const isChecked = (event.target as HTMLInputElement).checked;
+    if (isChecked) {
+      this.selectedUsers = this.filteredUsers.map((user) => user.id);
+    } else {
+      this.selectedUsers = [];
+    }
+  }
+
+  toggleUserSelection(userId: number, event: Event) {
+    const isChecked = (event.target as HTMLInputElement).checked;
+    if (isChecked) {
+      this.selectedUsers.push(userId);
+    } else {
+      this.selectedUsers = this.selectedUsers.filter((id) => id !== userId);
+    }
+  }
+
+  deleteSelectedUsers() {
+    if (
+      confirm(
+        `Are you sure you want to delete ${this.selectedUsers.length} users?`
+      )
+    ) {
+      this.selectedUsers.forEach((id) => {
+        this.userService.deleteUser(id).subscribe({
+          next: () => {
+            this.users = this.users.filter((user) => user.id !== id);
+            this.filteredUsers = [...this.users];
+          },
+          error: (err) => {
+            console.error(`Error deleting user with ID ${id}:`, err);
+          },
+        });
+      });
+      this.selectedUsers = [];
+    }
   }
 
   openAddUserModal() {

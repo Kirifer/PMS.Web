@@ -97,13 +97,26 @@ export class EditUserComponent implements OnInit {
 
   saveChanges() {
     if (this.editableUser) {
+      // Extract only the fields that should be updated
+      const updatedUserPayload = {
+        firstName: this.editableUser.firstName,
+        lastName: this.editableUser.lastName,
+        email: this.editableUser.email,
+        position: this.editableUser.position,
+        isSupervisor: this.editableUser.isSupervisor,
+      };
+  
       this.isUpdating = true;
-      this.http.put<UserRecord>(`https://localhost:7012/users/${this.editableUser.id}`, this.editableUser)
+      this.http
+        .put<UserRecord>(
+          `https://localhost:7012/users/${this.editableUser.id}`,
+          updatedUserPayload
+        )
         .subscribe({
           next: (updatedUser) => {
             this.isUpdating = false;
-            this.userUpdated.emit(updatedUser); 
-            this.reloadUsers.emit(); 
+            this.userUpdated.emit(updatedUser);
+            this.reloadUsers.emit();
           },
           error: (err) => {
             this.isUpdating = false;
@@ -113,6 +126,7 @@ export class EditUserComponent implements OnInit {
         });
     }
   }
+  
 
   cancelEdit() {
     this.cancel.emit();
