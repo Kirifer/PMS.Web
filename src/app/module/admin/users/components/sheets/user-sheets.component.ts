@@ -36,7 +36,6 @@ import { UserRecord } from '../../user.interface';
         *ngIf="isSheetOpen"
         class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end items-center backdrop-blur-sm "
       >
-      <!--  class="fixed inset-0 bg-gray-800 bg-opacity-50 backdrop-blur-sm transition-opacity duration-300" -->
         <div
           #sheetContainer
           class="bg-white p-6 shadow-lg w-2/5 h-full transform transition-transform duration-500 ease-in-out translate-x-0"
@@ -52,7 +51,7 @@ import { UserRecord } from '../../user.interface';
               <!-- Center the image -->
               <img
                 class="w-32 h-32 rounded-full"
-                src="https://placehold.co/160x160"
+                src="https://docs.material-tailwind.com/img/face-2.jpg"
                 alt="Profile Picture"
               />
             </div>
@@ -64,48 +63,47 @@ import { UserRecord } from '../../user.interface';
                 }}</span>
               </div>
             </div>
-           
-              <!-- Email -->
-              <div class="grid grid-cols-4 items-center gap-4">
-                <label class="text-right text-gray-700">Email</label>
-                <span class="text-sm text-gray-500 col-span-3">
-                  {{ user.email }}
-                </span>
-              </div>
 
-              <!-- Position -->
-              <div class="grid grid-cols-4 items-center gap-4">
-                <label class="text-right text-gray-700">Position</label>
-                <span class="text-sm text-gray-500 col-span-3">
-                  {{ user.position }}
-                </span>
-              </div>
+            <!-- Email -->
+            <div class="grid grid-cols-4 items-center gap-4">
+              <label class="text-right text-gray-700">Email</label>
+              <span class="text-sm text-gray-500 col-span-3">
+                {{ user.email }}
+              </span>
+            </div>
 
-              <!-- Status -->
-              <div class="grid grid-cols-4 items-center gap-4">
-                <label class="text-right text-gray-700">Status</label>
-                <span
-                  class="px-2 py-1 rounded-full text-white "
-                  [class.bg-green-500]="user.isActive"
-                  [class.bg-gray-500]="!user.isActive"
-                >
-                  {{ user.isActive ? 'Active' : 'Inactive' }}
-                </span>
-              </div>
+            <!-- Position -->
+            <div class="grid grid-cols-4 items-center gap-4">
+              <label class="text-right text-gray-700">Position</label>
+              <span class="text-sm text-gray-500 col-span-3">
+                {{ user.position }}
+              </span>
+            </div>
 
-              <!-- Role -->
-              <div class="grid grid-cols-4 items-center gap-4">
-                <label class="text-right text-gray-700">Role</label>
-                <span
-                  class="px-2 py-1 rounded-full "
-                  [class.bg-violet-500]="user.isSupervisor"
-                  [class.bg-gray-500]="!user.isSupervisor"
-                  [class.text-black]="!user.isSupervisor"
-                >
-                  {{ user.isSupervisor ? 'Supervisor' : 'Non-Supervisor' }}
-                </span>
-              </div>
-         
+            <!-- Status -->
+            <div class="grid grid-cols-4 items-center gap-4">
+              <label class="text-right text-gray-700">Status</label>
+              <span
+                class="px-2 py-1 rounded-full text-white "
+                [class.bg-green-500]="user.isActive"
+                [class.bg-gray-500]="!user.isActive"
+              >
+                {{ user.isActive ? 'Active' : 'Inactive' }}
+              </span>
+            </div>
+
+            <!-- Role -->
+            <div class="grid grid-cols-4 items-center gap-4">
+              <label class="text-right text-gray-700">Role</label>
+              <span
+                class="px-2 py-1 rounded-full "
+                [class.bg-violet-500]="user.isSupervisor"
+                [class.bg-gray-500]="!user.isSupervisor"
+                [class.text-black]="!user.isSupervisor"
+              >
+                {{ user.isSupervisor ? 'Supervisor' : 'Non-Supervisor' }}
+              </span>
+            </div>
 
             <!-- Footer -->
             <div class="mt-4 text-right">
