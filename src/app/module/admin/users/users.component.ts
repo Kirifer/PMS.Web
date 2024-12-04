@@ -112,12 +112,11 @@ import {
                 <tbody class="bg-white divide-y divide-gray-200">
                   <tr
                     *ngFor="let user of getPaginatedUsers()"
+                    
                     class="${TW_TABLE_ROW}"
                   >
-                    <td
-                      class="p-4 flex items-center space-x-4"
-                      (click)="openSheet()"
-                    >
+                  <td class="p-4 flex items-center space-x-4" >
+
                       <input type="checkbox" class="mr-2" />
 
                       <img
@@ -125,6 +124,7 @@ import {
                         src="https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=612x612&w=0&k=20&c=s0aTdmT5aU6b8ot7VKm11DeID6NctRCpB755rA1BIP0="
                         alt="avatar"
                         class="cursor-pointer inline-block relative object-cover object-center !rounded-full w-10 h-10 border border-slate-400 p-0"
+                        (click)="openSheet(user)"
                       />
 
                       <div *ngIf="user" class="cursor-pointer">
@@ -176,10 +176,7 @@ import {
             </div>
           </ng-template>
 
-          <app-sheets
-            *ngIf="isSheetOpen"
-            (closeSheet)="closeSheet()"
-          ></app-sheets>
+          <app-sheets *ngIf="isSheetOpen" [user]="selectedUser" (closeSheet)="closeSheet()"></app-sheets>
 
           <div *ngIf="isEditModalVisible">
             <app-edit-user
@@ -250,6 +247,7 @@ export class UsersComponent implements OnInit {
   endItem: number = 0;
   positionFilter: string = '';
   supervisorFilter: string = '';
+  selectedUser: UserRecord | null = null;
 
   users: UserRecord[] = [];
   filteredUsers: UserRecord[] = [];
@@ -419,7 +417,9 @@ export class UsersComponent implements OnInit {
     this.isSheetOpen = false;
   }
 
-  openSheet() {
+  openSheet(user: UserRecord): void {
+    this.selectedUser = user;
     this.isSheetOpen = true;
+    console.log(`Opening sheet for user with ID: ${user.id}`);
   }
 }

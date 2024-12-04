@@ -31,108 +31,70 @@ import { EditUserComponent } from "../edit-user/edit-user.component";
     MatFormFieldModule,
     LucideAngularModule,
     MatDialogModule,
-
-],
+  ],
   template: `
-    <div class="flex justify-center items-center min-h-screen bg-gray-100">
-      <!-- Sheet Profile Card -->
-      <div
-        *ngIf="isSheetOpen"
-        class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end items-center backdrop-blur-sm"
-      >
-        <div
-          #sheetContainer
-          class="bg-white p-6 shadow-lg w-2/5 h-full transform transition-transform duration-500 ease-in-out translate-x-0"
-        >
-          <div class="mt-4 text-right">
-            <button
-              (click)="closeSheetHandler()"
-              class="px-4 py-2  text-white rounded-md hover:bg-blue-600 flex items-center ml-auto"
-            >
-              <lucide-icon
-                [name]="X"
-                class="w-5 h-5 text-black ml-auto"
-              ></lucide-icon>
-            </button>
-          </div>
-
-          <!-- Profile Picture -->
-          <div class="flex justify-center items-center">
-            <!-- Outer container for the gradient -->
-            <div
-              class="rounded-full p-[5px] bg-gradient-to-r from-blue-500 to-purple-500"
-            >
-              <!-- Inner container for the white border -->
-              <div class="rounded-full border-4 border-white p-1">
-                <!-- Inner container for the image -->
-                <div class="rounded-full overflow-hidden">
-                  <img
-                    class="w-32 h-32"
-                    src="https://docs.material-tailwind.com/img/face-2.jpg"
-                    alt="Profile Picture"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Name and Email -->
-          <div class="text-center">
-            <h1 class="text-xl font-bold text-gray-900">{{ user?.name }}</h1>
-            <p class="text-sm text-gray-600">{{ user?.email }}</p>
-          </div>
-
-          <!-- Edit Button -->
-          <div class="flex justify-center mt-4">
-            <button
-              class="bg-blue-900 text-white hover:bg-blue-700 py-2 px-6 rounded-full transition duration-200"
-            >
-              Edit Profile
-
-           <!-- <app-edit-user></app-edit-user> -->
-            </button>
-          </div>
-
-          <!-- Add spacing between sections -->
-          <div class="divide-y divide-gray-200 mt-6">
-            <!-- Position -->
-            <div class="flex justify-between py-2">
-              <span class="text-gray-500">Position</span>
-              <span class="text-gray-900 font-medium">{{
-                user?.position
-              }}</span>
-            </div>
-            <!-- Status -->
-            <div class="flex justify-between py-2">
-              <span class="text-gray-500">Status</span>
-              <span
-                class="px-2 py-1 rounded-full"
-                [class.bg-green-500]="user?.isActive"
-                [class.bg-gray-400]="!user?.isActive"
-              >
-                {{ user?.isActive ? 'Active' : 'Inactive' }}
-              </span>
-            </div>
-            <!-- Role -->
-            <div class="flex justify-between py-2">
-              <span class="text-gray-500">Role</span>
-              <span
-                class="px-2 py-1 rounded-full"
-                [class.bg-violet-500]="user?.isSupervisor"
-                [class.bg-gray-500]="!user?.isSupervisor"
-                [class.text-black]="!user?.isSupervisor"
-              >
-                {{ user?.isSupervisor ? 'Supervisor' : 'Non-Supervisor' }}
-              </span>
-            </div>
-          </div>
-
-          <!-- Footer -->
-        </div>
+    <!-- List of users -->
+    <div class="user-list">
+      <div *ngFor="let user of users" (click)="openSheet(user)" class="user-item cursor-pointer">
+        <p>{{ user.name }}</p>
       </div>
     </div>
 
-    <!--  -->
+    <!-- Sheet Profile Card -->
+    <div *ngIf="isSheetOpen" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end items-center backdrop-blur-sm">
+      <div #sheetContainer class="bg-white p-6 shadow-lg w-2/5 h-full transform transition-transform duration-500 ease-in-out translate-x-0">
+        <!-- Sheet content -->
+        <div class="mt-4 text-right">
+          <button (click)="closeSheetHandler()" class="px-4 py-2  text-white rounded-md hover:bg-blue-600 flex items-center ml-auto">
+            <lucide-icon [name]="X" class="w-5 h-5 text-black ml-auto"></lucide-icon>
+          </button>
+        </div>
+
+        <!-- Profile Picture -->
+        <div class="flex justify-center items-center">
+          <div class="rounded-full p-[5px] bg-gradient-to-r from-blue-500 to-purple-500">
+            <div class="rounded-full border-4 border-white p-1">
+              <div class="rounded-full overflow-hidden">
+                <img class="w-32 h-32" src="https://docs.material-tailwind.com/img/face-2.jpg" alt="Profile Picture" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Name and Email -->
+        <div class="text-center">
+          <h1 class="text-xl font-bold text-gray-900">{{ user?.name }}</h1>
+          <p class="text-sm text-gray-600">{{ user?.email }}</p>
+        </div>
+
+        <!-- Edit Button -->
+        <div class="flex justify-center mt-4">
+          <button class="bg-blue-900 text-white hover:bg-blue-700 py-2 px-6 rounded-full transition duration-200">
+            Edit Profile
+          </button>
+        </div>
+
+        <!-- Position, Status, and Role -->
+        <div class="divide-y divide-gray-200 mt-6">
+          <div class="flex justify-between py-2">
+            <span class="text-gray-500">Position</span>
+            <span class="text-gray-900 font-medium">{{ user?.position }}</span>
+          </div>
+          <div class="flex justify-between py-2">
+            <span class="text-gray-500">Status</span>
+            <span class="px-2 py-1 rounded-full" [class.bg-green-500]="user?.isActive" [class.bg-gray-400]="!user?.isActive">
+              {{ user?.isActive ? 'Active' : 'Inactive' }}
+            </span>
+          </div>
+          <div class="flex justify-between py-2">
+            <span class="text-gray-500">Role</span>
+            <span class="px-2 py-1 rounded-full" [class.bg-violet-500]="user?.isSupervisor" [class.bg-gray-500]="!user?.isSupervisor">
+              {{ user?.isSupervisor ? 'Supervisor' : 'Non-Supervisor' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
   `,
 })
 export class SheetsComponent implements OnInit {
@@ -154,7 +116,6 @@ export class SheetsComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent): void {
-    // Check if the click is outside the sheet container
     if (
       this.isSheetOpen &&
       !this.sheetContainer.nativeElement.contains(event.target)
@@ -163,46 +124,44 @@ export class SheetsComponent implements OnInit {
     }
   }
 
-  openSheet(): void {
-    if (this.users.length > 0) {
-      this.isSheetOpen = true;
-      this.user = this.users[0];
-    }
+  openSheet(user: UserRecord): void {
+    this.isSheetOpen = true;
+    this.user = user;
   }
 
   closeSheetHandler(): void {
+    this.user = null; 
+    this.isSheetOpen = false; 
     this.closeSheet.emit();
   }
 
   fetchUsers(): void {
     this.isLoading = true;
 
-    this.http
-      .get<{ data: UserRecord[] }>('https://localhost:7012/lookup/users')
-      .subscribe({
-        next: (response) => {
-          if (response && Array.isArray(response.data)) {
-            this.users = response.data
-              .filter((user) => !user.is_deleted)
-              .map((user) => ({
-                ...user,
-                name: `${user.firstName} ${user.lastName}`,
-              }));
+    this.http.get<{ data: UserRecord[] }>('https://localhost:7012/lookup/users').subscribe({
+      next: (response) => {
+        if (response && Array.isArray(response.data)) {
+          this.users = response.data
+            .filter((user) => !user.is_deleted)
+            .map((user) => ({
+              ...user,
+              name: `${user.firstName} ${user.lastName}`,
+            }));
+          console.log('API Response:', response.data);
 
-            // Ensure sheet can open after users are loaded
-            if (this.users.length > 0) {
-              this.openSheet();
-            }
-
-            setTimeout(() => {
-              this.isLoading = false;
-            }, 1000);
+          if (this.users.length > 0) {
+            this.openSheet(this.users[0]);
           }
-        },
-        error: (err) => {
-          console.error('Error Fetching Users:', err);
-          this.isLoading = false;
-        },
-      });
+
+          setTimeout(() => {
+            this.isLoading = false;
+          }, 1000);
+        }
+      },
+      error: (err) => {
+        console.error('Error Fetching Users:', err);
+        this.isLoading = false;
+      },
+    });
   }
 }
