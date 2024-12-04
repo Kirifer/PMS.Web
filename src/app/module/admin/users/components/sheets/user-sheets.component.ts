@@ -80,6 +80,10 @@ import { EditUserComponent } from "../edit-user/edit-user.component";
             <span class="text-gray-500">Position</span>
             <span class="text-gray-900 font-medium">{{ user?.position }}</span>
           </div>
+          <div class="flex justify-between items-center py-2">
+            <span class="text-gray-500">Date Created</span>
+            <span class="text-gray-800">{{ user?.dateCreated | date: 'mediumDate' }}</span>
+          </div>
           <div class="flex justify-between py-2">
             <span class="text-gray-500">Status</span>
             <span class="px-2 py-1 rounded-full" [class.bg-green-500]="user?.isActive" [class.bg-gray-400]="!user?.isActive">
