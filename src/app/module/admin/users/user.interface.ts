@@ -5,6 +5,7 @@ export interface UserCreateDto {
   password: string;
   position: string;
   isSupervisor: boolean;
+  dateCreated?: string; 
 }
 
 export interface UserRecord {
@@ -17,4 +18,5 @@ export interface UserRecord {
   isActive?: boolean;
   is_deleted?: boolean;
   isSupervisor: boolean;
+  dateCreated?: string; 
 }

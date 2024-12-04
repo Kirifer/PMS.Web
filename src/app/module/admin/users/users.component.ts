@@ -103,7 +103,19 @@ import {
               <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-muted text-muted-foreground">
                   <tr class="uppercase">
-                    <th class="p-4 text-left">User Name</th>
+                    <!-- <th class="p-4 text-left">
+                      <input
+                        type="checkbox"
+                        (change)="toggleSelectAll($event)"
+                      />
+                    </th> -->
+                    <th class="p-4 text-left">
+                    <input
+                        class="mr-3"
+                        type="checkbox"
+                        (change)="toggleSelectAll($event)"
+                      />  
+                    User Name</th>
                     <th class="p-4 text-left">Role</th>
                     <th class="p-4 text-left">Position</th>
                     <th class="p-4 text-left">Actions</th>
@@ -114,24 +126,27 @@ import {
                     *ngFor="let user of getPaginatedUsers()"
                     class="${TW_TABLE_ROW}"
                   >
-                    <td class="p-4 flex items-center space-x-4"
-                    (click)="openSheet()">
-                      <input type="checkbox" class="mr-2" />
-
+                    <td class="p-4 flex items-center space-x-4">
+                      <!-- <input type="checkbox" class="mr-2" /> -->
+                      <input
+                        type="checkbox"
+                        [checked]="selectedUsers.includes(user.id)"
+                        (change)="toggleUserSelection(user.id, $event)"
+                      />
                       <img
                         *ngIf="user"
-          
-                        
                         src="https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=612x612&w=0&k=20&c=s0aTdmT5aU6b8ot7VKm11DeID6NctRCpB755rA1BIP0="
                         alt="avatar"
                         class="cursor-pointer inline-block relative object-cover object-center !rounded-full w-10 h-10 border border-slate-400 p-0"
+                        (click)="openSheet()"
                       />
 
-                      <div  *ngIf="user"
-                
-                        class="cursor-pointer" >
-                        
-                        <span  class="block font-bold">{{ user.name }}</span>
+                      <div
+                        *ngIf="user"
+                        class="cursor-pointer"
+                        (click)="openSheet()"
+                      >
+                        <span class="block font-bold">{{ user.name }}</span>
                         <span class="block text-sm text-muted-foreground">{{
                           user.email
                         }}</span>
@@ -144,21 +159,16 @@ import {
                         class="${TW_BADGE}"
                         [class.bg-blue-900]="user.isActive"
                         [class.bg-yellow-500]="!user.isActive"
-
                       >
-                        
-                          {{ user.isActive ? 'Active' : 'Inactive' }}
+                        {{ user.isActive ? 'Active' : 'Inactive' }}
                       </span>
 
                       <span
                         class="${TW_BADGE_2}"
                         [class.bg-violet-500]="user.isSupervisor"
                         [class.bg-cyan-500]="!user.isSupervisor"
-                       
                       >
-                        {{
-                          user.isSupervisor ? 'Supervisor' : 'Employee'
-                        }}
+                        {{ user.isSupervisor ? 'Supervisor' : 'Employee' }}
                       </span>
                     </td>
 
@@ -183,7 +193,14 @@ import {
               </table>
             </div>
           </ng-template>
-
+          <button
+            *ngIf="selectedUsers.length > 1"
+            class="mt-4 text-red-600 hover:text-red-900"
+            (click)="deleteSelectedUsers()"
+            [disabled]="selectedUsers.length === 0"
+          >
+            Delete Users
+          </button>
           <app-sheets
             *ngIf="isSheetOpen"
             (closeSheet)="closeSheet()"
@@ -239,6 +256,7 @@ import {
   providers: [UserService],
 })
 export class UsersComponent implements OnInit {
+  selectedUsers: number[] = [];
   isSheetOpen = false;
   readonly ChevronLeft = ChevronLeft;
   readonly ChevronRight = ChevronRight;
@@ -273,6 +291,8 @@ export class UsersComponent implements OnInit {
     this.loadScript(
       'https://unpkg.com/unlazy@0.11.3/dist/unlazy.with-hashing.iife.js'
     );
+
+    console.log(this.fetchUsers)
   }
 
   applyFilter(event?: Event) {
@@ -321,7 +341,7 @@ export class UsersComponent implements OnInit {
               ...user,
               name: `${user.firstName} ${user.lastName}`,
             }));
-            console.log(response.data)
+          console.log(response.data);
           this.filteredUsers = [...this.users];
           this.totalUsers = this.users.length;
 
@@ -377,7 +397,6 @@ export class UsersComponent implements OnInit {
     this.updatePagination();
   }
 
-
   onUserUpdated(updatedUser: UserRecord) {
     const index = this.users.findIndex((user) => user.id === updatedUser.id);
     if (index !== -1) {
@@ -399,11 +418,51 @@ export class UsersComponent implements OnInit {
       position: newUser.position,
       name: `${newUser.firstName} ${newUser.lastName}`,
       isSupervisor: newUser.isSupervisor,
+      dateCreated: newUser.dateCreated
     };
 
     this.users.push(createdUser);
     this.filteredUsers = [...this.users];
     this.isModalVisible = false;
+  }
+
+  toggleSelectAll(event: Event) {
+    const isChecked = (event.target as HTMLInputElement).checked;
+    if (isChecked) {
+      this.selectedUsers = this.filteredUsers.map((user) => user.id);
+    } else {
+      this.selectedUsers = [];
+    }
+  }
+
+  toggleUserSelection(userId: number, event: Event) {
+    const isChecked = (event.target as HTMLInputElement).checked;
+    if (isChecked) {
+      this.selectedUsers.push(userId);
+    } else {
+      this.selectedUsers = this.selectedUsers.filter((id) => id !== userId);
+    }
+  }
+
+  deleteSelectedUsers() {
+    if (
+      confirm(
+        `Are you sure you want to delete ${this.selectedUsers.length} users?`
+      )
+    ) {
+      this.selectedUsers.forEach((id) => {
+        this.userService.deleteUser(id).subscribe({
+          next: () => {
+            this.users = this.users.filter((user) => user.id !== id);
+            this.filteredUsers = [...this.users];
+          },
+          error: (err) => {
+            console.error(`Error deleting user with ID ${id}:`, err);
+          },
+        });
+      });
+      this.selectedUsers = [];
+    }
   }
 
   openAddUserModal() {

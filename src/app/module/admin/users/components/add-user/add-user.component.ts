@@ -251,6 +251,7 @@ export class AddUserComponent {
       position: this.position,
       isSupervisor: this.isSupervisor,
       is_deleted: false,
+      dateCreated: new Date().toISOString(),
     };
 
     this.userService.addUser(payload).subscribe(
