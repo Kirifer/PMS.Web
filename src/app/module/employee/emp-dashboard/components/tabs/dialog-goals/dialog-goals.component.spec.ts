@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PerfReviewComponent2 } from './perf-review.component';
+import { DialogGoalsComponent } from './dialog-goals.component';
 
-describe('PerfReviewComponent', () => {
-  let component: PerfReviewComponent2;
-  let fixture: ComponentFixture<PerfReviewComponent2>;
+describe('DialogGoalsComponent', () => {
+  let component: DialogGoalsComponent;
+  let fixture: ComponentFixture<DialogGoalsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PerfReviewComponent2]
+      imports: [DialogGoalsComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PerfReviewComponent2);
+    fixture = TestBed.createComponent(DialogGoalsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

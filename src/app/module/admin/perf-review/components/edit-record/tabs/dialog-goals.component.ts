@@ -73,11 +73,11 @@ import { FormsModule } from '@angular/forms';
               {{ i + 1 }}
             </th>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-              <textarea
-                class="w-full p-1 border rounded text-center text-sm resize-none"
+              <input
+                class="p-1 border rounded text-center text-sm resize-none"
                 rows="2"
                 [(ngModel)]="row.goals"
-              ></textarea>
+              >
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
               <input
@@ -90,32 +90,32 @@ import { FormsModule } from '@angular/forms';
               <p>{{ startDate }} - {{ endDate }}</p>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-              <textarea
+              <input
                 class="w-full p-1 border rounded text-center text-sm resize-none"
                 rows="2"
                 [(ngModel)]="row.measure4"
-              ></textarea>
+              >
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-              <textarea
+              <input
                 class="w-full p-1 border rounded text-center text-sm resize-none"
                 rows="2"
                 [(ngModel)]="row.measure3"
-              ></textarea>
+              >
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-              <textarea
+              <input
                 class="w-full p-1 border rounded text-center text-sm resize-none"
                 rows="2"
                 [(ngModel)]="row.measure2"
-              ></textarea>
+              >
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-              <textarea
+              <input
                 class="w-full p-1 border rounded text-center text-sm resize-none"
                 rows="2"
                 [(ngModel)]="row.measure1"
-              ></textarea>
+              >
             </td>
           </tr>
         </tbody>

@@ -27,7 +27,7 @@ export interface UserCreateDto {
       <div class="max-w-md w-full p-8 bg-white rounded-lg shadow-xl relative">
         <!-- Close Button -->
         <button
-          class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring focus:ring-gray-300"
+          class="absolute top-4 right-4 text-blue-900"
           aria-label="Close"
           (click)="closeAddUserModal()"
         >

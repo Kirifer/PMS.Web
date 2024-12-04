@@ -7,6 +7,7 @@ import {
   Users,
   Ticket,
   LogOut,
+  LayoutGrid,
   User,
 } from 'lucide-angular';
 
@@ -33,7 +34,7 @@ interface NavItem {
       <div class="p-4 flex justify-between items-center mt-4">
         <!-- Logo Section -->
         <div
-          class="flex items-center gap-2 cursor-pointer"
+          class="flex items-center gap-2 cursor-pointer"i
           (click)="toggleSidenav()"
         >
           <img
@@ -99,16 +100,16 @@ interface NavItem {
       <div class="flex flex-col gap-2 mt-auto mb-4">
         <a
           [routerLink]=""
-          class="nav-item flex items-center gap-2 p-2 cursor-pointer hover:bg-blue-950"
+          class="nav-item flex items-center gap-2 p-2 cursor-pointer"
           [ngClass]="{
             'justify-center': !isExpanded,
             'w-full pl-4': isExpanded
           }"
         >
           <img
-            src="https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=612x612&w=0&k=20&c=s0aTdmT5aU6b8ot7VKm11DeID6NctRCpB755rA1BIP0="
+            src="https://docs.material-tailwind.com/img/face-2.jpg"
             alt="avatar"
-            class="relative inline-block h-9 w-9 !rounded-full  object-cover object-center"
+            class="relative inline-block h-9 w-9 !rounded-full  object-cover border-white object-center hover:border-blue-700 border-2"
           />
           <div *ngIf="isExpanded" class="text-left">
             <p class="text-sm font-bold"></p>
@@ -126,17 +127,23 @@ export class SideNavComponent implements OnInit {
   readonly UserIcon = User;
   readonly TicketIcon = Ticket;
   readonly LogOutIcon = LogOut;
+  readonly LayoutGridIcon = LayoutGrid
 
   isExpanded: boolean = false;
 
   // Navigation items
   navItems: NavItem[] = [
-    { icon: this.HouseIcon, label: 'Home', link: 'admin/dashboard' },
+    { icon: this.HouseIcon, label: 'Admin Dashboard', link: 'admin/dashboard' },
     { icon: this.UsersIcon, label: 'Users', link: 'admin/users' },
     {
       icon: this.TicketIcon,
       label: 'Performance Review',
       link: 'admin/perf-rev',
+    },
+    {
+      icon: this.LayoutGridIcon,
+      label: 'Employee Dashboard',
+      link: 'emp/dashboard',
     },
   ];
 

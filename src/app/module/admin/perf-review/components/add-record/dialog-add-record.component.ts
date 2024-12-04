@@ -39,14 +39,27 @@ import { LookUpService } from '@app/core/services/lookup.service';
     <div
       class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50"
     >
-      <div class="bg-white rounded-lg shadow-lg max-h-[80vh] w-3/4 p-6">
+      <div class="bg-white rounded-lg shadow-lg h-[80%] w-[95%] p-6">
         <div class="flex justify-between items-center">
           <h2 class="text-lg font-semibold text-gray-800">Add a Record</h2>
           <button
             (click)="closeDialog()"
             class="text-blue-900 focus:outline-none"
           >
-            ✖
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
           </button>
         </div>
         <div class="mt-4 border-b">
@@ -62,7 +75,7 @@ import { LookUpService } from '@app/core/services/lookup.service';
             </li>
           </ul>
         </div>
-        <div class="mt-4 max-h-96 overflow-y-auto">
+        <div class="mt-2 max-h-[75%] overflow-y-auto">
           <ng-container *ngIf="activeTab === 0">
             <app-dialog-employee
               [employeeData]="employeeData"

@@ -14,7 +14,7 @@ import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { FormsModule } from '@angular/forms';
 import { TableSkeletonComponent } from '@app/shared/components/loading/table-skeleton/table-skeleton.component';
 import { UserService } from '@app/core/services/users.service';
-import { SheetsComponent } from './components/sheets/sheets';
+import { SheetsComponent } from './components/sheets/user-sheets.component';
 import {
   TW_BUTTON,
   TW_BUTTON_CUSTOM,
@@ -124,6 +124,7 @@ import {
                 <tbody class="bg-white divide-y divide-gray-200">
                   <tr
                     *ngFor="let user of getPaginatedUsers()"
+                    
                     class="${TW_TABLE_ROW}"
                   >
                     <td class="p-4 flex items-center space-x-4">
@@ -276,6 +277,7 @@ export class UsersComponent implements OnInit {
   endItem: number = 0;
   positionFilter: string = '';
   supervisorFilter: string = '';
+  selectedUser: UserRecord | null = null;
 
   users: UserRecord[] = [];
   filteredUsers: UserRecord[] = [];
@@ -487,7 +489,9 @@ export class UsersComponent implements OnInit {
     this.isSheetOpen = false;
   }
 
-  openSheet() {
+  openSheet(user: UserRecord): void {
+    this.selectedUser = user;
     this.isSheetOpen = true;
+    console.log(`Opening sheet for user with ID: ${user.id}`);
   }
 }
