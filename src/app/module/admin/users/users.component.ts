@@ -115,7 +115,7 @@ import {
                     
                     class="${TW_TABLE_ROW}"
                   >
-                  <td class="p-4 flex items-center space-x-4" >
+                  <td class="p-4 flex items-center space-x-4" (click)="openSheet(user)">
 
                       <input type="checkbox" class="mr-2" />
 
@@ -124,7 +124,7 @@ import {
                         src="https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=612x612&w=0&k=20&c=s0aTdmT5aU6b8ot7VKm11DeID6NctRCpB755rA1BIP0="
                         alt="avatar"
                         class="cursor-pointer inline-block relative object-cover object-center !rounded-full w-10 h-10 border border-slate-400 p-0"
-                        (click)="openSheet(user)"
+                        
                       />
 
                       <div *ngIf="user" class="cursor-pointer">
