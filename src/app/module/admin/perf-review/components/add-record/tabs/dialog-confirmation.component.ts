@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="max-h-[80vh] flex flex-col -mt-2">
+    <div class="max-h-[75%] flex flex-col border-red-900 border-2">
       <!-- Employee Details Section -->
       <div class="bg-white p-6 rounded-lg">
         <h2 class="text-2xl font-bold mb-6 text-gray-800">Employee Details</h2>
@@ -103,7 +103,7 @@ import { CommonModule } from '@angular/common';
       </div>
 
       <!-- Competency Section -->
-      <div class="bg-white p-6 rounded-lg mb-72">
+      <div class="bg-white p-6 rounded-lg">
         <h3 class="text-2xl font-bold mb-6 text-gray-800">Competencies</h3>
         <div class="max-h-full">
           <table

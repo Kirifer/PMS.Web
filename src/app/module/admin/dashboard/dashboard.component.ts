@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NgFor } from '@angular/common';
-import { StatCardComponent } from './stat-card.component';
-import { PerformanceTableComponent } from './performance-table.component';
+import { StatCardComponent } from './components/stat-card.component';
+import { PerformanceTableComponent } from './components/performance-table.component';
 
 interface PerformanceRecord {
   id: number;

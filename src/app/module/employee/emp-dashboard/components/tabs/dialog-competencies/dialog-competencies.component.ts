@@ -58,11 +58,8 @@ import { Component, Input, OnInit } from '@angular/core';
 
         <!-- Table body -->
         <tbody class="bg-white divide-y divide-gray-200">
-          <tr *ngFor="let row of individualCompetencies; let i = index">
-            <th
-              scope="row"
-              class="px-4 py-2 text-sm font-light text-gray-900"
-            >
+          <tr *ngFor="let row of reviewDetails.competencies; let i = index">
+            <th scope="row" class="px-4 py-2 text-sm font-light text-gray-900">
               {{ i + 1 }}
             </th>
             <td class="px-4 py-2 text-sm text-gray-900 w-48">
@@ -97,9 +94,9 @@ import { Component, Input, OnInit } from '@angular/core';
   styles: [],
 })
 export class DialogCompetenciesComponent implements OnInit {
-  @Input() individualCompetencies: any[] = [];
+  @Input() reviewDetails: any = {};
 
   ngOnInit(): void {
-    console.log('individualCompetencies', this.individualCompetencies);
+    console.log('reviewDetails', this.reviewDetails);
   }
 }
