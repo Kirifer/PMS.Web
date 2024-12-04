@@ -39,7 +39,7 @@ import { LookUpService } from '@app/core/services/lookup.service';
     <div
       class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50"
     >
-      <div class="bg-white rounded-lg shadow-lg max-h-[80vh] w-3/4 p-6">
+      <div class="bg-white rounded-lg shadow-lg max-h-[80vh] w-[90%] p-6">
         <div class="flex justify-between items-center">
           <h2 class="text-lg font-semibold text-gray-800">Add a Record</h2>
           <button
