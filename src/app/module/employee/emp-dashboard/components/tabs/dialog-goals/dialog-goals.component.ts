@@ -58,7 +58,7 @@ import { Component, Input, OnInit } from '@angular/core';
 
         <!-- Table body -->
         <tbody class="bg-white divide-y divide-gray-200">
-          <tr *ngFor="let row of individualGoals; let i = index">
+          <tr *ngFor="let row of reviewDetails.goals; let i = index">
             <th
               scope="row"
               class="px-4 py-2 text-sm font-light text-gray-900"
@@ -97,9 +97,9 @@ import { Component, Input, OnInit } from '@angular/core';
   styles: [],
 })
 export class DialogGoalsComponent implements OnInit {
-  @Input() individualGoals: any[] = [];
+  @Input() reviewDetails: any = {};
 
   ngOnInit(): void {
-    console.log('individualGoals', this.individualGoals);
+    console.log('reviewDetails', this.reviewDetails);
   }
 }

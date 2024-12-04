@@ -1,22 +1,19 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import {
-  COMPETENCIES,
-  INDIVIDUAL_GOALS,
-  TABS,
-} from '../constants/data.constants';
+import { REVIEW_DETAILS, TABS } from '../constants/data.constants';
 import { CommonModule } from '@angular/common';
 import { DialogGoalsComponent } from '../tabs/dialog-goals/dialog-goals.component';
 import { DialogCompetenciesComponent } from '../tabs/dialog-competencies/dialog-competencies.component';
+import { DialogConfirmationComponent } from "../tabs/dialog-confirmation/dialog-confirmation.component";
 
 @Component({
   selector: 'app-take-review',
   standalone: true,
-  imports: [CommonModule, DialogGoalsComponent, DialogCompetenciesComponent],
+  imports: [CommonModule, DialogGoalsComponent, DialogCompetenciesComponent, DialogConfirmationComponent],
   template: `
     <div
       class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50"
     >
-      <div class="bg-white rounded-lg shadow-lg max-h-[80vh] w-[95%] p-6">
+      <div class="bg-white rounded-lg shadow-lg h-[80%] w-[95%] p-6">
         <div class="flex justify-between items-center">
           <h2 class="text-lg font-semibold text-gray-800">Take Review</h2>
           <button
@@ -40,7 +37,7 @@ import { DialogCompetenciesComponent } from '../tabs/dialog-competencies/dialog-
           </button>
         </div>
         <div class="mt-4 border-b">
-          <ul class="flex justify-between space-x-4">
+          <ul class="flex justify-evenly space-x-40">
             <li
               *ngFor="let tab of tabs; let i = index"
               (click)="activeTab = i"
@@ -52,14 +49,15 @@ import { DialogCompetenciesComponent } from '../tabs/dialog-competencies/dialog-
             </li>
           </ul>
         </div>
-        <div class="mt-4 max-h-96 overflow-y-auto">
+        <div class="mt-2 max-h-[75%] overflow-y-auto">
           <ng-container *ngIf="activeTab === 0">
-            <app-dialog-goals [individualGoals]="individualGoals" />
+            <app-dialog-goals [reviewDetails]="reviewDetails" />
           </ng-container>
           <ng-container *ngIf="activeTab === 1">
-            <app-dialog-competencies
-              [individualCompetencies]="individualCompetencies"
-            />
+            <app-dialog-competencies [reviewDetails]="reviewDetails" />
+          </ng-container>
+          <ng-container *ngIf="activeTab === 2">
+            <app-dialog-confirmation [reviewDetails]="reviewDetails" />
           </ng-container>
         </div>
         <div class="mt-6 flex justify-end space-x-4">
@@ -86,8 +84,7 @@ export class TakeReviewComponent {
 
   activeTab = 0;
   tabs = TABS;
-  individualGoals = INDIVIDUAL_GOALS;
-  individualCompetencies = COMPETENCIES;
+  reviewDetails: any = REVIEW_DETAILS;
 
   closeTakeReviewDialog() {
     this.close.emit();

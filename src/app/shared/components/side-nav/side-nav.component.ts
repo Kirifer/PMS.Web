@@ -7,6 +7,7 @@ import {
   Users,
   Ticket,
   LogOut,
+  LayoutGrid,
   User,
 } from 'lucide-angular';
 
@@ -99,7 +100,7 @@ interface NavItem {
       <div class="flex flex-col gap-2 mt-auto mb-4">
         <a
           [routerLink]=""
-          class="nav-item flex items-center gap-2 p-2 cursor-pointer hover:bg-blue-950"
+          class="nav-item flex items-center gap-2 p-2 cursor-pointer"
           [ngClass]="{
             'justify-center': !isExpanded,
             'w-full pl-4': isExpanded
@@ -108,7 +109,7 @@ interface NavItem {
           <img
             src="https://docs.material-tailwind.com/img/face-2.jpg"
             alt="avatar"
-            class="relative inline-block h-9 w-9 !rounded-full  object-cover object-center"
+            class="relative inline-block h-9 w-9 !rounded-full  object-cover border-white object-center hover:border-blue-700 border-2"
           />
           <div *ngIf="isExpanded" class="text-left">
             <p class="text-sm font-bold"></p>
@@ -126,6 +127,7 @@ export class SideNavComponent implements OnInit {
   readonly UserIcon = User;
   readonly TicketIcon = Ticket;
   readonly LogOutIcon = LogOut;
+  readonly LayoutGridIcon = LayoutGrid
 
   isExpanded: boolean = false;
 
@@ -139,7 +141,7 @@ export class SideNavComponent implements OnInit {
       link: 'admin/perf-rev',
     },
     {
-      icon: this.TicketIcon,
+      icon: this.LayoutGridIcon,
       label: 'Employee Dashboard',
       link: 'emp/dashboard',
     },

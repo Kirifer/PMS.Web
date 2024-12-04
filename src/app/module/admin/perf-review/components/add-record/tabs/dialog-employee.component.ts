@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="max-w-5xl mx-auto p-6 bg-white  rounded-lg">
+    <div class="max-w-5xl align-middle mx-auto  bg-white rounded-lg">
       <!-- <h1 class="text-3xl font-semibold text-gray-700 mb-6">Employee Form</h1> -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Employee Name -->
