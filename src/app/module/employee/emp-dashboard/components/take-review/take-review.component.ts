@@ -40,7 +40,7 @@ import { DialogCompetenciesComponent } from '../tabs/dialog-competencies/dialog-
           </button>
         </div>
         <div class="mt-4 border-b">
-          <ul class="flex justify-between space-x-4">
+          <ul class="flex justify-evenly space-x-40">
             <li
               *ngFor="let tab of tabs; let i = index"
               (click)="activeTab = i"

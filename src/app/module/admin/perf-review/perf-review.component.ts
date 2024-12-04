@@ -75,7 +75,7 @@ import {
               <select
                 [(ngModel)]="departmentFilter"
                 (change)="applyFilter()"
-                class="${TW_INPUT} ml-2 appearance-none pr-8"
+                class="${TW_INPUT} ml-2 appearance-auto pr-8"
               >
                 <option value="">All Departments</option>
                 <option
@@ -89,7 +89,7 @@ import {
               <select
                 [(ngModel)]="supervisorFilter"
                 (change)="applyFilter()"
-                class="${TW_INPUT} ml-2 appearance-none pr-5"
+                class="${TW_INPUT} ml-2 pr-5"
               >
                 <option value="">All Supervisors</option>
                 <option
@@ -101,7 +101,7 @@ import {
               </select>
 
               <button
-                class="ml-4 ${TW_BUTTON} ${TW_BUTTON_CUSTOM} flex items-center"
+                class="ml-2 ${TW_BUTTON} ${TW_BUTTON_CUSTOM} flex items-center"
                 (click)="openAddDialog()"
               >
                 <i-lucide [img]="Plus" class="w-4 h-4"></i-lucide>
