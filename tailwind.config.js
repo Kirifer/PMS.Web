@@ -6,7 +6,11 @@ module.exports = withMT({
     "./src/**/*.{html,ts}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'bg-photo': "url('/images/bg-image.jpg')",
+      },
+    },
   },
   plugins: [require('tailwindcss-animated')],
 });

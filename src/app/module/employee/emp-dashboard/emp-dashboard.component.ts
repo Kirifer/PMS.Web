@@ -8,11 +8,12 @@ import {
   Target,
   Award,
 } from 'lucide-angular';
+import { TakeReviewComponent } from './components/take-review/take-review.component';
 
 @Component({
   selector: 'app-emp-dashboard',
   standalone: true,
-  imports: [LucideAngularModule, CommonModule],
+  imports: [LucideAngularModule, CommonModule, TakeReviewComponent],
   template: `
     <div
       class="h-[calc(100vh-.75rem)] mt-3 bg-gray-50 py-6 sm:px-6 lg:px-8 rounded-tl-2xl rounded-bl-2xl"
@@ -22,10 +23,11 @@ import {
           <h1 class="text-3xl font-semibold text-gray-900 mb-6">
             Goodmorning, User!
           </h1>
-          <p class="text-sm text-gray-600 mt-[-20px] mb-4">
+          <p class="text-md text-gray-600 mt-[-20px] mb-4">
             Track, Analyze, and Optimize Performance Dashboard
           </p>
         </div>
+
         <div>
           <div class="relative">
             <button
@@ -46,7 +48,7 @@ import {
               class="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-100 z-50"
             >
               <div class="p-4 border-b border-gray-100">
-                <h3 class="text-sm font-semibold text-gray-900">
+                <h3 class="text-md font-semibold text-gray-900">
                   Notifications
                 </h3>
               </div>
@@ -55,7 +57,7 @@ import {
                   *ngFor="let notification of notifications"
                   class="p-4 hover:bg-gray-50 transition-colors duration-200 cursor-pointer border-b border-gray-100 last:border-b-0"
                 >
-                  <p class="text-sm text-gray-800">
+                  <p class="text-md text-gray-800">
                     {{ notification.message }}
                   </p>
                   <span class="text-xs text-gray-500">{{
@@ -72,7 +74,7 @@ import {
         <div class="bg-white p-6 rounded-lg shadow-sm">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-sm text-gray-500">Performance Score</p>
+              <p class="text-md text-gray-500">Performance Score</p>
               <h3 class="text-2xl font-bold text-gray-900">85%</h3>
             </div>
             <div class="bg-green-100 p-3 rounded-full">
@@ -85,7 +87,7 @@ import {
         <div class="bg-white p-6 rounded-lg shadow-sm">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-sm text-gray-500">Team Ranking</p>
+              <p class="text-md text-gray-500">Team Ranking</p>
               <h3 class="text-2xl font-bold text-gray-900">#3</h3>
             </div>
             <div class="bg-blue-100 p-3 rounded-full">
@@ -98,7 +100,7 @@ import {
         <div class="bg-white p-6 rounded-lg shadow-sm">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-sm text-gray-500">Goals Completed</p>
+              <p class="text-md text-gray-500">Goals Completed</p>
               <h3 class="text-2xl font-bold text-gray-900">12/15</h3>
             </div>
             <div class="bg-purple-100 p-3 rounded-full">
@@ -111,7 +113,7 @@ import {
         <div class="bg-white p-6 rounded-lg shadow-sm">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-sm text-gray-500">Achievements</p>
+              <p class="text-md text-gray-500">Achievements</p>
               <h3 class="text-2xl font-bold text-gray-900">5</h3>
             </div>
             <div class="bg-yellow-100 p-3 rounded-full">
@@ -123,7 +125,7 @@ import {
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="bg-white rounded-lg shadow-sm p-6">
-          <h2 class="text-lg font-semibold mb-4">Recent Activities</h2>
+          <h2 class="text-xl font-semibold mb-4">Recent Activities</h2>
           <div class="space-y-4">
             <div
               *ngFor="let activity of activities"
@@ -133,21 +135,21 @@ import {
                 [class]="'w-2 h-2 mt-2 rounded-full ' + activity.statusColor"
               ></div>
               <div>
-                <p class="text-sm text-gray-900">{{ activity.description }}</p>
+                <p class="text-md text-gray-900">{{ activity.description }}</p>
                 <p class="text-xs text-gray-500">{{ activity.time }}</p>
               </div>
             </div>
           </div>
         </div>
         <div class="bg-white rounded-lg shadow-sm p-6">
-          <h2 class="text-lg font-semibold mb-4">Upcoming Tasks</h2>
+          <h2 class="text-xl font-semibold mb-4">Upcoming Tasks</h2>
           <div class="space-y-4">
             <div
               *ngFor="let task of tasks"
               class="flex items-center justify-between"
             >
               <div>
-                <h3 class="text-sm font-medium text-gray-900">
+                <h3 class="text-md font-medium text-gray-900">
                   {{ task.title }}
                 </h3>
                 <p class="text-xs text-gray-500">Due: {{ task.dueDate }}</p>
@@ -161,11 +163,8 @@ import {
           </div>
         </div>
       </div>
-      <img
-        class="mt-32"
-        src="images/its-logo_v1.3-light.png"
-        alt="IT Squarehub Logo"
-      />
+      <button class="border border-blue-900" (click)="openTakeReviewDialog()">Take Review</button>
+      <app-take-review *ngIf="isTakeReviewDialogOpen" (close)="closeTakeReviewDialog()" />
     </div>
   `,
   styles: `
@@ -212,6 +211,16 @@ export class EmpDashboardComponent {
   readonly Users = Users;
   readonly Target = Target;
   readonly Award = Award;
+
+  isTakeReviewDialogOpen = false;
+
+  openTakeReviewDialog() {
+    this.isTakeReviewDialogOpen = true;
+  }
+
+  closeTakeReviewDialog() {
+    this.isTakeReviewDialogOpen = false;
+  } 
 
   activities = [
     {
