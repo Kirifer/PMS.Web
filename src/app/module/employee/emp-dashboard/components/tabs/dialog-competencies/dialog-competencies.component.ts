@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-dialog-competencies',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   template: `
     <div class="w-full bg-white rounded-lg shadow-sm">
       <table class="min-w-full divide-y divide-gray-200">
@@ -75,6 +76,7 @@ import { Component, Input, OnInit } from '@angular/core';
               <textarea
                 class="w-full p-2 border rounded text-sm resize-none focus:outline-none focus:ring-blue-900 focus:border-blue-900"
                 rows="4"
+                [(ngModel)]="row.employeeComments"
               ></textarea>
             </td>
             <td class="px-4 py-2 text-sm text-gray-900 w-24">
@@ -84,6 +86,7 @@ import { Component, Input, OnInit } from '@angular/core';
               <textarea
                 class="w-full p-2 border rounded text-sm resize-none focus:outline-none focus:ring-blue-900 focus:border-blue-900"
                 rows="4"
+                [(ngModel)]="row.managerComments"
               ></textarea>
             </td>
           </tr>

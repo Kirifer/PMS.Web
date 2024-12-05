@@ -111,19 +111,13 @@ import { Component, Input } from '@angular/core';
                   {{ row.employeeLevel }}
                 </td>
                 <td class="px-4 py-2 text-sm text-gray-900">
-                  <textarea
-                    class="w-full p-2 border rounded text-sm resize-none focus:outline-none focus:ring-blue-900 focus:border-blue-900"
-                    rows="4"
-                  ></textarea>
+                  {{ row.employeeComments || "N/A"}}
                 </td>
                 <td class="px-4 py-2 text-sm text-gray-900 w-24">
                   {{ row.managerLevel }}
                 </td>
                 <td class="px-4 py-2 text-sm text-gray-900">
-                  <textarea
-                    class="w-full p-2 border rounded text-sm resize-none focus:outline-none focus:ring-blue-900 focus:border-blue-900"
-                    rows="4"
-                  ></textarea>
+                  {{ row.managerComments || "N/A"}}
                 </td>
               </tr>
             </tbody>
@@ -203,19 +197,13 @@ import { Component, Input } from '@angular/core';
                   {{ row.employeeLevel }}
                 </td>
                 <td class="px-4 py-2 text-sm text-gray-900">
-                  <textarea
-                    class="w-full p-2 border rounded text-sm resize-none focus:outline-none focus:ring-blue-900 focus:border-blue-900"
-                    rows="4"
-                  ></textarea>
+                  {{ row.employeeComments || "N/A"}}
                 </td>
                 <td class="px-4 py-2 text-sm text-gray-900 w-24">
                   {{ row.managerLevel }}
                 </td>
                 <td class="px-4 py-2 text-sm text-gray-900">
-                  <textarea
-                    class="w-full p-2 border rounded text-sm resize-none focus:outline-none focus:ring-blue-900 focus:border-blue-900"
-                    rows="4"
-                  ></textarea>
+                  {{ row.managerComments || "N/A"}}
                 </td>
               </tr>
             </tbody>
