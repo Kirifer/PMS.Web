@@ -1,4 +1,3 @@
-// sheets.component.ts
 import {
   Component,
   OnInit,
@@ -33,13 +32,6 @@ import { EditUserComponent } from "../edit-user/edit-user.component";
     MatDialogModule,
   ],
   template: `
-    <!-- List of users -->
-    <!-- <div class="user-list">
-      <div *ngFor="let user of users" (click)="openSheet(user)" class="user-item cursor-pointer">
-        <p>{{ user.name }}</p>
-      </div>
-    </div> -->
-
     <!-- Sheet Profile Card -->
     <div *ngIf="isSheetOpen" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end items-center backdrop-blur-sm">
       <div #sheetContainer class="bg-white p-6 shadow-lg w-2/5 h-full transform transition-transform duration-500 ease-in-out translate-x-0">
@@ -118,15 +110,15 @@ export class SheetsComponent implements OnInit {
     this.fetchUsers();
   }
 
-  @HostListener('document:click', ['$event'])
-  onClickOutside(event: MouseEvent): void {
-    if (
-      this.isSheetOpen &&
-      !this.sheetContainer.nativeElement.contains(event.target)
-    ) {
-      this.closeSheetHandler();
-    }
-  }
+  // @HostListener('document:click', ['$event'])
+  // onClickOutside(event: MouseEvent): void {
+  //   if (
+  //     this.isSheetOpen &&
+  //     !this.sheetContainer.nativeElement.contains(event.target)
+  //   ) {
+  //     this.closeSheetHandler();
+  //   }
+  // }
 
   openSheet(user: UserRecord): void {
     this.isSheetOpen = true;
@@ -142,19 +134,17 @@ export class SheetsComponent implements OnInit {
   fetchUsers(): void {
     this.isLoading = true;
 
-    this.http.get<{ data: UserRecord[] }>('https://localhost:7012/lookup/users').subscribe({
-      next: (response) => {
-        if (response && Array.isArray(response.data)) {
-          this.users = response.data
-            .filter((user) => !user.is_deleted)
-            .map((user) => ({
-              ...user,
-              name: `${user.firstName} ${user.lastName}`,
-            }));
-          console.log('API Response:', response.data);
+    // Assuming you have a user ID to fetch the details
+    const userId = 1; // Replace with the actual user ID you want to fetch
 
-          if (this.users.length > 0) {
-            this.openSheet(this.users[0]);
+    this.http.get<{ data: UserRecord[] }>(`https://localhost:7012/lookup/users/{id}`).subscribe({
+      next: (response) => {
+        if (response && Array.isArray(response.data) && response.data.length > 0) {
+          const user = response.data[0]; // Extract the first user from the array
+          console.log('API Response:', user);
+
+          if (user) {
+            this.openSheet(user);
           }
 
           setTimeout(() => {
@@ -163,7 +153,7 @@ export class SheetsComponent implements OnInit {
         }
       },
       error: (err) => {
-        console.error('Error Fetching Users:', err);
+        console.error('Error Fetching User:', err);
         this.isLoading = false;
       },
     });
