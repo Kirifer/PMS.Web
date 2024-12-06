@@ -491,7 +491,7 @@ export class UsersComponent implements OnInit {
     this.isSheetOpen = false;
   }
 
-  isSheetVisible = true;
+  isSheetVisible = false;
 
   openUserSheet(user: UserRecord): void {
     this.selectedUser = user;

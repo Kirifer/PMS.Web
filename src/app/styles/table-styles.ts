@@ -10,7 +10,7 @@ export const TW_BORDER = 'border border-border';
 export const TW_INPUT =
   'border border-border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-primary';
 export const TW_TABLE_ROW = 'border-b border-border hover:bg-muted/50 transition';
-export const TW_BADGE = 'text-white px-2 py-1 rounded-full text-xs font-bold uppercase';
+export const TW_BADGE = 'text-white px-2 py-1 rounded-full text-xs font-bold uppercase text-center';
 export const TW_BADGE_2 = ' text-white px-2 py-1 rounded-full text-xs font-bold uppercase';
 export const TW_SHADOW = 'shadow-lg';
 export const TW_CARD = 'bg-card p-4 rounded-lg border border-primary';
