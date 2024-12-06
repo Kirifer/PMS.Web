@@ -69,8 +69,17 @@ import { FormsModule } from '@angular/forms';
             <td class="px-4 py-2 text-sm text-gray-900 w-20">
               {{ row.weight }} %
             </td>
-            <td class="px-4 py-2 text-sm text-gray-900 w-24">
-              {{ row.employeeLevel }}
+            <!-- Employee Level Dropdown -->
+            <td class="px-4 py-2 text-sm text-gray-900 w-25">
+              <select
+                class="w-full p-2 border rounded text-sm focus:outline-none focus:ring-blue-900 focus:border-blue-900"
+                [(ngModel)]="row.employeeLevel"
+              >
+                <option value="" disabled>Select Level</option>
+                <option *ngFor="let level of employeeLevels" [value]="level">
+                  {{ level }}
+                </option>
+              </select>
             </td>
             <td class="px-4 py-2 text-sm text-gray-900">
               <textarea
@@ -79,8 +88,17 @@ import { FormsModule } from '@angular/forms';
                 [(ngModel)]="row.employeeComments"
               ></textarea>
             </td>
+            <!-- Manager Level Dropdown -->
             <td class="px-4 py-2 text-sm text-gray-900 w-24">
-              {{ row.managerLevel }}
+              <select
+                class="w-full p-2 border rounded text-sm focus:outline-none focus:ring-blue-900 focus:border-blue-900"
+                [(ngModel)]="row.managerLevel"
+              >
+                <option value="" disabled>Select Level</option>
+                <option *ngFor="let level of managerLevels" [value]="level">
+                  {{ level }}
+                </option>
+              </select>
             </td>
             <td class="px-4 py-2 text-sm text-gray-900">
               <textarea
@@ -98,6 +116,20 @@ import { FormsModule } from '@angular/forms';
 })
 export class DialogCompetenciesComponent implements OnInit {
   @Input() reviewDetails: any = {};
+
+  employeeLevels = [
+    'Resource for Others',
+    'Significant Strength',
+    'Growing Strength',
+    'Development Needed',
+  ];
+
+  managerLevels = [
+    'Resource for Others',
+    'Significant Strength',
+    'Growing Strength',
+    'Development Needed',
+  ];
 
   ngOnInit(): void {
     console.log('reviewDetails', this.reviewDetails);

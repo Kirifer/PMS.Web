@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -70,25 +70,38 @@ import { FormsModule } from '@angular/forms';
               {{ row.weight }} %
             </td>
             <td class="px-4 py-2 text-sm text-gray-900 w-24">
-              {{ row.employeeLevel }}
+              <select
+                class="w-full p-2 border rounded text-sm focus:outline-none focus:ring-blue-900 focus:border-blue-900"
+                [(ngModel)]="row.employeeLevel"
+              >
+                <option value="" disabled selected>Select Level</option>
+                <option *ngFor="let level of employeeLevels" [value]="level">
+                  {{ level }}
+                </option>
+              </select>
             </td>
             <td class="px-4 py-2 text-sm text-gray-900">
               <textarea
                 class="w-full p-2 border rounded text-sm resize-none focus:outline-none focus:ring-blue-900 focus:border-blue-900"
                 rows="4"
                 [(ngModel)]="row.employeeComments"
-        
               ></textarea>
             </td>
             <td class="px-4 py-2 text-sm text-gray-900 w-24">
-              {{ row.managerLevel }}
+              <select
+                class="w-full p-2 border rounded text-sm focus:outline-none focus:ring-blue-900 focus:border-blue-900"
+                [(ngModel)]="row.managerLevel"
+              >
+                <option *ngFor="let level of managerLevels" [value]="level">
+                  {{ level }}
+                </option>
+              </select>
             </td>
             <td class="px-4 py-2 text-sm text-gray-900">
               <textarea
                 class="w-full p-2 border rounded text-sm resize-none focus:outline-none focus:ring-blue-900 focus:border-blue-900"
                 rows="4"
                 [(ngModel)]="row.managerComments"
-             
               ></textarea>
             </td>
           </tr>
@@ -100,6 +113,20 @@ import { FormsModule } from '@angular/forms';
 })
 export class DialogGoalsComponent implements OnInit {
   @Input() reviewDetails: any = {};
+
+  employeeLevels = [
+    'Consistently Exceeds Expectations',
+    'Met and Sometimes Exceeds Expectations',
+    'Met Expectations',
+    'Did Not Meet Expectations',
+  ];
+
+  managerLevels = [
+    'Consistently Exceeds Expectations',
+    'Met and Sometimes Exceeds Expectations',
+    'Met Expectations',
+    'Did Not Meet Expectations',
+  ];
 
   ngOnInit(): void {
     console.log('reviewDetails', this.reviewDetails);
