@@ -35,6 +35,7 @@
             ],
             "styles": [
               "src/styles.scss"
+              
             ],
             "scripts": []
           },

@@ -1,10 +1,16 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+import withMT from "@material-tailwind/html/utils/withMT";
+
+module.exports = withMT({
   content: [
     "./src/**/*.{html,ts}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'bg-photo': "url('/images/bg-image.jpg')",
+      },
+    },
   },
-  plugins: [],
-}
+  plugins: [require('tailwindcss-animated')],
+});
