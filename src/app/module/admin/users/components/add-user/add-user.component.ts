@@ -1,9 +1,9 @@
 import { Component, EventEmitter, inject, Output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { HttpClient } from '@angular/common/http';
+import { FormsModule, FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { HttpBackend, HttpClient, HttpClientModule } from '@angular/common/http';
 import { LucideAngularModule, User } from 'lucide-angular';
 import { UserService } from '@app/core/services/users.service';
+import { CommonModule } from '@angular/common';
 
 // Define UserCreateDto interface with all necessary fields
 export interface UserCreateDto {
@@ -19,7 +19,7 @@ export interface UserCreateDto {
 @Component({
   selector: 'app-add-user',
   standalone: true,
-  imports: [FormsModule, HttpClientModule, LucideAngularModule],
+  imports: [FormsModule, ReactiveFormsModule, HttpClientModule ,LucideAngularModule, CommonModule],
   template: `
     <div
       class="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50"
@@ -53,7 +53,7 @@ export interface UserCreateDto {
         </div>
 
         <!-- Add User Form -->
-        <form (ngSubmit)="submitUserForm()" class="space-y-4">
+        <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="space-y-4">
           <!-- First Name and Last Name in the same line -->
           <div class="flex space-x-4">
             <div class="flex-1">
@@ -66,16 +66,18 @@ export interface UserCreateDto {
                 <input
                   id="firstName"
                   type="text"
-                  [(ngModel)]="firstName"
+                  formControlName="firstName"
                   name="firstName"
                   class="mt-1 block w-full pl-9 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Enter first name"
-                  required
                 />
                 <i-lucide
                   [img]="User"
                   class="absolute left-1 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500 pointer-events-none"
                 ></i-lucide>
+              </div>
+              <div *ngIf="userForm.controls['firstName'].invalid && userForm.controls['firstName'].touched">
+                First Name is required.
               </div>
             </div>
             <div class="flex-1">
@@ -87,12 +89,14 @@ export interface UserCreateDto {
               <input
                 id="lastName"
                 type="text"
-                [(ngModel)]="lastName"
+                formControlName="lastName"
                 name="lastName"
                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Enter last name"
-                required
               />
+            </div>
+            <div *ngIf="userForm.controls['lastName'].invalid && userForm.controls['lastName'].touched">
+                Last Name is required.
             </div>
           </div>
 
@@ -104,12 +108,14 @@ export interface UserCreateDto {
             <input
               id="email"
               type="email"
-              [(ngModel)]="email"
+              formControlName="email"
               name="email"
               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               placeholder="Enter email"
-              required
             />
+            <div *ngIf="userForm.controls['email'].invalid && userForm.controls['email'].touched">
+              Enter a valid email.
+            </div>
           </div>
 
           <!-- Password -->
@@ -122,12 +128,14 @@ export interface UserCreateDto {
             <input
               id="password"
               type="password"
-              [(ngModel)]="password"
+              formControlName="password"
               name="password"
               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               placeholder="Enter password"
-              required
             />
+            <div *ngIf="userForm.controls['password'].invalid && userForm.controls['password'].touched">
+              Password is required.
+            </div>
           </div>
 
           <!-- Confirm Password -->
@@ -140,12 +148,15 @@ export interface UserCreateDto {
             <input
               id="confirmPassword"
               type="password"
-              [(ngModel)]="confirmPassword"
+              formControlName="confirmPassword"
               name="confirmPassword"
               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               placeholder="Confirm password"
               required
             />
+            <div *ngIf="userForm.get('password')?.value !== userForm.get('confirmPassword')?.value && userForm.get('confirmPassword')?.touched">
+              Passwords do not match.
+            </div>
           </div>
 
           <!-- Position -->
@@ -158,12 +169,15 @@ export interface UserCreateDto {
             <input
               id="position"
               type="text"
-              [(ngModel)]="position"
-              name="position"
+              formControlName="position"
+
               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               placeholder="Enter position"
-              required
             />
+
+            <div *ngIf="userForm.controls['position'].invalid && userForm.controls['position'].touched">
+              Position is required.
+            </div>
           </div>
 
           <!-- Is Supervisor -->
@@ -176,7 +190,7 @@ export interface UserCreateDto {
             <input
               id="isSupervisor"
               type="checkbox"
-              [(ngModel)]="isSupervisor"
+              formControlName="isSupervisor"
               name="isSupervisor"
               class="mt-1"
             />
@@ -186,13 +200,15 @@ export interface UserCreateDto {
           <div class="flex justify-end space-x-4">
             <button
               type="button"
-              (click)="closeAddUserModal()"
+
               class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
             >
               Cancel
             </button>
+
             <button
               type="submit"
+              [disabled]="userForm.invalid"
               class="px-4 py-2 bg-blue-900 text-white rounded-md hover:bg-blue-600"
             >
               Add User
@@ -209,60 +225,42 @@ export class AddUserComponent {
   @Output() userAdded = new EventEmitter<UserCreateDto>();
   private userService = inject(UserService);
 
+  userForm: FormGroup;
   readonly User = User;
-
-  firstName = '';
-  lastName = '';
-  email = '';
-  password = '';
-  confirmPassword = '';
-  position = '';
-  isSupervisor = false;
   isModalVisible = true;
 
-  constructor(private http: HttpClient) {}
+  constructor( private fb: FormBuilder, private http: HttpClient) {
+    this.userForm = this.fb.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: ['', Validators.required, Validators.email],
+      password: ['', Validators.required],
+      confirmPassword: ['', Validators.required],
+      position: ['', Validators.required],
+      isSupervisor: [false]
+    });
+  }
 
   closeAddUserModal() {
     this.closeModal.emit();
   }
 
-  submitUserForm() {
-    if (this.password !== this.confirmPassword) {
-      alert('Passwords do not match.');
-      return;
+  onSubmit() {
+    if (this.userForm.invalid) {
+      alert('Invalid fields!');
     }
 
-    if (
-      !this.firstName ||
-      !this.lastName ||
-      !this.email ||
-      !this.password ||
-      !this.position
-    ) {
-      alert('Please fill in all required fields.');
-      return;
-    }
+    const{ confirmPassword, ...payload } = this.userForm.value;
 
-    const payload = {
-      firstName: this.firstName,
-      lastName: this.lastName,
-      email: this.email,
-      password: this.password,
-      position: this.position,
-      isSupervisor: this.isSupervisor,
-      is_deleted: false,
-      dateCreated: new Date().toISOString(),
-    };
-
-    this.userService.addUser(payload).subscribe(
-      (response) => {
+    this.userService.addUser(payload).subscribe({
+      next: (res) => {
         this.userAdded.emit(payload);
         this.closeAddUserModal();
       },
-      (error) => {
-        console.error('Error adding user:', error);
-        if (error.error && error.error.errors) {
-          const validationErrors = error.error.errors;
+      error: (err) => {
+         console.error('Error adding user:', err);
+        if (err.error && err.error.errors) {
+          const validationErrors = err.error.errors;
           let errorMessage = 'Validation errors:\n';
           validationErrors.forEach((err: any) => {
             errorMessage += `- ${err.message || 'Unknown error'}\n`;
@@ -272,6 +270,7 @@ export class AddUserComponent {
           alert('An unexpected error occurred. Please try again.');
         }
       }
-    );
+    });
+
   }
 }

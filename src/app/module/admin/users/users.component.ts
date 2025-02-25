@@ -333,7 +333,7 @@ export class UsersComponent implements OnInit {
 
   fetchUsers() {
     this.isLoading = true;
-    this.userService.fetchUsers().subscribe({
+    this.userService.getAllUsers().subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
           this.users = response.data
