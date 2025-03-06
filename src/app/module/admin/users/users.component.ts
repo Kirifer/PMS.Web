@@ -1,13 +1,7 @@
 import { Component, inject, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  LucideAngularModule,
-  Edit,
-  Trash,
-  Plus,
-  ChevronLeft,
-  ChevronRight,
-} from 'lucide-angular';
+
+import { LucideAngularModule, Edit, Trash, Plus, ChevronLeft,ChevronRight } from 'lucide-angular';
 import { AddUserComponent } from './components/add-user/add-user.component';
 import { UserCreateDto, UserRecord } from './user.interface';
 import { EditUserComponent } from './components/edit-user/edit-user.component';
@@ -26,13 +20,15 @@ import {
   TW_BADGE_2,
   TW_BORDER,
 } from '@app/styles/table-styles';
+import { MatDialog } from '@angular/material/dialog';
+import { PreviewPdf } from './components/previewPDF/preview.pdf.component';
 
 @Component({
   selector: 'app-users',
   standalone: true,
   imports: [
-    CommonModule,
     LucideAngularModule,
+    CommonModule,
     FormsModule,
     AddUserComponent,
     EditUserComponent,
@@ -88,8 +84,17 @@ import {
                 class="ml-4 ${TW_BUTTON} ${TW_BUTTON_CUSTOM} flex items-center"
                 (click)="openAddUserModal()"
               >
-                <i-lucide [img]="Plus" class="w-4 h-4"></i-lucide>
+              <i-lucide [img]="Plus" class="w-4 h-4"></i-lucide>
+
                 Add User
+              </button>
+
+              <button
+                class="ml-4 ${TW_BUTTON} ${TW_BUTTON_CUSTOM} flex items-center"
+                (click)="openPdf()"
+              >
+              <i-lucide [img]="Plus" class="w-4 h-4"></i-lucide>
+                Preview PDF
               </button>
             </div>
           </div>
@@ -180,13 +185,13 @@ import {
                         class="text-indigo-600 hover:text-indigo-900 mr-3"
                         (click)="openEditUserModal(user)"
                       >
-                        <i-lucide [img]="Edit" class="w-5 h-5"></i-lucide>
+                      <i-lucide [img]="Edit" class="w-5 h-5"></i-lucide>
                       </button>
                       <button
                         class="text-red-600 hover:text-red-900"
                         (click)="deleteUser(user.id)"
                       >
-                        <i-lucide [img]="Trash" class="w-5 h-5"></i-lucide>
+                      <i-lucide [img]="Trash" class="w-5 h-5"></i-lucide>
                       </button>
                     </td>
                   </tr>
@@ -235,7 +240,7 @@ import {
               (click)="currentPage = currentPage - 1"
               [disabled]="currentPage === 1"
             >
-              <i-lucide
+            <i-lucide
                 [img]="ChevronLeft"
                 class="w-7 h-7 hover:text-blue-900 hover:bg-gray-200 hover:rounded-md"
               ></i-lucide>
@@ -245,7 +250,7 @@ import {
               (click)="currentPage = currentPage + 1"
               [disabled]="currentPage * itemsPerPage >= filteredUsers.length"
             >
-              <i-lucide
+            <i-lucide
                 [img]="ChevronRight"
                 class="w-7 h-7  hover:text-blue-900 hover:bg-gray-200 hover:rounded-md"
               ></i-lucide>
@@ -265,6 +270,8 @@ export class UsersComponent implements OnInit {
   readonly Edit = Edit;
   readonly Trash = Trash;
   readonly Plus = Plus;
+
+  constructor(private dialog: MatDialog) {}
 
   isEditModalVisible: boolean = false;
   isModalVisible: boolean = false;
@@ -467,6 +474,13 @@ export class UsersComponent implements OnInit {
       });
       this.selectedUsers = [];
     }
+  }
+
+  openPdf() {
+    this.dialog.open(PreviewPdf, {
+      width: "80vw",
+      data: { pdf: 'assets/pdf/sample_file.pdf' }
+    });
   }
 
   openAddUserModal() {
