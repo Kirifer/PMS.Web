@@ -1,35 +1,42 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { NgFor } from '@angular/common';
 import {
-  LucideAngularModule,
-  Edit,
-  Trash,
-  Plus,
   ChevronLeft,
   ChevronRight,
+  Edit,
+  LucideAngularModule,
+  Plus,
+  Trash
 } from 'lucide-angular';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { AddPerformanceReviewComponent } from './components/add-record/dialog-add-record.component';
-import { InfoDialog } from './components/info-dialog/info-dialog.component';
-import { EditPerformanceReviewComponent } from './components/edit-record/dialog-edit-record.component';
-import { TableSkeletonComponent } from '@shared/components/loading/table-skeleton/table-skeleton.component';
+
+import {
+  CommonModule,
+  NgFor
+} from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import {
+  inject,
+  Component,
+  OnInit
+} from '@angular/core';
+import {
+  FormsModule,
+  ReactiveFormsModule
+} from '@angular/forms';
 import { PerformanceRecord } from '@app/core/models/performance.interface';
 import { LookUpService } from '@app/core/services/lookup.service';
 import { PerformanceReviewService } from '@app/core/services/performance-review.service';
 import {
+  TW_BORDER,
   TW_BUTTON,
   TW_BUTTON_CUSTOM,
   TW_BUTTON_MUTED,
-  TW_BUTTON_SECONDARY,
   TW_INPUT,
-  TW_TABLE_ROW,
-  TW_BADGE,
-  TW_BADGE_2,
-  TW_BORDER,
+  TW_TABLE_ROW
 } from '@app/styles/table-styles';
+import { TableSkeletonComponent } from '@shared/components/loading/table-skeleton/table-skeleton.component';
+
+import { AddPerformanceReviewComponent } from './components/add-record/dialog-add-record.component';
+import { EditPerformanceReviewComponent } from './components/edit-record/dialog-edit-record.component';
+import { InfoDialog } from './components/info-dialog/info-dialog.component';
 
 @Component({
   selector: 'app-performance-review',
@@ -52,7 +59,7 @@ import {
       <div class="max-w-full mx-auto py-3">
         <div class="p-2 bg-white rounded-lg mb-6">
           <h1 class="text-3xl font-semibold text-gray-900">
-            Performance Review Management
+            Performance Review Management System
           </h1>
           <p class="text-sm text-gray-600 mt-2">
             Manage your performance reviews and their details here.

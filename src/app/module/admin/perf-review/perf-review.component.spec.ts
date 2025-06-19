@@ -1,4 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed
+} from '@angular/core/testing';
 
 import { PerformanceReviewComponent } from './perf-review.component';
 
@@ -11,7 +14,7 @@ describe('PerfReviewComponent', () => {
       imports: [PerformanceReviewComponent]
     })
     .compileComponents();
-
+    // Create the component fixture and instance
     fixture = TestBed.createComponent(PerformanceReviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
