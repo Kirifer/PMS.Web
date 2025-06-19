@@ -8,17 +8,17 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="max-w-5xl align-middle mx-auto  bg-white rounded-lg">
+    <div class="max-w-5xl align-middle mx-auto bg-white rounded-lg p-6 shadow-xl">
       <!-- <h1 class="text-3xl font-semibold text-gray-700 mb-6">Employee Form</h1> -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Employee Name -->
         <div class="flex flex-col">
-          <label for="name" class="text-gray-600 mb-2">Employee</label>
+          <label for="name" class="text-gray-700 text-base font-semibold mb-2 tracking-wide capitalize">Employee</label>
           <select
             id="name"
             [(ngModel)]="employeeData.employee.id"
             (change)="onEmployeeChange()"
-            class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+            class="p-3 border border-gray-300 rounded-md text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-blue-300 transition-all duration-200 ease-in-out"
           >
             <option value="" disabled selected>Select a User</option>
             <option *ngFor="let user of lookUpUsers" [value]="user.id">
@@ -26,24 +26,24 @@ import { Router } from '@angular/router';
             </option>
           </select>
         </div>
-
+        <!-- Record Name -->
         <div class="flex flex-col">
-          <label for="name" class="text-gray-600 mb-2">Record Name</label>
+          <label for="name" class="text-gray-700 text-base font-semibold mb-2 tracking-wide capitalize">Record Name</label>
           <input
             id="name"
             [(ngModel)]="employeeData.name"
             name="name"
-            class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+            class="p-3 border border-gray-300 rounded-md text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-blue-300 transition-all duration-200 ease-in-out"
           />
         </div>
         <!-- Department -->
         <div class="flex flex-col">
-          <label for="department" class="text-gray-600 mb-2">Department</label>
+          <label for="department" class="text-gray-700 text-base font-semibold mb-2 tracking-wide capitalize">Department</label>
           <select
             id="department"
             [(ngModel)]="employeeData.departmentType"
             name="departmentType"
-            class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+            class="p-3 border border-gray-300 rounded-md text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-blue-300 transition-all duration-200 ease-in-out"
           >
             <option value="" disabled selected>Select Department</option>
             <option
@@ -57,38 +57,38 @@ import { Router } from '@angular/router';
 
         <!-- Start Date -->
         <div class="flex flex-col">
-          <label for="startDate" class="text-gray-600 mb-2">Start Date</label>
+          <label for="startDate" class="text-gray-700 text-base font-semibold mb-2 tracking-wide capitalize">Start Date</label>
           <input
             id="startDate"
             type="date"
             [(ngModel)]="employeeData.startDate"
             name="startDate"
             (change)="onStartDateChange($event)"
-            class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+            class="p-3 border border-gray-300 rounded-md text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-blue-300 transition-all duration-200 ease-in-out"
           />
         </div>
 
         <!-- End Date -->
         <div class="flex flex-col">
-          <label for="endDate" class="text-gray-600 mb-2">End Date</label>
+          <label for="endDate" class="text-gray-700 text-base font-semibold mb-2 tracking-wide capitalize">End Date</label>
           <input
             id="endDate"
             type="date"
             [(ngModel)]="employeeData.endDate"
             name="endDate"
             (change)="onEndDateChange($event)"
-            class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+            class="p-3 border border-gray-300 rounded-md text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-blue-300 transition-all duration-200 ease-in-out"
           />
         </div>
 
         <!-- Start Year -->
         <div class="flex flex-col">
-          <label for="startYear" class="text-gray-600 mb-2">Start Year</label>
+          <label for="startYear" class="text-gray-700 text-base font-semibold mb-2 tracking-wide capitalize">Start Year</label>
           <select
             id="startYear"
             [(ngModel)]="employeeData.startYear"
             name="startYear"
-            class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+            class="p-3 border border-gray-300 rounded-md text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-blue-300 transition-all duration-200 ease-in-out"
           >
             <option value="" disabled selected>Select Start Year</option>
             <option *ngFor="let year of years" [value]="year">
@@ -99,12 +99,12 @@ import { Router } from '@angular/router';
 
         <!-- End Year -->
         <div class="flex flex-col">
-          <label for="endYear" class="text-gray-600 mb-2">End Year</label>
+          <label for="endYear" class="text-gray-700 text-base font-semibold mb-2 tracking-wide capitalize">End Year</label>
           <select
             id="endYear"
             [(ngModel)]="employeeData.endYear"
             name="endYear"
-            class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+            class="p-3 border border-gray-300 rounded-md text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-blue-300 transition-all duration-200 ease-in-out"
           >
             <option value="" disabled selected>Select End Year</option>
             <option *ngFor="let year of years" [value]="year">
@@ -115,12 +115,12 @@ import { Router } from '@angular/router';
 
        <!-- Supervisor -->
         <div class="flex flex-col">
-  <label for="supervisor" class="text-gray-600 mb-2">Supervisor</label>
+  <label for="supervisor" class="text-gray-700 text-base font-semibold mb-2 tracking-wide capitalize">Supervisor</label>
   <select
     id="supervisor"
     [(ngModel)]="employeeData.supervisor.id"
     (change)="onSupervisorChange()"
-    class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+    class="p-3 border border-gray-300 rounded-md text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-blue-300 transition-all duration-200 ease-in-out"
   >
     <option value="" disabled selected>Select a User</option>
     <option *ngFor="let supervisor of lookUpSupervisors" [value]="supervisor.id">
@@ -130,15 +130,15 @@ import { Router } from '@angular/router';
 </div>
 
         <!-- Active Supervisor -->
-        <div class="flex items-center col-span-2 mt-[-15px]">
+        <div class="flex items-center col-span-2 mt-2 space-x-2">
           <input
             id="activeSupervisor"
             type="checkbox"
             [(ngModel)]="employeeData.activeSupervisor"
             name="activeSupervisor"
-            class="mr-2"
+            class="accent-blue-600 w-5 h-5"
           />
-          <label for="activeSupervisor" class="text-gray-600"
+          <label for="activeSupervisor" class="text-gray-600 text-sm font-medium"
             >Active Supervisor</label
           >
         </div>
