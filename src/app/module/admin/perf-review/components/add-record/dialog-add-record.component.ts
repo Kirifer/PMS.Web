@@ -65,12 +65,14 @@ import { LookUpService } from '@app/core/services/lookup.service';
         <div class="mt-4 border-b">
           <ul class="flex justify-between space-x-4">
             <li
-              *ngFor="let tab of tabs; let i = index"
-              (click)="activeTab = i"
-              [class.border-blue-500]="activeTab === i"
-              [class.text-blue-500]="activeTab === i"
-              class="px-4 py-2 cursor-pointer border-b-2 border-transparent hover:text-blue-500 hover:border-blue-300"
-            >
+  *ngFor="let tab of tabs; let i = index"
+  (click)="activeTab = i"
+  [ngClass]="{
+    'border-blue-600 text-blue-600 font-semibold': activeTab === i,
+    'text-gray-500 border-transparent hover:text-blue-400 hover:border-blue-400': activeTab !== i
+  }"
+  class="px-4 py-2 cursor-pointer border-b-2 transition-all duration-200 ease-in-out"
+>
               {{ tab.label }}
             </li>
           </ul>

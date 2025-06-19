@@ -7,36 +7,51 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [FormsModule, CommonModule],
   template: `
-    <div class="mt-5 overflow-x-auto bg-white rounded-lg shadow-sm">
-      <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
+    <div class="mt-5 overflow-x-auto bg-white rounded-xl shadow-md">
+      <table class="min-w-full divide-y divide-gray-200 text-sm font-sans text-gray-800">
+        <thead class="bg-gray-50 text-gray-700 font-semibold tracking-wide">
           <tr>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">No.</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Competencies</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Weight</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Level</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Description</th>
+            <th class="px-6 py-3 text-left text-xs uppercase">No.</th>
+            <th class="px-6 py-3 text-left text-xs uppercase">Competencies</th>
+            <th class="px-6 py-3 text-left text-xs uppercase">Weight</th>
+            <th class="px-6 py-3 text-left text-xs uppercase">Level</th>
+            <th class="px-6 py-3 text-left text-xs uppercase">Description</th>
           </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
-          <tr *ngFor="let row of competencyData; let i = index">
-            <td class="px-6 py-4 text-sm text-gray-900">{{ i + 1 }}</td>
-            <td class="px-6 py-4 text-sm text-gray-900">
-              <select [(ngModel)]="row.competency" (change)="updateLevels(row)" class="w-full p-1 border rounded text-sm">
+        <tbody class="bg-white divide-y divide-gray-100">
+          <tr *ngFor="let row of competencyData; let i = index" class="hover:bg-gray-50 transition">
+            <td class="px-6 py-4 text-gray-900 font-light">{{ i + 1 }}</td>
+            <td class="px-6 py-4">
+              <select
+                [(ngModel)]="row.competency"
+                (change)="updateLevels(row)"
+                class="w-full p-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+              >
                 <option value="" disabled selected>Select Competency</option>
-                <option *ngFor="let competency of competencyOptions" [value]="competency">{{ competency }}</option>
+                <option *ngFor="let competency of competencyOptions" [value]="competency">
+                  {{ competency }}
+                </option>
               </select>
             </td>
-            <td class="px-6 py-4 text-sm text-gray-900">
-              <input type="number" class="w-10 max-w-full border rounded text-sm" [(ngModel)]="row.weight" (input)="emitCompetencyChange()" />
+            <td class="px-6 py-4">
+              <input
+                type="number"
+                [(ngModel)]="row.weight"
+                (input)="emitCompetencyChange()"
+                class="w-16 p-2 border border-gray-300 rounded-md text-center text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+              />
             </td>
-            <td class="px-6 py-4 text-sm text-gray-900">
-              <select [(ngModel)]="row.level" (change)="updateDescription(row)" class="w-full p-1 border rounded text-sm">
+            <td class="px-6 py-4">
+              <select
+                [(ngModel)]="row.level"
+                (change)="updateDescription(row)"
+                class="w-full p-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+              >
                 <option value="" disabled selected>Select Level</option>
                 <option *ngFor="let level of row.levelOptions" [value]="level">{{ level }}</option>
               </select>
             </td>
-            <td class="px-6 py-4 max-w-lg text-sm text-gray-900">
+            <td class="px-6 py-4 max-w-lg text-gray-700 italic">
               {{ row.description || 'No description available' }}
             </td>
           </tr>
@@ -52,8 +67,8 @@ export class DialogCompetenciesComponent implements OnInit {
   @Output() competencyChange = new EventEmitter<any[]>();
 
   ngOnInit(): void {
-    console.log('Initial competencyData:', this.competencyOptions);
-    console.log('Initial competencyOptions:', this.competencies);
+    console.log('Initial competencyOptions:', this.competencyOptions);
+    console.log('Initial competencies:', this.competencies);
   }
 
   emitCompetencyChange(): void {
@@ -64,7 +79,11 @@ export class DialogCompetenciesComponent implements OnInit {
     row.level = '';
     row.description = '';
     row.levelOptions = [
-      ...new Set(this.competencies.filter((item) => item.competency === row.competency).map((item) => item.level)),
+      ...new Set(
+        this.competencies
+          .filter((item) => item.competency === row.competency)
+          .map((item) => item.level)
+      ),
     ];
     this.emitCompetencyChange();
   }
