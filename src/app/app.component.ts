@@ -28,7 +28,7 @@ export class AppComponent {
   showSideNav = true; // Controls whether the sidenav is visible
 
   // Routes without sidenav
-  private routesWithoutSideNav: string[] = ['/login', '/register'];
+  private routesWithoutSideNav: string[] = [ '/', '/login', '/register'];
 
   constructor(private router: Router) {
     // Subscribe to route changes
