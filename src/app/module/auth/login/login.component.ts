@@ -13,17 +13,17 @@ import { CommonModule } from '@angular/common';
   imports: [ReactiveFormsModule, CommonModule],
   template: `
     <div
-      class="h-screen w-screen flex items-center justify-center bg-gray-100 "
+      class="h-screen w-screen flex items-center justify-center bg-gray-100"
     >
       <div
         class="bg-white rounded-lg shadow-lg grid grid-cols-1 lg:grid-cols-2 h-full w-full"
       >
         <!-- Left side - Login Form -->
-        <div class="flex flex-col justify-center h-full max-w-2xl mx-28">
-          <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">
+        <div class="flex flex-col justify-center h-full w-full max-w-xl px-6 sm:px-10 md:px-20 lg:px-28">
+          <h2 class="text-4xl font-extrabold font-sans tracking-tight text-gray-900 mb-6 text-center">
             Welcome Back
           </h2>
-          <p class="text-sm text-gray-600 mb-6 text-center">
+          <p class="text-base font-medium text-gray-600 mb-6 text-center">
             Please sign in to your account to continue.
           </p>
           <form
@@ -39,21 +39,18 @@ import { CommonModule } from '@angular/common';
                 Email
               </label>
               <input
+                placeholder="Enter your email"
                 type="email"
                 id="email"
                 formControlName="email"
                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
                 [ngClass]="{
-                  'border-red-500':
-                    loginForm.get('email')?.invalid &&
-                    loginForm.get('email')?.touched
+                  'border-red-500': email?.invalid && email?.touched
                 }"
+                aria-required="true"
               />
               <div
-                *ngIf="
-                  loginForm.get('email')?.invalid &&
-                  loginForm.get('email')?.touched
-                "
+                *ngIf="email?.invalid && email?.touched"
                 class="text-red-500 text-sm mt-1"
               >
                 Please enter a valid email
@@ -68,25 +65,30 @@ import { CommonModule } from '@angular/common';
                 Password
               </label>
               <input
-                type="password"
+                placeholder="Enter your password"
+                [type]="showPassword ? 'text' : 'password' "
                 id="password"
                 formControlName="password"
                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
                 [ngClass]="{
-                  'border-red-500':
-                    loginForm.get('password')?.invalid &&
-                    loginForm.get('password')?.touched
+                  'border-red-500': password?.invalid && password?.touched
                 }"
+                aria-required="true"
               />
               <div
-                *ngIf="
-                  loginForm.get('password')?.invalid &&
-                  loginForm.get('password')?.touched
-                "
+                *ngIf="password?.invalid && password?.touched"
                 class="text-red-500 text-sm mt-1"
               >
                 Password must be at least 6 characters
               </div>
+              <button
+                type="button"
+                (click)="togglePasswordVisibility()"
+                class="text-sm text-blue-600 hover:text-blue-500 mt-1"
+                [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+              >
+                {{ showPassword ? 'Hide Password' : 'Show Password' }}
+              </button>
             </div>
 
             <div class="flex items-center justify-between">
@@ -107,7 +109,7 @@ import { CommonModule } from '@angular/common';
 
             <button
               type="submit"
-              class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2"
+              class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
               [disabled]="!loginForm.valid"
             >
               Sign in
@@ -116,9 +118,9 @@ import { CommonModule } from '@angular/common';
         </div>
 
         <!-- Right side - Image -->
-        <div class="bg-blue-900 lg:block h-full hidden ">
-          <!-- Add an image here if needed -->
-           <!-- <img src="images/logo.png" class="mx-auto my-auto"> -->
+        <div class="bg-blue-900 relative h-full w-full flex items-center justify-center">
+          <div class="absolute inset-0 bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 opacity-70"></div>
+          <img src="images/its-logo_v1.3-dark.png" alt="ITS Logo" class="relative z-10 mx-auto my-auto max-w-xs max-h-80" />
         </div>
       </div>
     </div>
@@ -132,6 +134,20 @@ export class LoginComponent {
       Validators.minLength(6),
     ]),
   });
+
+  get email() {
+    return this.loginForm.get('email');
+  }
+
+  get password() {
+    return this.loginForm.get('password');
+  }
+
+  showPassword = false;
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
 
   onSubmit() {
     if (this.loginForm.valid) {

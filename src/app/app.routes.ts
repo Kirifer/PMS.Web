@@ -5,8 +5,14 @@ import { UsersComponent } from './module/admin/users/users.component';
 import { LoginComponent } from './module/auth/login/login.component';
 import { EmpDashboardComponent } from './module/employee/emp-dashboard/emp-dashboard.component';
 import { PageNotFoundComponent } from './module/shared/page-not-found/page-not-found.component';
+import { LogIn } from 'lucide-angular';
 
 export const routes: Routes = [
+  {
+    path: '',
+    component: LoginComponent,
+    pathMatch: 'full'
+  },
   {
     path: 'admin/dashboard',
     component: DashboardComponent,
