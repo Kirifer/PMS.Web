@@ -18,17 +18,32 @@ interface PerformanceRecord {
   standalone: true,
   imports: [NgFor, StatCardComponent, PerformanceTableComponent],
   template: `
-    <div class="h-[calc(100vh-.75rem)] mt-3 bg-gray-50 py-6 px-4 sm:px-6 lg:px-8 rounded-tl-2xl rounded-bl-2xl">
-      <div class="max-w-full mx-auto px-4">
-        <h1 class="text-3xl font-semibold text-gray-900 mb-6">
-          Performance Management Dashboard
-        </h1>
-        <p class="text-sm text-gray-600 mt-[-20px] mb-4">
-          Track, Analyze, and Optimize Performance Dashboard
-        </p>
+    <div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+      <!-- Header Section -->
+      <div class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <h1 class="text-3xl font-bold text-gray-900">
+                Performance Management Dashboard
+              </h1>
+              <p class="text-gray-600 mt-2">
+                Track, analyze, and optimize performance metrics
+              </p>
+            </div>
+            <div class="flex items-center space-x-4">
+              <div class="text-right">
+                <p class="text-sm text-gray-500">Last updated</p>
+                <p class="text-sm font-medium text-gray-900">{{ getCurrentTime() }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-        <!-- Stat Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <!-- Stat Cards Section -->
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <app-stat-card
             *ngFor="let stat of stats"
             [title]="stat.title"
@@ -37,9 +52,13 @@ interface PerformanceRecord {
             [icon]="stat.icon"
           />
         </div>
+      </div>
 
-        <!-- Performance Table -->
-        <app-performance-table />
+      <!-- Performance Table Section -->
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+          <app-performance-table />
+        </div>
       </div>
     </div>
   `,
@@ -72,4 +91,8 @@ export class DashboardComponent {
       icon: 'M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z',
     },
   ];
+
+  getCurrentTime(): string {
+    return new Date().toLocaleString();
+  }
 }
