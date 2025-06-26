@@ -1,4 +1,4 @@
 export const environment = {
     production: false,
-    apiUrl: 'https://localhost:7012',
+    apiUrl: 'https://pmsapi-staging.up.railway.app',
   };
