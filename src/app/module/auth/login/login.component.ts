@@ -20,10 +20,10 @@ import { CommonModule } from '@angular/common';
       >
         <!-- Left side - Login Form -->
         <div class="flex flex-col justify-center h-full w-full max-w-xl px-6 sm:px-10 md:px-20 lg:px-28">
-          <h2 class="text-4xl font-extrabold font-sans tracking-tight text-gray-900 mb-6 text-center">
+          <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">
             Welcome Back
           </h2>
-          <p class="text-base font-medium text-gray-600 mb-6 text-center">
+          <p class="text-sm text-gray-600 mb-6 text-center">
             Please sign in to your account to continue.
           </p>
           <form

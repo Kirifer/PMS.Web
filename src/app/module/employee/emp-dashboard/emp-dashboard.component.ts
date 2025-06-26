@@ -7,6 +7,8 @@ import {
   Users,
   Target,
   Award,
+  Activity,
+  Calendar,
 } from 'lucide-angular';
 import { TakeReviewComponent } from './components/take-review/take-review.component';
 
@@ -60,9 +62,7 @@ import { TakeReviewComponent } from './components/take-review/take-review.compon
                   <p class="text-md text-gray-800">
                     {{ notification.message }}
                   </p>
-                  <span class="text-xs text-gray-500">{{
-                    notification.time
-                  }}</span>
+                  <span class="text-xs text-gray-500 mt-1 block">{{ notification.time }}</span>
                 </div>
               </div>
             </div>
@@ -70,100 +70,120 @@ import { TakeReviewComponent } from './components/take-review/take-review.compon
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <div class="bg-white p-6 rounded-lg shadow-sm">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-md text-gray-500">Performance Score</p>
-              <h3 class="text-2xl font-bold text-gray-900">85%</h3>
+              <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Performance Score</p>
+              <h3 class="text-3xl font-bold text-gray-900 mt-2">85%</h3>
+              <div class="flex items-center mt-2">
+                <span class="text-sm text-green-600 font-medium">↑ 12%</span>
+                <span class="text-sm text-gray-500 ml-1">from last month</span>
+              </div>
             </div>
-            <div class="bg-green-100 p-3 rounded-full">
-              <i-lucide [img]="TrendingUp" class="text-green-600" />
+            <div class="bg-gradient-to-br from-green-400 to-green-600 p-4 rounded-xl">
+              <i-lucide [img]="TrendingUp" class="w-8 h-8 text-white" />
             </div>
           </div>
-          <p class="text-xs text-green-600 mt-2">↑ 12% from last month</p>
         </div>
-
-        <div class="bg-white p-6 rounded-lg shadow-sm">
+        <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-md text-gray-500">Team Ranking</p>
-              <h3 class="text-2xl font-bold text-gray-900">#3</h3>
+              <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Team Ranking</p>
+              <h3 class="text-3xl font-bold text-gray-900 mt-2">#3</h3>
+              <div class="flex items-center mt-2">
+                <span class="text-sm text-blue-600 font-medium">Top 10%</span>
+                <span class="text-sm text-gray-500 ml-1">performers</span>
+              </div>
             </div>
-            <div class="bg-blue-100 p-3 rounded-full">
-              <i-lucide [img]="Users" class="text-blue-600" />
+            <div class="bg-gradient-to-br from-blue-400 to-blue-600 p-4 rounded-xl">
+              <i-lucide [img]="Users" class="w-8 h-8 text-white" />
             </div>
           </div>
-          <p class="text-xs text-blue-600 mt-2">Top 10% performers</p>
         </div>
-
-        <div class="bg-white p-6 rounded-lg shadow-sm">
+        <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-md text-gray-500">Goals Completed</p>
-              <h3 class="text-2xl font-bold text-gray-900">12/15</h3>
+              <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Goals Completed</p>
+              <h3 class="text-3xl font-bold text-gray-900 mt-2">12/15</h3>
+              <div class="flex items-center mt-2">
+                <span class="text-sm text-purple-600 font-medium">80%</span>
+                <span class="text-sm text-gray-500 ml-1">completion rate</span>
+              </div>
             </div>
-            <div class="bg-purple-100 p-3 rounded-full">
-              <i-lucide [img]="Target" class="text-purple-600" />
+            <div class="bg-gradient-to-br from-purple-400 to-purple-600 p-4 rounded-xl">
+              <i-lucide [img]="Target" class="w-8 h-8 text-white" />
             </div>
           </div>
-          <p class="text-xs text-purple-600 mt-2">80% completion rate</p>
         </div>
-
-        <div class="bg-white p-6 rounded-lg shadow-sm">
+        <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-md text-gray-500">Achievements</p>
-              <h3 class="text-2xl font-bold text-gray-900">5</h3>
+              <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Achievements</p>
+              <h3 class="text-3xl font-bold text-gray-900 mt-2">5</h3>
+              <div class="flex items-center mt-2">
+                <span class="text-sm text-yellow-600 font-medium">2 new</span>
+                <span class="text-sm text-gray-500 ml-1">this month</span>
+              </div>
             </div>
-            <div class="bg-yellow-100 p-3 rounded-full">
-              <i-lucide [img]="Award" class="text-yellow-600" />
+            <div class="bg-gradient-to-br from-yellow-400 to-yellow-600 p-4 rounded-xl">
+              <i-lucide [img]="Award" class="w-8 h-8 text-white" />
             </div>
           </div>
-          <p class="text-xs text-yellow-600 mt-2">2 new this month</p>
         </div>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="bg-white rounded-lg shadow-sm p-6">
-          <h2 class="text-xl font-semibold mb-4">Recent Activities</h2>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-bold text-gray-900">Recent Activities</h2>
+            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+              <i-lucide [img]="Activity" class="w-4 h-4 text-blue-600" />
+            </div>
+          </div>
           <div class="space-y-4">
-            <div
-              *ngFor="let activity of activities"
-              class="flex items-start gap-4"
-            >
-              <div
-                [class]="'w-2 h-2 mt-2 rounded-full ' + activity.statusColor"
-              ></div>
-              <div>
-                <p class="text-md text-gray-900">{{ activity.description }}</p>
-                <p class="text-xs text-gray-500">{{ activity.time }}</p>
+            <div *ngFor="let activity of activities" class="flex items-start gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+              <div [class]="'w-3 h-3 mt-2 rounded-full ' + activity.statusColor"></div>
+              <div class="flex-1">
+                <p class="text-sm font-medium text-gray-900">{{ activity.description }}</p>
+                <p class="text-xs text-gray-500 mt-1">{{ activity.time }}</p>
               </div>
             </div>
           </div>
         </div>
-        <div class="bg-white rounded-lg shadow-sm p-6">
-          <h2 class="text-xl font-semibold mb-4">Upcoming Tasks</h2>
+        <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-bold text-gray-900">Upcoming Tasks</h2>
+            <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+              <i-lucide [img]="Calendar" class="w-4 h-4 text-green-600" />
+            </div>
+          </div>
           <div class="space-y-4">
-            <div
-              *ngFor="let task of tasks"
-              class="flex items-center justify-between"
-            >
+            <div *ngFor="let task of tasks" class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200">
               <div>
                 <h3 class="text-md font-medium text-gray-900">
                   {{ task.title }}
                 </h3>
                 <p class="text-xs text-gray-500">Due: {{ task.dueDate }}</p>
               </div>
-              <span
-                [class]="'px-2 py-1 text-xs rounded-full ' + task.priorityClass"
-              >
+              <span [class]="'px-2 py-1 text-xs rounded-full ' + task.priorityClass">
                 {{ task.priority }}
               </span>
             </div>
           </div>
         </div>
       </div>
-      <button class="border border-blue-900" (click)="openTakeReviewDialog()">Take Review</button>
+
+      <div class="flex justify-end mt-10">
+        <button
+          class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium rounded-lg shadow-lg hover:from-blue-700 hover:to-blue-800 transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-300"
+          (click)="openTakeReviewDialog()"
+        >
+          <i-lucide [img]="Target" class="w-5 h-5 mr-2" />
+          Take Review
+        </button>
+      </div>
+
       <app-take-review *ngIf="isTakeReviewDialogOpen" (close)="closeTakeReviewDialog()" />
     </div>
   `,
@@ -202,7 +222,7 @@ import { TakeReviewComponent } from './components/take-review/take-review.compon
     }
 
     .animate-shake {
-      animation: shake 0.5s ease-in-out;
+      animation: shake 0.5s;
     }`,
 })
 export class EmpDashboardComponent {
@@ -211,77 +231,39 @@ export class EmpDashboardComponent {
   readonly Users = Users;
   readonly Target = Target;
   readonly Award = Award;
+  readonly Activity = Activity;
+  readonly Calendar = Calendar;
 
   isTakeReviewDialogOpen = false;
-
-  openTakeReviewDialog() {
-    this.isTakeReviewDialogOpen = true;
-  }
-
-  closeTakeReviewDialog() {
-    this.isTakeReviewDialogOpen = false;
-  } 
-
-  activities = [
-    {
-      description: 'Completed quarterly performance review',
-      time: '2 hours ago',
-      statusColor: 'bg-green-500',
-    },
-    {
-      description: 'New goal assigned: Improve customer satisfaction metrics',
-      time: '5 hours ago',
-      statusColor: 'bg-blue-500',
-    },
-    {
-      description: 'Achieved team collaboration milestone',
-      time: '1 day ago',
-      statusColor: 'bg-purple-500',
-    },
-    {
-      description: 'Received recognition for project completion',
-      time: '2 days ago',
-      statusColor: 'bg-yellow-500',
-    },
-  ];
-
-  tasks = [
-    {
-      title: 'Complete Self Assessment',
-      dueDate: 'Tomorrow',
-      priority: 'High',
-      priorityClass: 'bg-red-100 text-red-800',
-    },
-    {
-      title: 'Team Progress Meeting',
-      dueDate: 'Wed, 10:00 AM',
-      priority: 'Medium',
-      priorityClass: 'bg-yellow-100 text-yellow-800',
-    },
-    {
-      title: 'Update Goal Progress',
-      dueDate: 'Next Week',
-      priority: 'Low',
-      priorityClass: 'bg-green-100 text-green-800',
-    },
-  ];
-
   isOpen = false;
   hasNewNotifications = true;
   notificationCount = 3;
 
-  notifications = [
-    {
-      message: 'Your performance review is due tomorrow',
-      time: '2 minutes ago',
-    },
-    {
-      message: 'New goal has been assigned to you',
-      time: '1 hour ago',
-    },
-    {
-      message: 'Team meeting scheduled for tomorrow',
-      time: '3 hours ago',
-    },
+  activities = [
+    { description: 'Completed Q2 goals review', time: '2 hours ago', statusColor: 'bg-green-500' },
+    { description: 'Manager commented on your performance', time: '1 day ago', statusColor: 'bg-blue-500' },
+    { description: 'New goal assigned', time: '3 days ago', statusColor: 'bg-yellow-500' },
   ];
+
+  tasks = [
+    { title: 'Submit self-assessment', dueDate: '2024-06-10', priority: 'High', priorityClass: 'bg-red-100 text-red-700' },
+    { title: 'Review team feedback', dueDate: '2024-06-12', priority: 'Medium', priorityClass: 'bg-yellow-100 text-yellow-700' },
+    { title: 'Update goals progress', dueDate: '2024-06-15', priority: 'Low', priorityClass: 'bg-green-100 text-green-700' },
+  ];
+
+  notifications = [
+    { message: 'Your manager left a new comment.', time: 'Just now' },
+    { message: 'Performance review period is open.', time: '1 hour ago' },
+    { message: 'You have a new goal assigned.', time: 'Yesterday' },
+  ];
+
+  openTakeReviewDialog() {
+    this.isTakeReviewDialogOpen = true;
+  }
+  closeTakeReviewDialog() {
+    this.isTakeReviewDialogOpen = false;
+  }
+  toggleNotifications() {
+    this.isOpen = !this.isOpen;
+  }
 }
