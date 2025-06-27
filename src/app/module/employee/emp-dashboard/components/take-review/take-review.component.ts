@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, HostListener } from '@angular/core';
 import { REVIEW_DETAILS, TABS } from '../constants/data.constants';
 import { CommonModule } from '@angular/common';
 import { DialogGoalsComponent } from '../tabs/dialog-goals/dialog-goals.component';
@@ -41,9 +41,10 @@ import { DialogConfirmationComponent } from "../tabs/dialog-confirmation/dialog-
             <li
               *ngFor="let tab of tabs; let i = index"
               (click)="activeTab = i"
-              [class.border-blue-500]="activeTab === i"
-              [class.text-blue-500]="activeTab === i"
-              class="px-4 py-2 cursor-pointer border-b-2 border-transparent hover:text-blue-500 hover:border-blue-300"
+              [class.bg-blue-100]="activeTab === i"
+              [class.text-blue-600]="activeTab === i"
+              [class.font-bold]="activeTab === i"
+              class="px-4 py-2 cursor-pointer border-b-2 border-transparent hover:text-blue-500 hover:border-blue-300 rounded-md transition duration-200 uppercase"
             >
               {{ tab.label }}
             </li>
@@ -85,6 +86,11 @@ export class TakeReviewComponent {
   activeTab = 0;
   tabs = TABS;
   reviewDetails: any = REVIEW_DETAILS;
+
+  @HostListener('document:keydown.escape', ['$event'])
+  onEscapePress(Event:KeyboardEvent) {
+    this.closeTakeReviewDialog();
+  }
 
   closeTakeReviewDialog() {
     this.close.emit();
