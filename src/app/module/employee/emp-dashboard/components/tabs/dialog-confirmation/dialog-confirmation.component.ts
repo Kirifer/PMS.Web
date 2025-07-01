@@ -9,83 +9,83 @@ import { Component, Input } from '@angular/core';
     <div class="max-h-[75%] flex flex-col">
       <!-- Employee Details Section -->
       <div class="bg-white p-6 rounded-lg">
-        <h2 class="text-2xl font-bold mb-6 text-gray-800">Employee Details</h2>
+        <h2 class="text-2xl font-bold mb-6 text-gray-800 uppercase">Employee Details</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="flex items-center">
-            <span class="text-gray-600 font-medium w-1/3">Employee Name:</span>
+            <span class="text-gray-600 font-bold w-1/3">Employee Name:</span>
             <span class="text-gray-800"
               >{{ reviewDetails.employeeId }} -
               {{ reviewDetails.employeeName }}</span
             >
           </div>
           <div class="flex items-center">
-            <span class="text-gray-600 font-medium w-1/3">Supervisor:</span>
-            <span class="text-gray-800">{{ reviewDetails.supervisor }}</span>
+            <span class="text-gray-600 font-bold w-1/3">Start Date:</span>
+            <span class="text-gray-800">{{ reviewDetails.startDate }}</span>
           </div>
           <div class="flex items-center">
-            <span class="text-gray-600 font-medium w-1/3">Review Year:</span>
+            <span class="text-gray-600 font-bold w-1/3">Review Year:</span>
             <span class="text-gray-800">
               {{ reviewDetails.reviewYear }}
             </span>
           </div>
           <div class="flex items-center">
-            <span class="text-gray-600 font-medium w-1/3">Start Date:</span>
-            <span class="text-gray-800">{{ reviewDetails.startDate }}</span>
+            <span class="text-gray-600 font-bold w-1/3">End Date:</span>
+            <span class="text-gray-800">{{ reviewDetails.endDate }}</span>
           </div>
           <div class="flex items-center">
-            <span class="text-gray-600 font-medium w-1/3">End Date:</span>
-            <span class="text-gray-800">{{ reviewDetails.endDate }}</span>
+            <span class="text-gray-600 font-bold w-1/3">Supervisor:</span>
+            <span class="text-gray-800">{{ reviewDetails.supervisor }}</span>
           </div>
         </div>
       </div>
 
       <!-- Goals Section -->
       <div class="bg-white p-6 rounded-lg">
-        <h3 class="text-2xl font-bold mb-6 text-gray-800">Goals</h3>
+        <h3 class="text-2xl font-bold mb-6 text-gray-800 uppercase">Goals</h3>
         <div class="max-h-full">
           <table class="min-w-full divide-y divide-gray-200">
             <!-- Table head -->
-            <thead class="bg-gray-50">
+            <thead class="bg-blue-300">
               <tr>
                 <th
                   scope="col"
-                  class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  class="px-4 py-2 text-center text-xs font-bold text-white uppercase tracking-wider"
                 >
                   No.
                 </th>
                 <th
                   scope="col"
-                  class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-48"
+                  class="px-2 py-2 text-left text-xs font-bold text-white uppercase tracking-wider"
                 >
                   Individual Goals
                 </th>
                 <th
                   scope="col"
-                  class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-20"
+                  class="px-1/3 py-2 text-center text-xs font-bold text-white uppercase tracking-wider"
                 >
-                  Weight (%)
+                  <span>Weight</span> (%)
                 </th>
                 <th
                   scope="col"
-                  class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-24"
+                  class="px-4 py-2 text-center text-xs font-bold text-white uppercase tracking-wider w-44"
                 >
                   Employee Level
                 </th>
                 <th
                   scope="col"
-                  class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  class="px-4 py-2 text-left text-xs font-bold text-white uppercase tracking-wider"
                 >
                   Employee Comments
                 </th>
                 <th
                   scope="col"
-                  class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-24"
+                  class="px-1/3 py-2 text-left text-xs font-bold text-white uppercase tracking-wider w-44"
                 >
                   Manager Level
                 </th>
                 <th
                   scope="col"
-                  class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  class="px-4 py-2 text-left text-xs font-bold text-white uppercase tracking-wider"
                 >
                   Manager Comments
                 </th>
@@ -127,51 +127,51 @@ import { Component, Input } from '@angular/core';
 
       <!-- Competency Section -->
       <div class="bg-white p-6 rounded-lg">
-        <h3 class="text-2xl font-bold mb-6 text-gray-800">Competencies</h3>
+        <h3 class="text-2xl font-bold mb-6 text-gray-800 uppercase">Competencies</h3>
         <div class="max-h-full">
           <table class="min-w-full divide-y divide-gray-200">
             <!-- Table head -->
-            <thead class="bg-gray-50">
+            <thead class="bg-blue-300">
               <tr>
                 <th
                   scope="col"
-                  class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  class="px-4 py-2 text-center text-xs font-bold text-white uppercase tracking-wider"
                 >
                   No.
                 </th>
                 <th
                   scope="col"
-                  class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-48"
+                  class="px-2 py-2 text-left text-xs font-bold text-white uppercase tracking-wider"
                 >
                   Competency
                 </th>
                 <th
                   scope="col"
-                  class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-20"
+                  class="px-1/3 py-2 text-center text-xs font-bold text-white uppercase tracking-wider"
                 >
-                  Weight (%)
+                  <span>Weight</span> (%)
                 </th>
                 <th
                   scope="col"
-                  class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-24"
+                  class="px-4 py-2 text-center text-xs font-bold text-white uppercase tracking-wider w-44"
                 >
                   Employee Level
                 </th>
                 <th
                   scope="col"
-                  class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  class="px-4 py-2 text-left text-xs font-bold text-white uppercase tracking-wider"
                 >
                   Employee Comments
                 </th>
                 <th
                   scope="col"
-                  class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-24"
+                  class="px-1/3 py-2 text-left text-xs font-bold text-white uppercase tracking-wider w-44"
                 >
                   Manager Level
                 </th>
                 <th
                   scope="col"
-                  class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  class="px-4 py-2 text-left text-xs font-bold text-white uppercase tracking-wider"
                 >
                   Manager Comments
                 </th>

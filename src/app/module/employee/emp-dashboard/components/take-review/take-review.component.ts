@@ -61,6 +61,7 @@ import { DialogConfirmationComponent } from "../tabs/dialog-confirmation/dialog-
             <app-dialog-confirmation [reviewDetails]="reviewDetails" />
           </ng-container>
         </div>
+        <!--
         <div class="mt-6 flex justify-end space-x-4">
           <button
             (click)="closeTakeReviewDialog()"
@@ -68,13 +69,14 @@ import { DialogConfirmationComponent } from "../tabs/dialog-confirmation/dialog-
           >
             Cancel
           </button>
-          <!-- <button
-            (click)="submitForm()"
+
+          <button
             class="px-4 py-2 bg-blue-500 rounded-md text-white hover:bg-blue-600"
           >
-            Confirm
-          </button> -->
+            Next
+          </button>
         </div>
+        -->
       </div>
     </div>
   `,
