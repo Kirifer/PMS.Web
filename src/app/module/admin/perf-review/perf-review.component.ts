@@ -46,196 +46,245 @@ import {
     TableSkeletonComponent,
   ],
   template: `
-    <div
-      class="h-[calc(100vh-.75rem)] bg-white mt-3 rounded-tl-2xl rounded-bl-2xl sm:px-6 lg:px-8"
-    >
-      <div class="max-w-full mx-auto py-3">
-        <div class="p-2 bg-white rounded-lg mb-6">
-          <h1 class="text-3xl font-semibold text-gray-900">
-            Performance Review Management
-          </h1>
-          <p class="text-sm text-gray-600 mt-2">
-            Manage your performance reviews and their details here.
-          </p>
-
-          <div class="flex justify-between items-center mt-4">
-            <span class="text-lg font-bold">
-              All Records
-              <span class="text-muted-foreground"
-                >({{ performanceReviews.length }})</span
-              >
-            </span>
-            <div class="flex items-center">
-              <input
-                (keyup)="applyFilter($event)"
-                placeholder="Search records"
-                #input
-                class="${TW_INPUT}"
-              />
-              <select
-                [(ngModel)]="departmentFilter"
-                (change)="applyFilter()"
-                class="${TW_INPUT} ml-2 appearance-auto pr-8"
-              >
-                <option value="">All Departments</option>
-                <option
-                  *ngFor="let department of departments"
-                  [value]="department"
-                >
-                  {{ department }}
-                </option>
-              </select>
-
-              <select
-                [(ngModel)]="supervisorFilter"
-                (change)="applyFilter()"
-                class="${TW_INPUT} ml-2 pr-5"
-              >
-                <option value="">All Supervisors</option>
-                <option
-                  *ngFor="let supervisor of supervisors"
-                  [value]="supervisor.id"
-                >
-                  {{ supervisor.name }}
-                </option>
-              </select>
-
-              <button
-                class="ml-2 ${TW_BUTTON} ${TW_BUTTON_CUSTOM} flex items-center"
-                (click)="openAddDialog()"
-              >
-                <i-lucide [img]="Plus" class="w-4 h-4"></i-lucide>
-                Add Record
-              </button>
+    <div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-6">
+      <div class="max-w-7xl mx-auto">
+        <!-- Header Card -->
+        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 mb-6">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-900 to-indigo-700 bg-clip-text text-transparent">
+                Performance Review Management
+              </h1>
+              <p class="text-gray-600 mt-2 text-lg">
+                Manage your performance reviews and their details here.
+              </p>
+            </div>
+            <div class="flex items-center space-x-3">
+              <div class="bg-blue-50 rounded-full p-3">
+                <span class="text-2xl font-bold text-blue-900">{{ performanceReviews.length }}</span>
+              </div>
+              <span class="text-gray-600">Total Records</span>
             </div>
           </div>
+          
+          <!-- Enhanced Search and Filters -->
+          <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+            <div class="relative">
+              <input
+                (keyup)="applyFilter($event)"
+                placeholder="Search records..."
+                #input
+                class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              />
+              <svg class="absolute left-3 top-3.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </div>
+            
+            <select
+              [(ngModel)]="departmentFilter"
+              (change)="applyFilter()"
+              class="px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            >
+              <option value="">All Departments</option>
+              <option *ngFor="let department of departments" [value]="department">
+                {{ department }}
+              </option>
+            </select>
 
-          <div *ngIf="isLoading; else dataContent">
+            <select
+              [(ngModel)]="supervisorFilter"
+              (change)="applyFilter()"
+              class="px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            >
+              <option value="">All Supervisors</option>
+              <option *ngFor="let supervisor of supervisors" [value]="supervisor.id">
+                {{ supervisor.name }}
+              </option>
+            </select>
+
+            <button
+              class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl"
+              (click)="openAddDialog()"
+            >
+              <i-lucide [img]="Plus" class="w-5 h-5"></i-lucide>
+              <span>Add Record</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Enhanced Table -->
+        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+          <div *ngIf="isLoading; else dataContent" class="p-8">
             <app-table-skeleton></app-table-skeleton>
           </div>
 
           <ng-template #dataContent>
-            <div class="overflow-x-auto bg-white rounded-lg ${TW_BORDER} mt-4">
-              <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-muted text-muted-foreground">
-                  <tr class="uppercase">
-                    <th *ngFor="let header of headers" class="p-4 text-left">
+            <!-- Empty State -->
+            <div *ngIf="performanceReviews.length === 0" class="text-center py-12">
+              <div class="w-24 h-24 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+                <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+              </div>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">No performance reviews found</h3>
+              <p class="text-gray-500 mb-6">Get started by creating your first performance review record.</p>
+              <button
+                class="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-all duration-200"
+                (click)="openAddDialog()"
+              >
+                Create First Record
+              </button>
+            </div>
+
+            <!-- Table Content -->
+            <div *ngIf="performanceReviews.length > 0" class="overflow-x-auto">
+              <table class="w-full">
+                <thead class="bg-gradient-to-r from-gray-50 to-blue-50">
+                  <tr>
+                    <th *ngFor="let header of headers" class="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">
                       {{ header }}
                     </th>
                   </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
+                <tbody class="divide-y divide-gray-100">
                   <tr
                     *ngFor="let record of performanceReviews; let i = index"
-                    class="${TW_TABLE_ROW}"
+                    class="hover:bg-blue-50 transition-all duration-200 cursor-pointer group"
                   >
-                    <td
-                      class="p-4 flex items-center space-x-4 cursor-pointer"
-                      (click)="openInfoDialog(record.id)"
-                    >
-                      <input type="checkbox" class="mr-2" />
-
-                      <img
-                        src="https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=612x612&w=0&k=20&c=s0aTdmT5aU6b8ot7VKm11DeID6NctRCpB755rA1BIP0="
-                        alt="avatar"
-                        class="inline-block relative object-cover object-center !rounded-full w-10 h-10 border border-slate-400 p-0"
-                      />
-
-                      <div>
-                        <span class="block font-bold">{{
-                          record.employee.fullName
-                        }}</span>
-                        <span class="block text-sm text-muted-foreground">{{
-                          record.departmentType
-                        }}</span>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center space-x-4" (click)="openInfoDialog(record.id)">
+                        <div class="flex items-center">
+                          <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" />
+                        </div>
+                        
+                        <div class="flex items-center space-x-3">
+                          <div class="relative">
+                            <img
+                              src="https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=612x612&w=0&k=20&c=s0aTdmT5aU6b8ot7VKm11DeID6NctRCpB755rA1BIP0="
+                              alt="avatar"
+                              class="w-12 h-12 rounded-full border-2 border-gray-200 object-cover"
+                            />
+                            <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 border-2 border-white rounded-full"></div>
+                          </div>
+                          
+                          <div>
+                            <div class="text-sm font-semibold text-gray-900">{{ record.employee.fullName }}</div>
+                            <div class="text-sm text-gray-500">{{ record.departmentType }}</div>
+                          </div>
+                        </div>
                       </div>
-
-                      <div></div>
                     </td>
 
-                    <td class="p-4">
-                      {{ record.name }}
+                    <td class="px-6 py-4">
+                      <span class="text-sm font-medium text-gray-900">{{ record.name }}</span>
                     </td>
-                    <td class="p-4">
-                      {{ record.startYear }} - {{ record.endYear }}
+                    
+                    <td class="px-6 py-4">
+                      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        {{ record.startYear }} - {{ record.endYear }}
+                      </span>
                     </td>
-                    <td class="p-4">{{ record.startDate }}</td>
-                    <td class="p-4">{{ record.endDate }}</td>
-                    <td class="p-4">{{ record.supervisor.fullName }}</td>
-                    <td class="p-4">
-                      <button
-                        class="text-indigo-600 hover:text-indigo-900 mr-3"
-                        (click)="openEditDialog(record)"
-                      >
-                        <i-lucide [img]="Edit" class="w-5 h-5"></i-lucide>
-                      </button>
-                      <button
-                        class="text-red-600 hover:text-red-900"
-                        (click)="deleteRecord(record.id)"
-                      >
-                        <i-lucide [img]="Trash" class="w-5 h-5"></i-lucide>
-                      </button>
+                    
+                    <td class="px-6 py-4 text-sm text-gray-900">{{ record.startDate }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900">{{ record.endDate }}</td>
+                    
+                    <td class="px-6 py-4">
+                      <div class="flex items-center">
+                        <div class="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
+                          <span class="text-xs font-medium text-indigo-700">
+                            {{ record.supervisor.fullName.charAt(0) }}
+                          </span>
+                        </div>
+                        <span class="ml-2 text-sm text-gray-900">{{ record.supervisor.fullName }}</span>
+                      </div>
+                    </td>
+                    
+                    <td class="px-6 py-4">
+                      <div class="flex items-center space-x-2">
+                        <button
+                          class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200"
+                          (click)="openEditDialog(record)"
+                        >
+                          <i-lucide [img]="Edit" class="w-4 h-4"></i-lucide>
+                        </button>
+                        <button
+                          class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200"
+                          (click)="deleteRecord(record.id)"
+                          [disabled]="isDeleting"
+                        >
+                          <i-lucide [img]="Trash" class="w-4 h-4"></i-lucide>
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </ng-template>
+        </div>
 
-          <div *ngIf="isAddDialogOpen">
-            <app-add-performance-review
-              (updateTable)="onAddRecord($event)"
-              (close)="closeAddDialog()"
-            />
-          </div>
+        <!-- Enhanced Pagination -->
+        <div *ngIf="performanceReviews.length > 0" class="bg-white rounded-xl shadow-lg border border-gray-100 p-6 mt-6">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+              <span class="text-sm text-gray-600">
+                Showing <span class="font-semibold text-gray-900">{{ startItem }}</span> to 
+                <span class="font-semibold text-gray-900">{{ endItem }}</span> of 
+                <span class="font-semibold text-gray-900">{{ allPerformanceReviews.length }}</span> records
+              </span>
+              
+              <div class="flex items-center space-x-2">
+                <span class="text-sm text-gray-500">Page</span>
+                <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-lg font-semibold">
+                  {{ currentPage }}
+                </span>
+                <span class="text-sm text-gray-500">of {{ Math.ceil(allPerformanceReviews.length / itemsPerPage) }}</span>
+              </div>
+            </div>
 
-          <div *ngIf="isInfoDialogOpen">
-            <app-info-dialog
-              [id]="selectedId"
-              (close)="closeInfoDialog()"
-              [competencies]="competencies"
-            />
-          </div>
-
-          <div *ngIf="isEditDialogOpen">
-            <app-edit-performance-review
-              [performanceRecord]="selectedRecord"
-              (updateTable)="onEditRecord($event)"
-              (close)="closeEditDialog()"
-            />
+            <div class="flex items-center space-x-2">
+              <button
+                class="p-2 rounded-lg border border-gray-200 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                (click)="currentPage = currentPage - 1"
+                [disabled]="currentPage === 1"
+              >
+                <i-lucide [img]="ChevronLeft" class="w-5 h-5"></i-lucide>
+              </button>
+              
+              <button
+                class="p-2 rounded-lg border border-gray-200 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                (click)="currentPage = currentPage + 1"
+                [disabled]="currentPage * itemsPerPage >= allPerformanceReviews.length"
+              >
+                <i-lucide [img]="ChevronRight" class="w-5 h-5"></i-lucide>
+              </button>
+            </div>
           </div>
         </div>
 
-        <div class="flex justify-between">
-          <span class="text-muted-foreground">
-            Showing {{ startItem }} to {{ endItem }} of
-            {{ allPerformanceReviews.length }} records
-          </span>
+        <!-- Dialogs -->
+        <div *ngIf="isAddDialogOpen">
+          <app-add-performance-review
+            (updateTable)="onAddRecord($event)"
+            (close)="closeAddDialog()"
+          />
+        </div>
 
-          <div class="flex space-x-2">
-            <button
-              class="${TW_BUTTON} ${TW_BUTTON_MUTED}"
-              (click)="currentPage = currentPage - 1"
-              [disabled]="currentPage === 1"
-            >
-              <i-lucide
-                [img]="ChevronLeft"
-                class="w-7 h-7 hover:text-blue-900 hover:bg-gray-200 hover:rounded-md"
-              ></i-lucide>
-            </button>
-            <button
-              class="${TW_BUTTON} ${TW_BUTTON_MUTED}"
-              (click)="currentPage = currentPage + 1"
-              [disabled]="
-                currentPage * itemsPerPage >= allPerformanceReviews.length
-              "
-            >
-              <i-lucide
-                [img]="ChevronRight"
-                class="w-7 h-7  hover:text-blue-900 hover:bg-gray-200 hover:rounded-md"
-              ></i-lucide>
-            </button>
-          </div>
+        <div *ngIf="isInfoDialogOpen">
+          <app-info-dialog
+            [id]="selectedId"
+            (close)="closeInfoDialog()"
+            [competencies]="competencies"
+          />
+        </div>
+
+        <div *ngIf="isEditDialogOpen">
+          <app-edit-performance-review
+            [performanceRecord]="selectedRecord"
+            (updateTable)="onEditRecord($event)"
+            (close)="closeEditDialog()"
+          />
         </div>
       </div>
     </div>
@@ -267,6 +316,10 @@ export class PerformanceReviewComponent implements OnInit {
 
   // EditRecord
   selectedRecord: PerformanceRecord | null = null;
+
+  // Loading states
+  isLoading = false;
+  isDeleting = false;
 
   onUpdateTable(event: { success: boolean; newData: any }) {
     if (event.success) {
@@ -338,7 +391,7 @@ export class PerformanceReviewComponent implements OnInit {
         if (data?.data) {
           this.performanceReviews = data.data;
           this.allPerformanceReviews = [...this.performanceReviews];
-          this.totalItems = this.allPerformanceReviews.length; // Set total items
+          this.totalItems = this.allPerformanceReviews.length;
 
           // Extract unique departments and supervisors
           this.departments = Array.from(
@@ -377,7 +430,8 @@ export class PerformanceReviewComponent implements OnInit {
   }
 
   deleteRecord(id: string) {
-    if (confirm('Are you sure you want to delete?')) {
+    if (confirm('Are you sure you want to delete this record?')) {
+      this.isDeleting = true;
       this.performanceReviewService.deleteRecord(id).subscribe({
         next: () => {
           this.performanceReviews = this.performanceReviews.filter(
@@ -386,10 +440,13 @@ export class PerformanceReviewComponent implements OnInit {
           this.allPerformanceReviews = this.allPerformanceReviews.filter(
             (record) => record.id !== id
           );
+          this.isDeleting = false;
+          // Add success toast notification here
         },
         error: (err) => {
           console.error('Error deleting record:', err);
-          alert('Failed to delete the record. Please try again.');
+          this.isDeleting = false;
+          // Add error toast notification here
         },
       });
     }
@@ -412,7 +469,6 @@ export class PerformanceReviewComponent implements OnInit {
   isAddDialogOpen = false;
   isEditDialogOpen = false;
   isInfoDialogOpen = false;
-  isLoading = false;
 
   openAddDialog() {
     this.isAddDialogOpen = true;
@@ -473,4 +529,7 @@ export class PerformanceReviewComponent implements OnInit {
       this.fetchPerformanceReviews();
     }
   }
+
+  // Utility method for Math.ceil in template
+  Math = Math;
 }

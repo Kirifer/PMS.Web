@@ -32,95 +32,110 @@ import { EditUserComponent } from '../edit-user/edit-user.component';
     MatDialogModule,
   ],
   template: `
-    <!-- Sheet Profile Card -->
     <div
       *ngIf="isSheetOpen"
-      class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end items-center backdrop-blur-sm"
+      class="fixed inset-0 bg-black bg-opacity-50 flex justify-end items-center backdrop-blur-sm z-50"
     >
       <div
         #sheetContainer
-        class="bg-white p-6 shadow-lg w-2/5 h-full transform transition-transform duration-500 ease-in-out translate-x-0"
+        class="bg-white w-full max-w-md h-full transform transition-transform duration-300 ease-in-out shadow-2xl"
       >
-        <!-- Sheet content -->
-        <div class="mt-4 text-right">
+        <!-- Header -->
+        <div class="flex items-center justify-between p-6 border-b border-gray-200">
+          <h2 class="text-xl font-semibold text-gray-900">User Profile</h2>
           <button
             (click)="closeSheetHandler()"
-            class="px-4 py-2 text-white rounded-md hover:bg-blue-600 flex items-center ml-auto"
+            class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors duration-200"
           >
-            <lucide-icon
-              [name]="X"
-              class="w-5 h-5 text-black ml-auto"
-            ></lucide-icon>
+            <lucide-icon [name]="X" class="w-5 h-5"></lucide-icon>
           </button>
         </div>
 
-        <!-- Profile Picture -->
-        <div class="flex justify-center items-center">
-          <div
-            class="rounded-full p-[5px] bg-gradient-to-r from-blue-500 to-purple-500"
-          >
-            <div class="rounded-full border-4 border-white p-1">
-              <div class="rounded-full overflow-hidden">
+        <!-- Content -->
+        <div class="p-6 space-y-6">
+          <!-- Profile Picture -->
+          <div class="flex justify-center">
+            <div class="relative">
+              <div class="w-24 h-24 rounded-full overflow-hidden ring-4 ring-blue-100">
                 <img
-                  class="w-32 h-32"
+                  class="w-full h-full object-cover"
                   src="https://docs.material-tailwind.com/img/face-2.jpg"
                   alt="Profile Picture"
                 />
               </div>
+              <div 
+                class="absolute -bottom-1 -right-1 w-6 h-6 rounded-full border-3 border-white"
+                [ngClass]="{
+                  'bg-green-500': user?.isActive,
+                  'bg-gray-400': !user?.isActive
+                }"
+              ></div>
             </div>
           </div>
-        </div>
 
-        <!-- Name and Email -->
-        <div class="text-center">
-          <h1 class="text-xl font-bold text-gray-900">{{ user?.name }}</h1>
-          <p class="text-sm text-gray-600">
-            {{ user?.email || 'No Email Available' }}
-          </p>
-        </div>
-
-        <!-- Edit Button -->
-        <div class="flex justify-center mt-4">
-          <button
-            class="bg-blue-900 text-white hover:bg-blue-700 py-2 px-6 rounded-full transition duration-200"
-          >
-            Edit Profile
-          </button>
-        </div>
-
-        <!-- Position, Status, and Role -->
-        <div class="divide-y divide-gray-200 mt-6">
-          <div class="flex justify-between py-2">
-            <span class="text-gray-500">Position</span>
-            <span class="text-gray-900 font-medium">{{ user?.position }}</span>
+          <!-- User Info -->
+          <div class="text-center">
+            <h3 class="text-xl font-bold text-gray-900">{{ user?.name }}</h3>
+            <p class="text-gray-600 mt-1">{{ user?.email }}</p>
           </div>
-          <div class="flex justify-between items-center py-2">
-            <span class="text-gray-500">Date Created</span>
-            <span class="text-gray-800"></span>
+
+          <!-- Status Cards -->
+          <div class="grid grid-cols-2 gap-4">
+            <div class="bg-gray-50 rounded-xl p-4">
+              <div class="flex items-center justify-between">
+                <span class="text-sm font-medium text-gray-600">Status</span>
+                <span
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                  [ngClass]="{
+                    'bg-green-100 text-green-800': user?.isActive,
+                    'bg-yellow-100 text-yellow-800': !user?.isActive
+                  }"
+                >
+                  {{ user?.isActive ? 'Active' : 'Inactive' }}
+                </span>
+              </div>
+            </div>
+            
+            <div class="bg-gray-50 rounded-xl p-4">
+              <div class="flex items-center justify-between">
+                <span class="text-sm font-medium text-gray-600">Role</span>
+                <span
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                  [ngClass]="{
+                    'bg-purple-100 text-purple-800': user?.isSupervisor,
+                    'bg-blue-100 text-blue-800': !user?.isSupervisor
+                  }"
+                >
+                  {{ user?.isSupervisor ? 'Supervisor' : 'Employee' }}
+                </span>
+              </div>
+            </div>
           </div>
-          <div class="flex justify-between py-2">
-            <span class="text-gray-500">Status</span>
-            <span
-              class="px-2 py-1 rounded-full text-white"
-              [ngClass]="{
-                'bg-blue-900': user?.isActive,
-                'bg-yellow-500': !user?.isActive
-              }"
+
+          <!-- User Details -->
+          <div class="space-y-4">
+            <div class="bg-white border border-gray-200 rounded-xl p-4">
+              <div class="flex items-center justify-between">
+                <span class="text-sm font-medium text-gray-600">Position</span>
+                <span class="text-sm text-gray-900 font-medium">{{ user?.position }}</span>
+              </div>
+            </div>
+            
+            <div class="bg-white border border-gray-200 rounded-xl p-4">
+              <div class="flex items-center justify-between">
+                <span class="text-sm font-medium text-gray-600">Member Since</span>
+                <span class="text-sm text-gray-900">{{ user?.dateCreated || 'N/A' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="pt-4 border-t border-gray-200">
+            <button
+              class="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium py-3 px-4 rounded-xl hover:from-blue-700 hover:to-blue-800 focus:ring-4 focus:ring-blue-200 transition-all duration-200"
             >
-              {{ user?.isActive ? 'Active' : 'Inactive' }}
-            </span>
-          </div>
-          <div class="flex justify-between py-2">
-            <span class="text-gray-500">Role</span>
-            <span
-              class="px-2 py-1 rounded-full text-white"
-              [ngClass]="{
-                'bg-violet-500': user?.isSupervisor,
-                'bg-cyan-500': !user?.isSupervisor
-              }"
-            >
-              {{ user?.isSupervisor ? 'Supervisor' : 'Non-Supervisor' }}
-            </span>
+              Edit Profile
+            </button>
           </div>
         </div>
       </div>
