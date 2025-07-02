@@ -37,221 +37,290 @@ import {
     AddUserComponent,
     EditUserComponent,
     TableSkeletonComponent,
-    SheetsComponent, // Import SheetsComponent
+    SheetsComponent,
   ],
   template: `
-    <div
-      class="h-[calc(100vh-.75rem)] bg-white mt-3 rounded-tl-2xl rounded-bl-2xl sm:px-6 lg:px-8"
-    >
-      <div class="max-w-full mx-auto py-3">
-        <div class="p-2 bg-white rounded-lg mb-2">
-          <h1 class="text-3xl font-semibold text-gray-900">User Management</h1>
-          <p class="text-sm text-gray-600 mt-2">
-            Manage your team members and their account permissions here.
-          </p>
+    <div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Header Section with improved styling -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+            <div class="mb-6 sm:mb-0">
+              <h1 class="text-4xl font-bold bg-gradient-to-r from-gray-900 to-blue-900 bg-clip-text text-transparent">
+                User Management
+              </h1>
+              <p class="text-gray-600 mt-3 text-lg">
+                Manage your team members and their account permissions
+              </p>
+              <div class="flex items-center mt-4 space-x-4">
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                  <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+                  {{ totalUsers }} Total Users
+                </span>
+                <span class="text-sm text-gray-500">
+                  {{ filteredUsers.length }} filtered
+                </span>
+              </div>
+            </div>
+            
+            <!-- Enhanced Search & Filter Section -->
+            <div class="flex flex-col sm:flex-row gap-4">
+              <div class="relative">
+                <input
+                  matInput
+                  (keyup)="applyFilter($event)"
+                  placeholder="Search users..."
+                  #input
+                  class="w-full sm:w-64 pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                />
+                <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+              </div>
+              
+              <div class="flex gap-2">
+                <select
+                  [(ngModel)]="positionFilter"
+                  (change)="applyFilter()"
+                  class="px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white"
+                >
+                  <option value="">All Positions</option>
+                  <option *ngFor="let position of positions" [value]="position">
+                    {{ position }}
+                  </option>
+                </select>
 
-          <div class="flex justify-between items-center mt-4">
-            <span class="text-lg font-semibold">
-              All users
-              <span class="text-muted-foreground">({{ totalUsers }})</span>
-            </span>
-            <div class="flex items-center">
-              <input
-                matInput
-                (keyup)="applyFilter($event)"
-                placeholder="Search users"
-                #input
-                class="${TW_INPUT}"
-              />
-              <select
-                [(ngModel)]="positionFilter"
-                (change)="applyFilter()"
-                class="${TW_INPUT} ml-2 appearance-none pr-8"
-              >
-                <option value="">All Positions</option>
-                <option *ngFor="let position of positions" [value]="position">
-                  {{ position }}
-                </option>
-              </select>
-
-              <select
-                [(ngModel)]="supervisorFilter"
-                (change)="applyFilter()"
-                class="${TW_INPUT} ml-2 appearance-none pr-5"
-              >
-                <option value="">All Supervisors</option>
-                <option value="true">Supervisors</option>
-                <option value="false">Non-Supervisors</option>
-              </select>
+                <select
+                  [(ngModel)]="supervisorFilter"
+                  (change)="applyFilter()"
+                  class="px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white"
+                >
+                  <option value="">All Roles</option>
+                  <option value="true">Supervisors</option>
+                  <option value="false">Employees</option>
+                </select>
+              </div>
 
               <button
-                class="ml-4 ${TW_BUTTON} ${TW_BUTTON_CUSTOM} flex items-center"
+                class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium rounded-xl hover:from-blue-700 hover:to-blue-800 focus:ring-4 focus:ring-blue-200 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                 (click)="openAddUserModal()"
               >
-                <i-lucide [img]="Plus" class="w-4 h-4"></i-lucide>
+                <i-lucide [img]="Plus" class="w-5 h-5 mr-2"></i-lucide>
                 Add User
               </button>
             </div>
           </div>
+        </div>
 
-          <div *ngIf="isLoading; else dataContent">
+        <!-- Enhanced Table Section -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <div *ngIf="isLoading; else dataContent" class="p-8">
             <app-table-skeleton></app-table-skeleton>
           </div>
 
           <ng-template #dataContent>
-            <div class="overflow-x-auto bg-white rounded-lg ${TW_BORDER} mt-4">
-              <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-muted text-muted-foreground">
-                  <tr class="uppercase">
-                    <!-- <th class="p-4 text-left">
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead class="bg-gradient-to-r from-gray-50 to-blue-50 border-b border-gray-200">
+                  <tr>
+                    <th class="px-6 py-4 text-left">
+                      <div class="flex items-center">
                         <input
                           type="checkbox"
                           (change)="toggleSelectAll($event)"
+                          class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
                         />
-                      </th> -->
-                    <th class="p-4 text-left">
-                      <input
-                        class="mr-3"
-                        type="checkbox"
-                        (change)="toggleSelectAll($event)"
-                      />
-                      User Name
+                        <span class="ml-3 text-sm font-semibold text-gray-700 uppercase tracking-wider">
+                          User
+                        </span>
+                      </div>
                     </th>
-                    <th class="p-4 text-left">Role</th>
-                    <th class="p-4 text-left">Position</th>
-                    <th class="p-4 text-left">Actions</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">
+                      Status & Role
+                    </th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">
+                      Position
+                    </th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">
+                      Actions
+                    </th>
                   </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
+                <tbody class="bg-white divide-y divide-gray-100">
                   <tr
                     *ngFor="let user of getPaginatedUsers()"
-                    class="${TW_TABLE_ROW}"
+                    class="hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
+                    (click)="openUserSheet(user)"
                   >
-                    <td
-                      class="p-4 flex items-center space-x-4"
-                      (click)="openUserSheet(user)"
-                    >
-                      <input type="checkbox" class="mr-2" />
+                    <td class="px-6 py-4">
+                      <div class="flex items-center space-x-4">
+                        <input 
+                          type="checkbox" 
+                          class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                          (click)="$event.stopPropagation()"
+                        />
+                        
+                        <div class="relative">
+                          <img
+                            src="https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=612x612&w=0&k=20&c=s0aTdmT5aU6b8ot7VKm11DeID6NctRCpB755rA1BIP0="
+                            alt="avatar"
+                            class="w-12 h-12 rounded-full border-2 border-gray-200 object-cover"
+                          />
+                          <div 
+                            class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-white"
+                            [ngClass]="{
+                              'bg-green-500': user.isActive,
+                              'bg-gray-400': !user.isActive
+                            }"
+                          ></div>
+                        </div>
 
-                      <img
-                        *ngIf="user"
-                        src="https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=612x612&w=0&k=20&c=s0aTdmT5aU6b8ot7VKm11DeID6NctRCpB755rA1BIP0="
-                        alt="avatar"
-                        class="cursor-pointer inline-block relative object-cover object-center !rounded-full w-10 h-10 border border-slate-400 p-0"
-                        (click)="openUserSheet(user)"
-                      />
-
-                      <div
-                        *ngIf="user"
-                        class="cursor-pointer"
-                        (click)="openUserSheet(user)"
-                      >
-                        <span class="block font-bold">{{ user.name }}</span>
-
-                        <span class="block text-sm text-muted-foreground">{{
-                          user.email
-                        }}</span>
+                        <div class="flex-1 min-w-0">
+                          <p class="text-sm font-semibold text-gray-900 truncate">
+                            {{ user.name }}
+                          </p>
+                          <p class="text-sm text-gray-500 truncate">
+                            {{ user.email }}
+                          </p>
+                        </div>
                       </div>
-
-                      <div></div>
                     </td>
-                    <td class="p-4 space-x-1">
-                      <span
-                        class="${TW_BADGE}"
-                        [class.bg-blue-900]="user.isActive"
-                        [class.bg-yellow-500]="!user.isActive"
-                      >
-                        {{ user.isActive ? 'Active' : 'Inactive' }}
-                      </span>
-
-                      <span
-                        class="${TW_BADGE_2}"
-                        [class.bg-violet-500]="user.isSupervisor"
-                        [class.bg-cyan-500]="!user.isSupervisor"
-                      >
-                        {{ user.isSupervisor ? 'Supervisor' : 'Employee' }}
-                      </span>
+                    
+                    <td class="px-6 py-4">
+                      <div class="flex flex-col space-y-2">
+                        <span
+                          class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                          [ngClass]="{
+                            'bg-green-100 text-green-800': user.isActive,
+                            'bg-yellow-100 text-yellow-800': !user.isActive
+                          }"
+                        >
+                          <span 
+                            class="w-1.5 h-1.5 rounded-full mr-1.5"
+                            [ngClass]="{
+                              'bg-green-400': user.isActive,
+                              'bg-yellow-400': !user.isActive
+                            }"
+                          ></span>
+                          {{ user.isActive ? 'Active' : 'Inactive' }}
+                        </span>
+                        
+                        <span
+                          class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                          [ngClass]="{
+                            'bg-purple-100 text-purple-800': user.isSupervisor,
+                            'bg-blue-100 text-blue-800': !user.isSupervisor
+                          }"
+                        >
+                          {{ user.isSupervisor ? 'Supervisor' : 'Employee' }}
+                        </span>
+                      </div>
                     </td>
 
-                    <td class="p-4">{{ user.position }}</td>
-                    <!-- <td class="p-4">{{ user.isSupervisor }}</td> -->
-                    <td class="p-4">
-                      <button
-                        class="text-indigo-600 hover:text-indigo-900 mr-3"
-                        (click)="openEditUserModal(user)"
-                      >
-                        <i-lucide [img]="Edit" class="w-5 h-5"></i-lucide>
-                      </button>
-                      <button
-                        class="text-red-600 hover:text-red-900"
-                        (click)="deleteUser(user.id)"
-                      >
-                        <i-lucide [img]="Trash" class="w-5 h-5"></i-lucide>
-                      </button>
+                    <td class="px-6 py-4">
+                      <span class="text-sm text-gray-900 font-medium">
+                        {{ user.position }}
+                      </span>
+                    </td>
+                    
+                    <td class="px-6 py-4">
+                      <div class="flex items-center space-x-2">
+                        <button
+                          class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200"
+                          (click)="openEditUserModal(user); $event.stopPropagation()"
+                          title="Edit User"
+                        >
+                          <i-lucide [img]="Edit" class="w-5 h-5"></i-lucide>
+                        </button>
+                        <button
+                          class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200"
+                          (click)="deleteUser(user.id); $event.stopPropagation()"
+                          title="Delete User"
+                        >
+                          <i-lucide [img]="Trash" class="w-5 h-5"></i-lucide>
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </ng-template>
-          <button
-            *ngIf="selectedUsers.length > 1"
-            class="mt-4 text-red-600 hover:text-red-900"
-            (click)="deleteSelectedUsers()"
-            [disabled]="selectedUsers.length === 0"
-          >
-            Delete Users
-          </button>
-          <app-sheets
-            [user]="selectedUser"
-            [isSheetOpen]="isSheetVisible"
-            (closeSheet)="onSheetClose()"
-          ></app-sheets>
-
-          <div *ngIf="isEditModalVisible">
-            <app-edit-user
-              [user]="userToEdit"
-              (userUpdated)="onUserUpdated($event)"
-              (reloadUsers)="fetchUsers()"
-              (cancel)="closeEditModal()"
-            ></app-edit-user>
-          </div>
-
-          <div *ngIf="isModalVisible">
-            <app-add-user
-              (userAdded)="onUserAdded($event)"
-              (closeModal)="closeModalHandler()"
-            ></app-add-user>
-          </div>
         </div>
-        <div class="flex justify-between">
-          <span class="text-muted-foreground">
-            Showing {{ startItem }} to {{ endItem }} of
-            {{ filteredUsers.length }} users
-          </span>
-          <div class="flex space-x-2">
+
+        <!-- Enhanced Pagination -->
+        <div class="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+          <div class="text-sm text-gray-700 mb-4 sm:mb-0">
+            Showing <span class="font-medium">{{ startItem }}</span> to 
+            <span class="font-medium">{{ endItem }}</span> of 
+            <span class="font-medium">{{ filteredUsers.length }}</span> users
+          </div>
+          
+          <div class="flex items-center space-x-2">
             <button
-              class="${TW_BUTTON} ${TW_BUTTON_MUTED}"
+              class="inline-flex items-center px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               (click)="currentPage = currentPage - 1"
               [disabled]="currentPage === 1"
             >
-              <i-lucide
-                [img]="ChevronLeft"
-                class="w-7 h-7 hover:text-blue-900 hover:bg-gray-200 hover:rounded-md"
-              ></i-lucide>
+              <i-lucide [img]="ChevronLeft" class="w-4 h-4 mr-1"></i-lucide>
+              Previous
             </button>
+            
+            <div class="flex items-center space-x-1">
+              <span class="px-3 py-2 text-sm font-medium text-gray-700">
+                Page {{ currentPage }} of {{ Math.ceil(filteredUsers.length / itemsPerPage) }}
+              </span>
+            </div>
+            
             <button
-              class="${TW_BUTTON} ${TW_BUTTON_MUTED}"
+              class="inline-flex items-center px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               (click)="currentPage = currentPage + 1"
               [disabled]="currentPage * itemsPerPage >= filteredUsers.length"
             >
-              <i-lucide
-                [img]="ChevronRight"
-                class="w-7 h-7  hover:text-blue-900 hover:bg-gray-200 hover:rounded-md"
-              ></i-lucide>
+              Next
+              <i-lucide [img]="ChevronRight" class="w-4 h-4 ml-1"></i-lucide>
             </button>
           </div>
         </div>
+
+        <!-- Bulk Actions -->
+        <div *ngIf="selectedUsers.length > 0" class="mt-4 bg-red-50 border border-red-200 rounded-xl p-4">
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-red-800">
+              {{ selectedUsers.length }} user(s) selected
+            </span>
+            <button
+              class="inline-flex items-center px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 focus:ring-4 focus:ring-red-200 transition-all duration-200"
+              (click)="deleteSelectedUsers()"
+            >
+              <i-lucide [img]="Trash" class="w-4 h-4 mr-2"></i-lucide>
+              Delete Selected
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modals and Sheets -->
+      <app-sheets
+        [user]="selectedUser"
+        [isSheetOpen]="isSheetVisible"
+        (closeSheet)="onSheetClose()"
+      ></app-sheets>
+
+      <div *ngIf="isEditModalVisible">
+        <app-edit-user
+          [user]="userToEdit"
+          (userUpdated)="onUserUpdated($event)"
+          (reloadUsers)="fetchUsers()"
+          (cancel)="closeEditModal()"
+        ></app-edit-user>
+      </div>
+
+      <div *ngIf="isModalVisible">
+        <app-add-user
+          (userAdded)="onUserAdded($event)"
+          (closeModal)="closeModalHandler()"
+        ></app-add-user>
       </div>
     </div>
   `,
@@ -265,6 +334,7 @@ export class UsersComponent implements OnInit {
   readonly Edit = Edit;
   readonly Trash = Trash;
   readonly Plus = Plus;
+  readonly Math = Math; // Add Math property for template access
 
   isEditModalVisible: boolean = false;
   isModalVisible: boolean = false;
