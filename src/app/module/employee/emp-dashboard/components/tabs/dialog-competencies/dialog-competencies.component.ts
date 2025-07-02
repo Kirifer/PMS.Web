@@ -10,47 +10,47 @@ import { FormsModule } from '@angular/forms';
     <div class="w-full bg-white rounded-lg shadow-sm">
       <table class="min-w-full divide-y divide-gray-200">
         <!-- Table head -->
-        <thead class="bg-gray-50">
+        <thead class="bg-blue-300">
           <tr>
             <th
               scope="col"
-              class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              class="px-2 py-2 text-center text-sm font-bold text-white uppercase tracking-wider"
             >
               No.
             </th>
             <th
               scope="col"
-              class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-48"
+              class="px-4 py-2 text-left text-sm font-bold text-white uppercase tracking-wider"
             >
               Competency
             </th>
             <th
               scope="col"
-              class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-20"
+              class="px-2 py-2 text-center text-xs font-bold text-white uppercase tracking-wider"
             >
-              Weight (%)
+              <span class="text-sm">Weight</span> (%)
             </th>
             <th
               scope="col"
-              class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-24"
+              class="px-4 py-2 text-left text-sm font-bold text-white uppercase tracking-wider w-44"
             >
               Employee Level
             </th>
             <th
               scope="col"
-              class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              class="px-4 py-2 text-center text-sm font-bold text-white uppercase tracking-wider"
             >
               Employee Comments
             </th>
             <th
               scope="col"
-              class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-24"
+              class="px-4 py-2 text-left text-sm font-bold text-white uppercase tracking-wider w-44"
             >
               Manager Level
             </th>
             <th
               scope="col"
-              class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              class="px-4 py-2 text-center text-sm font-bold text-white uppercase tracking-wider"
             >
               Manager Comments
             </th>
@@ -59,7 +59,7 @@ import { FormsModule } from '@angular/forms';
 
         <!-- Table body -->
         <tbody class="bg-white divide-y divide-gray-200">
-          <tr *ngFor="let row of reviewDetails.competencies; let i = index">
+          <tr *ngFor="let row of reviewDetails.competencies; let i = index" class="odd:bg-white even:bg-blue-50">
             <th scope="row" class="px-4 py-2 text-sm font-light text-gray-900">
               {{ i + 1 }}
             </th>
@@ -84,7 +84,7 @@ import { FormsModule } from '@angular/forms';
             <td class="px-4 py-2 text-sm text-gray-900">
               <textarea
                 class="w-full p-2 border rounded text-sm resize-none focus:outline-none focus:ring-blue-900 focus:border-blue-900"
-                rows="4"
+                rows="2"
                 [(ngModel)]="row.employeeComments"
               ></textarea>
             </td>
@@ -103,7 +103,7 @@ import { FormsModule } from '@angular/forms';
             <td class="px-4 py-2 text-sm text-gray-900">
               <textarea
                 class="w-full p-2 border rounded text-sm resize-none focus:outline-none focus:ring-blue-900 focus:border-blue-900"
-                rows="4"
+                rows="2"
                 [(ngModel)]="row.managerComments"
               ></textarea>
             </td>
